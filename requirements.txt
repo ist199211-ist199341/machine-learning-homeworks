@@ -1,0 +1,5 @@
+black
+ipykernel
+nbformat
+nbconvert
+nbstripout
