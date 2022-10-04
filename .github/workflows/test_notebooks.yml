@@ -21,7 +21,12 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Execute all Notebooks
-        shell: bash -l {0}
-        run: |
-          jupyter nbconvert --execute --inplace src/**/*.ipynb
+      - name: Check pre-commit hooks
+        uses: pre-commit/action@v3.0.0
+
+      - name: set PY
+        run: echo "PY=$(python -VV | sha256sum | cut -d' ' -f1)" >> $GITHUB_ENV
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit|${{ env.PY }}|${{ hashFiles('.pre-commit-config.yaml') }}
