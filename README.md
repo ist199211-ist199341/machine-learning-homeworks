@@ -16,5 +16,5 @@ pip install -r requirements.txt
 Finally, setup Git hooks in order for Notebook outputs to be cleared before commit:
 
 ```
-git config --local core.hooksPath .githooks
+pre-commit install
 ```

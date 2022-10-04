@@ -1,3 +1,0 @@
-#!/bin/sh
-
-nbstripout src/**/*.ipynb --extra-keys "metadata.kernelspec metadata.language_info metadata.vscode"
