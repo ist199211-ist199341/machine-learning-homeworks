@@ -7,50 +7,156 @@
 \usepackage{enumitem}
 \usepackage{titling}
 \usepackage[colorlinks=true]{hyperref}
+\usepackage{multirow}
 
 \setlength{\droptitle}{-6em}
 
 \title{\large{Aprendizagem 2022}\vskip 0.2cm Homework I -- Group 020}
 \date{}
+\author{}
 \begin{document}
 \maketitle
 \center\large{\vskip -2.5cm\textbf{Part I}: Pen and paper}
 \begin{enumerate}[leftmargin=\labelsep]
     Given the following decision tree learnt from 20 observation using Shannon entropy, with leaf annotations (\texttt{\#correct/\#total}).
-    \item Draw the training confusion matrix.
-          \begin{enumerate}
-              \item Place your solution. Math can be entered using the equation
-                    environment like this
-                    \begin{equation}
-                        \vec{\mathbf{r}} = \vec{\mathbf{r}}_{0} + \vec{\mathbf{v}}_{0}t + \frac{1}{2}\vec{\mathbf{a}}t^{2}
-                    \end{equation}
-                    If you then where working in say the $x$-direction and had some numbers % A percent sign allows you to comment.
-                    %The dollar signs around something in a line of text is for "in-line math"
-                    \begin{equation}
-                        \begin{array}{r@{~=~}l}
-                            x & x_{0} + v_{x0}t + \frac{1}{2}a_{x}t^{2}                                                            \\ [2ex]
-                              & 1.2~\text{m} + (4.0~\text{m/s})(3.0~\text{s}) + \frac{1}{2}(-1.0~\text{m/s}^{2})(3.0~\text{s})^{2} \\ [2ex]
-                              & \boxed{8.7~\text{m}}
-                        \end{array}
-                    \end{equation}
+    \item \textbf{Draw the training confusion matrix.}\\
+          \vspace{0.5em}
+          \begin{center}
 
-              \item When you get to the next part, you can add a \verb"\item" to get the appropriate label. Also,
-                    if you don't like all the equation numbers, you can use the following to have the equation with
-                    no number
-                    \begin{equation*}
-                        \sum\vec{\mathbf{F}} = m\vec{\mathbf{a}}
-                    \end{equation*}
+              \begin{tabular}{|c|c|c|c|c|}
+                  \cline{3-4}
+                  \multicolumn{2}{c}{}                & \multicolumn{2}{|c|}{\textbf{Actual}} & \multicolumn{1}{c}{}                             \\
+                  \cline{3-4}
+                  \multicolumn{2}{c|}{}               & \textbf{Positive}                     & \textbf{Negative}    & \multicolumn{1}{c}{}      \\
+                  \hline
+                  \multirow{2}{*}{\textbf{Predicted}} & \textbf{Positive}                     & 8                    & 4                    & 12 \\
+                  \cline{2-5}
+                                                      & \textbf{Negative}                     & 8                    & 4                    & 12 \\
+                  \hline
+                  \multicolumn{2}{c|}{}               & 11                                    & 9                    & 20                        \\
+                  \cline{3-5}
+              \end{tabular}
+          \end{center}
 
-              \item For more details on putting math into {\LaTeX} documents you can see
-                    \href{https://www.overleaf.com/learn/latex/Mathematical_expressions}{this page on Overleaf}.
-          \end{enumerate}
+    \item \textbf{Identify the training F1 after a post-pruning of the given tree under a maximum depth of 1.}
 
-    \item We you get to the next problem, you can end the enumerate for the parts of the previous problem and then add another item.
-          \begin{enumerate}
-              \item Use a nested enumerate environment to label the parts of the next problem.
-              \item For a quick and broad overview of how to create documents in {\LaTeX} see
-                    \href{https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes}{this quick tutorial from Overleaf}.
-          \end{enumerate}
+          We start by drawing the training confusion matrix after pruning the given tree.
+
+          \begin{center}
+
+              \begin{tabular}{|c|c|c|c|c|}
+                  \cline{3-4}
+                  \multicolumn{2}{c}{}                & \multicolumn{2}{|c|}{\textbf{Actual}} & \multicolumn{1}{c}{}                             \\
+                  \cline{3-4}
+                  \multicolumn{2}{c|}{}               & \textbf{Positive}                     & \textbf{Negative}    & \multicolumn{1}{c}{}      \\
+                  \hline
+                  \multirow{2}{*}{\textbf{Predicted}} & \textbf{Positive}                     & 5                    & 2                    & 7  \\
+                  \cline{2-5}
+                                                      & \textbf{Negative}                     & 6                    & 7                    & 13 \\
+                  \hline
+                  \multicolumn{2}{c|}{}               & 11                                    & 9                    & 20                        \\
+                  \cline{3-5}
+              \end{tabular}
+          \end{center}
+
+          The training F1 can be calculated by:
+
+          \begin{equation}\label{ex2-f1}
+              F_1 = \frac{1}{\frac{1}{2} \times \left(\frac{1}{P} + \frac{1}{R}\right)}
+          \end{equation}
+
+          Where \(P\) is precision and \(R\) is recall, which can be calculated by:
+
+          \begin{equation}\label{ex2-precision-recall}
+              \begin{array}{l r}
+                  P = \frac{\text{true positives}}{\text{true positives} + \text{false positives}}
+                   & R = \frac{\text{true positives}}{\text{true positives} + \text{false negatives}}
+              \end{array}
+          \end{equation}
+
+          We have \textbf{5 true positives}, \textbf{6 false negatives} and \textbf{2 false positives}.\\
+          As per \eqref{ex2-f1} and \eqref{ex2-precision-recall},
+
+          \[
+              \begin{aligned}
+                  F_1 & = \frac{1}{\frac{1}{2} \times \left(\frac{5 + 2}{5} + \frac{5 + 6}{5}\right)} \\
+                      & = 0.5556
+              \end{aligned}
+          \]
+
+          Therefore, \(F_1 = 0.5556\).
+
+    \item \textbf{Identify two different reasons as to why the left tree path was not further decomposed.}
+
+          // TODO
+
+    \item \textbf{Compute the information gain of variable \texttt{y1}.}
+
+          The information gain of variable \texttt{y1} is given by
+
+          \begin{equation}\label{ex4-ig}
+              IG(y_1) = E(y_{out}) - E(y_{out} | y_1)
+          \end{equation}
+
+          The entropy of \(y_{out}\) is given by:
+
+          \[
+              E(y_{out}) = - \left(p(P) \log_2 \left(p(P)\right) + p(N) \log_2 \left(p(N)\right)\right)
+          \]
+
+          Since there are \textbf{11 positives} and \textbf{9 negatives}, we have the following proportions:
+
+          \[
+              \begin{array}{lcr}
+                  p(P) = \frac{11}{20} & , & p(N) = \frac{9}{20}
+              \end{array}
+          \]
+
+          Therefore, we can calculate $E(y_{out})$:
+
+          \[
+              \begin{aligned}
+                  E(y_{out}) & = - \left(\frac{11}{20} \log_2\left(\frac{11}{20}\right) + \frac{9}{20} \log_2\left(\frac{9}{20}\right)\right) \\
+                             & = 0.99277
+              \end{aligned}
+          \]
+
+          The next step is calculating $E(y_{out} | y_1)$:
+
+          \begin{equation}\label{ex4-e-yout-y1}
+              E(y_{out} | y_1) = p(y_1 = A) E(y_{out} , y_1 = A) + p(y_1 = B) E(y_{out} , y_1 = B)
+          \end{equation}
+
+          Since there are \textbf{7 observations where \(y_1 = A\)}, \textbf{5 of which are positive} while \textbf{2 of which are negative},
+          while remaining \textbf{13 observations have \(y_1 = B\)}, where \textbf{6 are positive} and \textbf{7 are negative},
+
+          \[
+              \begin{aligned}
+                  p(y_1 = A)          & = \frac{7}{20}                                                                                               \\
+                  p(y_1 = B)          & = \frac{13}{20}                                                                                              \\
+                  E(y_{out}, y_1 = A) & = - \left(\frac{5}{7} \log_2\left(\frac{5}{7}\right) + \frac{2}{7} \log_2\left(\frac{2}{7}\right)\right)     \\
+                                      & = 0.86312                                                                                                    \\
+                  E(y_{out}, y_1 = B) & = - \left(\frac{6}{13} \log_2\left(\frac{6}{13}\right) + \frac{7}{13} \log_2\left(\frac{7}{13}\right)\right) \\
+                                      & = 0.99573
+              \end{aligned}
+          \]
+
+          Therefore, replacing these values on equation \eqref{ex4-e-yout-y1}, gives us:
+
+          \[
+              \begin{aligned}
+                  E(y_{out} | y_1) & = \frac{7}{20} \times 0.86312 + \frac{13}{20} \times 0.99573 \\
+                                   & = 0.94932
+              \end{aligned}
+          \]
+
+          Finally, we can calculate the information gain, as per \eqref{ex4-ig},
+
+          \[
+              IG(y_{out}) = 0.99277 - 0.94932 = 0.04345
+          \]
+
+          Therefore, \(IG(y_{out}) = 0.04345\).
 \end{enumerate}
 
 \center\large{\textbf{Part II}: Programming}
