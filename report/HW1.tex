@@ -8,8 +8,36 @@
 \usepackage{titling}
 \usepackage[colorlinks=true]{hyperref}
 \usepackage{multirow}
+\usepackage{svg}
+\usepackage{listings}
+\usepackage{xcolor}
 
 \setlength{\droptitle}{-6em}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
 
 \title{\large{Aprendizagem 2022}\vskip 0.2cm Homework I -- Group 020}
 \date{}
@@ -161,12 +189,33 @@
 
 \center\large{\textbf{Part II}: Programming}
 
-\begin{enumerate}[leftmargin=\labelsep,resume]
-    \item Solution to the programming questions here.
+\begin{enumerate}[leftmargin=\labelsep]
+    \item {\bfseries Using sklearn, apply a stratified 70-30 training-testing split with a fixed seed
+          \texttt{random\_state=1}, and assess in a single plot the training and testing accuracies of
+          a decision tree with no depth limits (and remaining default behavior) for a varying number
+          of selected features in \(\{5,10,40,100,250,700\}\).
+          Feature selection should be performed before decision tree learning considering the
+          discriminative power of the input variables according to mutual information criterion
+          \texttt{(mutual\_info\_classif)}.
+          }
+
+          \includesvg{assets/hw1-plot.svg}
+
+    \item \textbf{Why training accuracy is persistently 1? Critically analyze the gathered results.}
+
+          From the obtained results, we noticed that the training accuracy is always 1, regardless of the number of selected features.
+          This is a result of how the decision trees learn.
+
+          Since the question prompt tells us the tree does not have a depth limit, for each element in the training set, a new leaf will be created, which has its values as the path on the tree.
+          Therefore, after the tree is trained, if we give the training set as the data set to test its accuracy, it'll know the correct path for all of the elements and knows how to classify them.
+          This results in an accuracy of 1.
+
+          However, if we test the model with a data set that it hasn't been trained on, we see its accuracy slightly decreases to around 0.8.
+          This happens because it has never seen the values before, so it might have leaves that are not expanded enough to accurately classify the elements.
 \end{enumerate}
 
 \center\large{\textbf{Appendix}\vskip 0.3cm}
 
-Code can be included here.
+\lstinputlisting[language=Python]{assets/hw1-code.py}
 
 \end{document}
