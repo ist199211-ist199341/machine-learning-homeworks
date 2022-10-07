@@ -11,6 +11,7 @@
 \usepackage{svg}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{float}
 
 \setlength{\droptitle}{-6em}
 
@@ -48,7 +49,7 @@
 \begin{enumerate}[leftmargin=\labelsep]
     Given the following decision tree learnt from 20 observation using Shannon entropy, with leaf annotations (\texttt{\#correct/\#total}).
 
-    \begin{figure}[h!]
+    \begin{figure}[H]
         \centering
         \includesvg[width=7cm]{assets/hw1-tree1.svg}
         \caption{Decision Tree from Part I}
@@ -78,7 +79,7 @@
 
           We start by drawing the decision tree after pruning.
 
-          \begin{figure}[h!]
+          \begin{figure}[H]
               \centering
               \includesvg[width=5cm]{assets/hw1-tree2.svg}
               \caption{Decision tree after pruning}
@@ -132,7 +133,16 @@
 
     \item \textbf{Identify two different reasons as to why the left tree path was not further decomposed.}
 
-          // TODO
+          The left tree path might not have been further decomposed because:
+
+          \begin{itemize}
+              \item We did not want to overfit the model, since we have a very small sample size.
+                    For this reason, if we were to further decompose the left tree path, we might end up with a less accurate
+                    decision tree, since the 2 negative observations might have been outliers.
+              \item The information gain of this branch, \(IG(y_{out} | y_2, y_1 = A)\), might be very small,
+                    since there are a lot more observations classified as positive than as negative.
+                    If we were to decompose the left path, there might be no optimal division that would correctly identify all observations.
+          \end{itemize}
 
     \item \textbf{Compute the information gain of variable \texttt{y1}.}
 
@@ -215,9 +225,9 @@
           \texttt{(mutual\_info\_classif)}.
           }
 
-          \begin{figure}[h!]
+          \begin{figure}[H]
               \centering
-              \includesvg[width=15cm]{assets/hw1-plot.svg}
+              \includesvg[width=14cm]{assets/hw1-plot.svg}
               \caption{Accuracy of trained decision tree with no depth limits, applied to both a test and training sets, for a number of selected features.}
               \label{fig:ex1-plot}
           \end{figure}
@@ -225,14 +235,19 @@
     \item \textbf{Why training accuracy is persistently 1? Critically analyze the gathered results.}
 
           From the obtained results, we noticed that the training accuracy is always 1, regardless of the number of selected features.
-          This is a result of how the decision trees learn.
+          This is a result of how decision trees learn.
 
-          Since the question prompt tells us the tree does not have a depth limit, for each element in the training set, a new leaf will be created, which has its values as the path on the tree.
-          Therefore, after the tree is trained, if we give the training set as the data set to test its accuracy, it'll know the correct path for all of the elements and knows how to classify them.
+          Since the question prompt tells us the decision tree does not have a depth limit, a decision tree that perfectly fits all the training data (\texttt{X\_train}) can be created.
+          Therefore, after the tree is trained, if we give the training set (\texttt{X\_train}) as the data set to test its accuracy, it'll know the correct path for all of the observations and knows how to classify them.
           This results in an accuracy of 1.
 
-          However, if we test the model with a data set that it hasn't been trained on, we see its accuracy slightly decreases to around 0.8.
-          This happens because it has never seen the values before, so it might have leaves that are not expanded enough to accurately classify the elements.
+          However, if we test the model with a data set that it hasn't been trained on (\texttt{X\_test}), we see its accuracy slightly decreases to around 0.8.
+          This happens because it has never seen those observations before, so it might have leaves that are not expanded enough to accurately classify them.
+
+          Furthermore, we can also notice that the accuracy of the decision tree changes with the number of features.
+          Using a lot of features to train the model can produce an overfitted tree, reducing its accuracy when predicting the outcome of a new observation,
+          while using only a few features might not be enough information to train the decision tree.
+          It's important to find the right features to include in the decision tree, and we can see that both \(N = 40\) and \(N = 250\) are good candidates for the number of features to improve, although not by much.
 \end{enumerate}
 
 \center\large{\textbf{Appendix}\vskip 0.3cm}
