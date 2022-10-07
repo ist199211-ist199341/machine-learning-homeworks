@@ -41,12 +41,20 @@
 
 \title{\large{Aprendizagem 2022}\vskip 0.2cm Homework I -- Group 020}
 \date{}
-\author{}
+\author{Diogo Correia (99211) \and Tomás Esteves (99341)}
 \begin{document}
 \maketitle
-\center\large{\vskip -2.5cm\textbf{Part I}: Pen and paper}
+\center\large{\vskip -1.0cm\textbf{Part I}: Pen and paper}
 \begin{enumerate}[leftmargin=\labelsep]
     Given the following decision tree learnt from 20 observation using Shannon entropy, with leaf annotations (\texttt{\#correct/\#total}).
+
+    \begin{figure}[h!]
+        \centering
+        \includesvg[width=7cm]{assets/hw1-tree1.svg}
+        \caption{Decision Tree from Part I}
+        \label{fig:decision-tree}
+    \end{figure}
+
     \item \textbf{Draw the training confusion matrix.}\\
           \vspace{0.5em}
           \begin{center}
@@ -68,10 +76,18 @@
 
     \item \textbf{Identify the training F1 after a post-pruning of the given tree under a maximum depth of 1.}
 
-          We start by drawing the training confusion matrix after pruning the given tree.
+          We start by drawing the decision tree after pruning.
+
+          \begin{figure}[h!]
+              \centering
+              \includesvg[width=5cm]{assets/hw1-tree2.svg}
+              \caption{Decision tree after pruning}
+              \label{fig:ex2-tree-pruned}
+          \end{figure}
+
+          Then, we draw the training confusion matrix, according to the pruned tree.
 
           \begin{center}
-
               \begin{tabular}{|c|c|c|c|c|}
                   \cline{3-4}
                   \multicolumn{2}{c}{}                & \multicolumn{2}{|c|}{\textbf{Actual}} & \multicolumn{1}{c}{}                             \\
@@ -199,7 +215,12 @@
           \texttt{(mutual\_info\_classif)}.
           }
 
-          \includesvg{assets/hw1-plot.svg}
+          \begin{figure}[h!]
+              \centering
+              \includesvg[width=15cm]{assets/hw1-plot.svg}
+              \caption{Accuracy of trained decision tree with no depth limits, applied to both a test and training sets, for a number of selected features.}
+              \label{fig:ex1-plot}
+          \end{figure}
 
     \item \textbf{Why training accuracy is persistently 1? Critically analyze the gathered results.}
 
