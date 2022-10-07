@@ -1,0 +1,257 @@
+\documentclass[12pt]{article}
+\usepackage[paper=letterpaper,margin=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{newtxtext, newtxmath}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{multirow}
+\usepackage{svg}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+
+\setlength{\droptitle}{-6em}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{\large{Aprendizagem 2022}\vskip 0.2cm Homework I -- Group 020}
+\date{}
+\author{Diogo Correia (99211) \and Tomás Esteves (99341)}
+\begin{document}
+\maketitle
+\center\large{\vskip -1.0cm\textbf{Part I}: Pen and paper}
+\begin{enumerate}[leftmargin=\labelsep]
+    Given the following decision tree learnt from 20 observation using Shannon entropy, with leaf annotations (\texttt{\#correct/\#total}).
+
+    \begin{figure}[H]
+        \centering
+        \includesvg[width=7cm]{assets/hw1-tree1.svg}
+        \caption{Decision Tree from Part I}
+        \label{fig:decision-tree}
+    \end{figure}
+
+    \item \textbf{Draw the training confusion matrix.}\\
+          \vspace{0.5em}
+          \begin{center}
+
+              \begin{tabular}{|c|c|c|c|c|}
+                  \cline{3-4}
+                  \multicolumn{2}{c}{}                & \multicolumn{2}{|c|}{\textbf{Actual}} & \multicolumn{1}{c}{}                             \\
+                  \cline{3-4}
+                  \multicolumn{2}{c|}{}               & \textbf{Positive}                     & \textbf{Negative}    & \multicolumn{1}{c}{}      \\
+                  \hline
+                  \multirow{2}{*}{\textbf{Predicted}} & \textbf{Positive}                     & 8                    & 4                    & 12 \\
+                  \cline{2-5}
+                                                      & \textbf{Negative}                     & 3                    & 5                    & 8  \\
+                  \hline
+                  \multicolumn{2}{c|}{}               & 11                                    & 9                    & 20                        \\
+                  \cline{3-5}
+              \end{tabular}
+          \end{center}
+
+    \item \textbf{Identify the training F1 after a post-pruning of the given tree under a maximum depth of 1.}
+
+          We start by drawing the decision tree after pruning.
+
+          \begin{figure}[H]
+              \centering
+              \includesvg[width=5cm]{assets/hw1-tree2.svg}
+              \caption{Decision tree after pruning}
+              \label{fig:ex2-tree-pruned}
+          \end{figure}
+
+          Then, we draw the training confusion matrix, according to the pruned tree.
+
+          \begin{center}
+              \begin{tabular}{|c|c|c|c|c|}
+                  \cline{3-4}
+                  \multicolumn{2}{c}{}                & \multicolumn{2}{|c|}{\textbf{Actual}} & \multicolumn{1}{c}{}                             \\
+                  \cline{3-4}
+                  \multicolumn{2}{c|}{}               & \textbf{Positive}                     & \textbf{Negative}    & \multicolumn{1}{c}{}      \\
+                  \hline
+                  \multirow{2}{*}{\textbf{Predicted}} & \textbf{Positive}                     & 5                    & 2                    & 7  \\
+                  \cline{2-5}
+                                                      & \textbf{Negative}                     & 6                    & 7                    & 13 \\
+                  \hline
+                  \multicolumn{2}{c|}{}               & 11                                    & 9                    & 20                        \\
+                  \cline{3-5}
+              \end{tabular}
+          \end{center}
+
+          The training F1 can be calculated by:
+
+          \begin{equation}\label{ex2-f1}
+              F_1 = \frac{1}{\frac{1}{2} \times \left(\frac{1}{P} + \frac{1}{R}\right)}
+          \end{equation}
+
+          Where \(P\) is precision and \(R\) is recall, which can be calculated by:
+
+          \begin{equation}\label{ex2-precision-recall}
+              \begin{array}{l r}
+                  P = \frac{\text{true positives}}{\text{true positives} + \text{false positives}}
+                   & R = \frac{\text{true positives}}{\text{true positives} + \text{false negatives}}
+              \end{array}
+          \end{equation}
+
+          We have \textbf{5 true positives}, \textbf{6 false negatives} and \textbf{2 false positives}.\\
+          As per \eqref{ex2-f1} and \eqref{ex2-precision-recall},
+
+          \[
+              \begin{aligned}
+                  F_1 & = \frac{1}{\frac{1}{2} \times \left(\frac{5 + 2}{5} + \frac{5 + 6}{5}\right)} \\
+                      & = \frac{5}{9} = 0.5556
+              \end{aligned}
+          \]
+
+          Therefore, \(F_1 = \frac{5}{9} = 0.5556\).
+
+    \item \textbf{Identify two different reasons as to why the left tree path was not further decomposed.}
+
+          The left tree path might not have been further decomposed because:
+
+          \begin{itemize}
+              \item We did not want to overfit the model, since we have a very small sample size.
+                    For this reason, if we were to further decompose the left tree path, we might end up with a less accurate
+                    decision tree, since the 2 negative observations might have been outliers.
+              \item The information gain of this branch, \(IG(y_{out} | y_2, y_1 = A)\), might be very small,
+                    since there are a lot more observations classified as positive than as negative.
+                    If we were to decompose the left path, there might be no optimal division that would correctly identify all observations.
+          \end{itemize}
+
+    \item \textbf{Compute the information gain of variable \texttt{y1}.}
+
+          The information gain of variable \texttt{y1} is given by
+
+          \begin{equation}\label{ex4-ig}
+              IG(y_1) = E(y_{out}) - E(y_{out} | y_1)
+          \end{equation}
+
+          The entropy of \(y_{out}\) is given by:
+
+          \[
+              E(y_{out}) = - \left(p(\text{Pos}) \log_2 \left(p(\text{Pos})\right) + p(\text{Neg}) \log_2 \left(p(\text{Neg})\right)\right)
+          \]
+
+          Since there are \textbf{11 positives} and \textbf{9 negatives}, we have the following proportions:
+
+          \[
+              \begin{array}{lcr}
+                  p(\text{Pos}) = \frac{11}{20} & , & p(\text{Neg}) = \frac{9}{20}
+              \end{array}
+          \]
+
+          Therefore, we can calculate $E(y_{out})$:
+
+          \[
+              \begin{aligned}
+                  E(y_{out}) & = - \left(\frac{11}{20} \log_2\left(\frac{11}{20}\right) + \frac{9}{20} \log_2\left(\frac{9}{20}\right)\right) \\
+                             & = 0.99277
+              \end{aligned}
+          \]
+
+          The next step is calculating $E(y_{out} | y_1)$:
+
+          \begin{equation}\label{ex4-e-yout-y1}
+              E(y_{out} | y_1) = p(y_1 = A) E(y_{out} , y_1 = A) + p(y_1 = B) E(y_{out} , y_1 = B)
+          \end{equation}
+
+          Since there are \textbf{7 observations where \(y_1 = A\)}, \textbf{5 of which are positive} while \textbf{2 of which are negative},
+          while remaining \textbf{13 observations have \(y_1 = B\)}, where \textbf{6 are positive} and \textbf{7 are negative},
+
+          \[
+              \begin{aligned}
+                  p(y_1 = A)          & = \frac{7}{20}                                                                                               \\
+                  p(y_1 = B)          & = \frac{13}{20}                                                                                              \\
+                  E(y_{out}, y_1 = A) & = - \left(\frac{5}{7} \log_2\left(\frac{5}{7}\right) + \frac{2}{7} \log_2\left(\frac{2}{7}\right)\right)     \\
+                                      & = 0.86312                                                                                                    \\
+                  E(y_{out}, y_1 = B) & = - \left(\frac{6}{13} \log_2\left(\frac{6}{13}\right) + \frac{7}{13} \log_2\left(\frac{7}{13}\right)\right) \\
+                                      & = 0.99573
+              \end{aligned}
+          \]
+
+          Therefore, replacing these values on equation \eqref{ex4-e-yout-y1}, gives us:
+
+          \[
+              \begin{aligned}
+                  E(y_{out} | y_1) & = \frac{7}{20} \times 0.86312 + \frac{13}{20} \times 0.99573 \\
+                                   & = 0.94932
+              \end{aligned}
+          \]
+
+          Finally, we can calculate the information gain, as per \eqref{ex4-ig},
+
+          \[
+              IG(y_{out}) = 0.99277 - 0.94932 = 0.04345
+          \]
+
+          Therefore, \(IG(y_{out}) = 0.04345\).
+\end{enumerate}
+
+\center\large{\textbf{Part II}: Programming}
+
+\begin{enumerate}[leftmargin=\labelsep]
+    \item {\bfseries Using sklearn, apply a stratified 70-30 training-testing split with a fixed seed
+          \texttt{random\_state=1}, and assess in a single plot the training and testing accuracies of
+          a decision tree with no depth limits (and remaining default behavior) for a varying number
+          of selected features in \(\{5,10,40,100,250,700\}\).
+          Feature selection should be performed before decision tree learning considering the
+          discriminative power of the input variables according to mutual information criterion
+          \texttt{(mutual\_info\_classif)}.
+          }
+
+          \begin{figure}[H]
+              \centering
+              \includesvg[width=14cm]{assets/hw1-plot.svg}
+              \caption{Accuracy of trained decision tree with no depth limits, applied to both a test and training sets, for a number of selected features.}
+              \label{fig:ex1-plot}
+          \end{figure}
+
+    \item \textbf{Why training accuracy is persistently 1? Critically analyze the gathered results.}
+
+          From the obtained results, we noticed that the training accuracy is always 1, regardless of the number of selected features.
+          This is a result of how decision trees learn.
+
+          Since the question prompt tells us the decision tree does not have a depth limit, a decision tree that perfectly fits all the training data (\texttt{X\_train}) can be created.
+          Therefore, after the tree is trained, if we give the training set (\texttt{X\_train}) as the data set to test its accuracy, it'll know the correct path for all of the observations and knows how to classify them.
+          This results in an accuracy of 1.
+
+          However, if we test the model with a data set that it hasn't been trained on (\texttt{X\_test}), we see its accuracy slightly decreases to around 0.8.
+          This happens because it has never seen those observations before, so it might have leaves that are not expanded enough to accurately classify them.
+
+          Furthermore, we can also notice that the accuracy of the decision tree changes with the number of features.
+          Using a lot of features to train the model can produce an overfitted tree, reducing its accuracy when predicting the outcome of a new observation,
+          while using only a few features might not be enough information to train the decision tree.
+          It's important to find the right features to include in the decision tree, and we can see that both \(N = 40\) and \(N = 250\) are good candidates for the number of features to select, although not by much.
+\end{enumerate}
+
+\center\large{\textbf{Appendix}\vskip 0.3cm}
+
+\lstinputlisting[language=Python]{assets/hw1-code.py}
+
+\end{document}
