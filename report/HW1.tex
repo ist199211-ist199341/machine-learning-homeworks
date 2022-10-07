@@ -237,11 +237,11 @@
           From the obtained results, we noticed that the training accuracy is always 1, regardless of the number of selected features.
           This is a result of how decision trees learn.
 
-          Since the question prompt tells us the decision tree does not have a depth limit, a decision tree that perfectly fits all the training data (\texttt{X\_train_cut}) can be created.
-          Therefore, after the tree is trained, if we give the training set (\texttt{X\_train_cut}) as the data set to test its accuracy, it'll know the correct path for all of the observations and knows how to classify them.
+          Since the question prompt tells us the decision tree does not have a depth limit, a decision tree that perfectly fits all the training data (\texttt{X\_train\_cut}) can be created.
+          Therefore, after the tree is trained, if we give the training set (\texttt{X\_train\_cut}) as the data set to test its accuracy, it'll know the correct path for all of the observations and knows how to classify them.
           This results in an accuracy of 1.
 
-          However, if we test the model with a data set that it hasn't been trained on (\texttt{X\_test_cut}), we see its accuracy slightly decreases to around 0.8.
+          However, if we test the model with a data set that it hasn't been trained on (\texttt{X\_test\_cut}), we see its accuracy slightly decreases to around 0.8.
           This happens because it has never seen those observations before, so it might have leaves that are not expanded enough to accurately classify them.
 
           Furthermore, we can also notice that the accuracy of the decision tree changes with the number of features.
