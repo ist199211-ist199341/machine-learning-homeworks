@@ -21,8 +21,8 @@ X_train, X_test, y_train, y_test = model_selection.train_test_split(
 
 NUM_FEATURES = [5, 10, 40, 100, 250, 700]
 
-training_accurancy = []
-test_accurancy = []
+training_accuracy = []
+test_accuracy = []
 
 for num_features in NUM_FEATURES:
     # Select the features with the greatest information gain (by mutual_info_classif)
@@ -50,18 +50,18 @@ for num_features in NUM_FEATURES:
     train_acc = metrics.accuracy_score(y_train, y_train_pred)
     test_acc = metrics.accuracy_score(y_test, y_test_pred)
 
-    training_accurancy.append(train_acc)
-    test_accurancy.append(test_acc)
+    training_accuracy.append(train_acc)
+    test_accuracy.append(test_acc)
 
 plt.plot(
     NUM_FEATURES,
-    training_accurancy,
-    label="Training Accuraccy",
+    training_accuracy,
+    label="Training Accuracy",
     marker="+",
     color="#4caf50",
 )
 plt.plot(
-    NUM_FEATURES, test_accurancy, label="Test Accuraccy", marker=".", color="#ff5722"
+    NUM_FEATURES, test_accuracy, label="Test Accuracy", marker=".", color="#ff5722"
 )
 
 plt.xlabel("Number of Selected Features")
