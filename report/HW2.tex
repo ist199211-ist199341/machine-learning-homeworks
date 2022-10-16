@@ -1,0 +1,188 @@
+\documentclass[12pt]{article}
+\usepackage[paper=letterpaper,margin=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{newtxtext, newtxmath}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{multirow}
+\usepackage{svg}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+
+\setlength{\droptitle}{-6em}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{\large{Aprendizagem 2022}\vskip 0.2cm Homework II -- Group 020}
+\date{}
+\author{Diogo Correia (99211) \and Tomás Esteves (99341)}
+\begin{document}
+\maketitle
+\center\large{\vskip -1.0cm\textbf{Part I}: Pen and paper}
+
+\begin{enumerate}[leftmargin=\labelsep]
+
+    Four positive observations, \(
+    \left\{
+    \begin{pmatrix}
+        A \\
+        0
+    \end{pmatrix}
+    ,
+    \begin{pmatrix}
+        B \\
+        1
+    \end{pmatrix}
+    ,
+    \begin{pmatrix}
+        A \\
+        1
+    \end{pmatrix}
+    ,
+    \begin{pmatrix}
+        A \\
+        0
+    \end{pmatrix}
+    \right\}
+    \), and four negative observations, \(
+    \left\{
+    \begin{pmatrix}
+        B \\
+        0
+    \end{pmatrix}
+    ,
+    \begin{pmatrix}
+        B \\
+        0
+    \end{pmatrix}
+    ,
+    \begin{pmatrix}
+        A \\
+        1
+    \end{pmatrix}
+    ,
+    \begin{pmatrix}
+        B \\
+        1
+    \end{pmatrix}
+    \right\}
+    \), were collected.
+    Consider the problem of classifying observations as positive or negative.
+
+    \item {\bfseries
+          Compute the recall of a distance-weighted \textit{k}NN with a \(k=5\)
+          and distance \(d(x_1,x_2)=\text{Hamming}(x_1,x_2)+\frac{1}{2}\) using
+          leave-one-out evaluation schema (i.e., when classifying one observation,
+          use all remaining ones).
+          }\\
+          \vspace{0.5em}
+
+          We start by calculating the distance between each observation.
+
+          \begin{center}
+              \begin{tabular}{c|cccccccc}
+                  \(d(x_1,x_2)\) & \(x_1\)      & \(x_2\)      & \(x_3\)      & \(x_4\)      & \(x_5\)      & \(x_6\)      & \(x_7\)      & \(x_8\)      \\
+                  \hline
+                  \(x_1\)        & -            & 2.5          & \textbf{1.5} & \textbf{0.5} & \textbf{1.5} & \textbf{1.5} & \textbf{1.5} & 2.5          \\
+                  \(x_2\)        & 2.5          & -            & \textbf{1.5} & 2.5          & \textbf{1.5} & \textbf{1.5} & \textbf{1.5} & \textbf{0.5} \\
+                  \(x_3\)        & \textbf{1.5} & \textbf{1.5} & -            & \textbf{1.5} & 2.5          & 2.5          & \textbf{0.5} & \textbf{1.5} \\
+                  \(x_4\)        & \textbf{0.5} & 2.5          & \textbf{1.5} & -            & \textbf{1.5} & \textbf{1.5} & \textbf{1.5} & 2.5          \\
+                  \(x_5\)        & \textbf{1.5} & \textbf{1.5} & 2.5          & \textbf{1.5} & -            & \textbf{0.5} & 2.5          & \textbf{1.5} \\
+                  \(x_6\)        & \textbf{1.5} & \textbf{1.5} & 2.5          & \textbf{1.5} & \textbf{0.5} & -            & 2.5          & \textbf{1.5} \\
+                  \(x_7\)        & \textbf{1.5} & \textbf{1.5} & \textbf{0.5} & \textbf{1.5} & 2.5          & 2.5          & -            & \textbf{1.5} \\
+                  \(x_8\)        & 2.5          & \textbf{0.5} & \textbf{1.5} & 2.5          & \textbf{1.5} & \textbf{1.5} & \textbf{1.5} & -
+              \end{tabular}
+          \end{center}
+
+          We can predict the outcome for each observation, using the \textit{weighted mode}.
+
+          \[
+              \begin{aligned}
+                  \hat{z_1} & = \text{weighted\_mode} \left(\left(\frac{1}{1.5}+\frac{1}{0.5}\right)P,\left(\frac{1}{1.5}+\frac{1}{1.5}+\frac{1}{1.5}\right)N\right) = P \\
+                  \hat{z_2} & = \text{weighted\_mode} \left(\left(\frac{1}{1.5}\right)P,\left(\frac{1}{1.5}+\frac{1}{1.5}+\frac{1}{1.5}+\frac{1}{0.5}\right)N\right) = N \\
+                  \hat{z_3} & = \text{weighted\_mode} \left(\left(\frac{1}{1.5}+\frac{1}{1.5}+\frac{1}{1.5}\right)P,\left(\frac{1}{0.5}+\frac{1}{1.5}\right)N\right) = N \\
+                  \hat{z_4} & = \text{weighted\_mode} \left(\left(\frac{1}{0.5}+\frac{1}{1.5}\right)P,\left(\frac{1}{1.5}+\frac{1}{1.5}+\frac{1}{1.5}\right)N\right) = P \\
+                  \hat{z_5} & = \text{weighted\_mode} \left(\left(\frac{1}{1.5}+\frac{1}{1.5}+\frac{1}{1.5}\right)P,\left(\frac{1}{0.5}+\frac{1}{1.5}\right)N\right) = N \\
+                  \hat{z_6} & = \text{weighted\_mode} \left(\left(\frac{1}{1.5}+\frac{1}{1.5}+\frac{1}{1.5}\right)P,\left(\frac{1}{0.5}+\frac{1}{1.5}\right)N\right) = N \\
+                  \hat{z_7} & = \text{weighted\_mode} \left(\left(\frac{1}{1.5}+\frac{1}{1.5}+\frac{1}{0.5}+\frac{1}{1.5}\right)P,\left(\frac{1}{1.5}\right)N\right) = P \\
+                  \hat{z_8} & = \text{weighted\_mode} \left(\left(\frac{1}{0.5}+\frac{1}{1.5}\right)P,\left(\frac{1}{1.5}+\frac{1}{1.5}+\frac{1}{1.5}\right)N\right) = P
+              \end{aligned}
+          \]
+
+          \begin{center}
+              \begin{tabular}{c|c|c}
+                  Observation & \(z\) & \(\hat{z}\) \\
+                  \hline
+                  \(x_1\)     & P     & P           \\
+                  \(x_2\)     & P     & N           \\
+                  \(x_3\)     & P     & N           \\
+                  \(x_4\)     & P     & P           \\
+                  \(x_5\)     & N     & N           \\
+                  \(x_6\)     & N     & N           \\
+                  \(x_7\)     & N     & P           \\
+                  \(x_8\)     & N     & P
+              \end{tabular}
+          \end{center}
+
+          Then, we draw the training confusion matrix, according to the obtained results.
+
+          \begin{center}
+              \begin{tabular}{|c|c|c|c|c|}
+                  \cline{3-4}
+                  \multicolumn{2}{c}{}                & \multicolumn{2}{|c|}{\textbf{Actual}} & \multicolumn{1}{c}{}                            \\
+                  \cline{3-4}
+                  \multicolumn{2}{c|}{}               & \textbf{Positive}                     & \textbf{Negative}    & \multicolumn{1}{c}{}     \\
+                  \hline
+                  \multirow{2}{*}{\textbf{Predicted}} & \textbf{Positive}                     & 2                    & 2                    & 4 \\
+                  \cline{2-5}
+                                                      & \textbf{Negative}                     & 2                    & 2                    & 4 \\
+                  \hline
+                  \multicolumn{2}{c|}{}               & 4                                     & 4                    & 8                        \\
+                  \cline{3-5}
+              \end{tabular}
+          \end{center}
+
+          We can now calculate the recall:
+
+          \[
+              \text{recall} = \frac{\#\text{true positives}}{\#\text{positives}} = \frac{2}{4} = 0.5
+          \]
+
+\end{enumerate}
+
+\center\large{\textbf{Part II}: Programming}
+
+\begin{enumerate}[leftmargin=\labelsep]
+    \item TODO
+\end{enumerate}
+
+\center\large{\textbf{Appendix}\vskip 0.3cm}
+
+\end{document}
