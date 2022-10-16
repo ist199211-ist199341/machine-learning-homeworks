@@ -45,57 +45,58 @@
 \author{Diogo Correia (99211) \and Tomás Esteves (99341)}
 \begin{document}
 \maketitle
-\center\large{\vskip -1.0cm\textbf{Part I}: Pen and paper}
+\begin{center}
+    \large{\vskip -1.0cm\textbf{Part I}: Pen and paper}
+\end{center}
+
+Four positive observations, \(
+\left\{
+\begin{pmatrix}
+    A \\
+    0
+\end{pmatrix}
+,
+\begin{pmatrix}
+    B \\
+    1
+\end{pmatrix}
+,
+\begin{pmatrix}
+    A \\
+    1
+\end{pmatrix}
+,
+\begin{pmatrix}
+    A \\
+    0
+\end{pmatrix}
+\right\}
+\), and four negative observations, \(
+\left\{
+\begin{pmatrix}
+    B \\
+    0
+\end{pmatrix}
+,
+\begin{pmatrix}
+    B \\
+    0
+\end{pmatrix}
+,
+\begin{pmatrix}
+    A \\
+    1
+\end{pmatrix}
+,
+\begin{pmatrix}
+    B \\
+    1
+\end{pmatrix}
+\right\}
+\), were collected.
+Consider the problem of classifying observations as positive or negative.
 
 \begin{enumerate}[leftmargin=\labelsep]
-
-    Four positive observations, \(
-    \left\{
-    \begin{pmatrix}
-        A \\
-        0
-    \end{pmatrix}
-    ,
-    \begin{pmatrix}
-        B \\
-        1
-    \end{pmatrix}
-    ,
-    \begin{pmatrix}
-        A \\
-        1
-    \end{pmatrix}
-    ,
-    \begin{pmatrix}
-        A \\
-        0
-    \end{pmatrix}
-    \right\}
-    \), and four negative observations, \(
-    \left\{
-    \begin{pmatrix}
-        B \\
-        0
-    \end{pmatrix}
-    ,
-    \begin{pmatrix}
-        B \\
-        0
-    \end{pmatrix}
-    ,
-    \begin{pmatrix}
-        A \\
-        1
-    \end{pmatrix}
-    ,
-    \begin{pmatrix}
-        B \\
-        1
-    \end{pmatrix}
-    \right\}
-    \), were collected.
-    Consider the problem of classifying observations as positive or negative.
-
     \item {\bfseries
           Compute the recall of a distance-weighted \textit{k}NN with a \(k=5\)
           and distance \(d(x_1,x_2)=\text{Hamming}(x_1,x_2)+\frac{1}{2}\) using
@@ -108,7 +109,7 @@
 
           \begin{center}
               \begin{tabular}{c|cccccccc}
-                  \(d(x_1,x_2)\) & \(x_1\)      & \(x_2\)      & \(x_3\)      & \(x_4\)      & \(x_5\)      & \(x_6\)      & \(x_7\)      & \(x_8\)      \\
+                  \(d(x_i,x_j)\) & \(x_1\)      & \(x_2\)      & \(x_3\)      & \(x_4\)      & \(x_5\)      & \(x_6\)      & \(x_7\)      & \(x_8\)      \\
                   \hline
                   \(x_1\)        & -            & 2.5          & \textbf{1.5} & \textbf{0.5} & \textbf{1.5} & \textbf{1.5} & \textbf{1.5} & 2.5          \\
                   \(x_2\)        & 2.5          & -            & \textbf{1.5} & 2.5          & \textbf{1.5} & \textbf{1.5} & \textbf{1.5} & \textbf{0.5} \\
@@ -175,6 +176,89 @@
               \text{recall} = \frac{\#\text{true positives}}{\#\text{positives}} = \frac{2}{4} = 0.5
           \]
 
+\end{enumerate}
+
+{\bfseries
+An additional positive observation was acquired, \(
+\begin{pmatrix}
+    B \\
+    0
+\end{pmatrix}
+\), and a third variable \(y_3\) was independently monitored, yielding estimates
+\(
+y_3 | P = \left\{1.2, 0.8, 0.5, 0.9, 0.8\right\}
+\) and \(
+y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
+\).
+}
+
+\begin{enumerate}[leftmargin=\labelsep,resume]
+    \item {\bfseries Considering the nine training observations, learn a Bayesian classifier assuming:
+          \begin{enumerate}[label=(\roman*)]
+              \item \(y_1\) and \(y_2\) are dependent;
+              \item \(\left\{y_1, y_2\right\}\) and \(\left\{y_3\right\}\) variable sets
+                    are independent and equally important;
+              \item \(y_3\) is normally distributed.
+          \end{enumerate}
+          Show all parameters.
+          }
+
+          As stated by the question prompt, variable sets \(\left\{y_1, y_2\right\}\)
+          and \(\left\{y_3\right\}\) are independent and equally important.
+          Since we have two independent sets, we'll train a Naive Bayes.
+
+          We'll refer to the outcome, which can be positive (pos) or
+          negative (neg), as class.
+
+          To estimate $p(\text{class} | y_1 \land y_2 \land y_3)$, we can use Bayes' theorem:
+
+          \begin{equation}\label{ex2-bayes1}
+              p(\text{class}| y_1 \land y_2 \land y_3) = \frac{p(y_1 \land y_2 \land y_3 | \text{class}) \times p(\text{class})}{p(y_1 \land y_2 \land y_3)}
+          \end{equation}
+
+          Since we know $\left\{y_1, y_2\right\}$ and $\left\{y_3\right\}$ are independent,
+          we can rewrite $p(y_1 \land y_2 \land y_3)$ as $p(y_1 \land y_2) \cdot p(y_3)$.
+          Rewriting \eqref{ex2-bayes1} with this, results in:
+
+          \begin{equation}\label{ex2-bayes2}
+              p(\text{class}| y_1 \land y_2 \land y_3) = \frac{p(y_1 \land y_2 | \text{class}) p(y_3 | \text{class}) \times p(\text{class})}{p(y_1 \land y_2)p(y_3)}
+          \end{equation}
+
+          We can therefore start calculating all these parameters.
+
+          \[
+              \begin{array}{cc}
+                  p(\text{pos}) = \frac{5}{9} &
+                  p(\text{neg}) = \frac{4}{9}
+              \end{array}
+          \]
+
+          \[
+              \begin{array}{cc}
+                  p(y_1 = A, \ y_2 = 0) = \frac{2}{9}, &
+                  p(y_1 = A, \ y_2 = 1) = \frac{2}{9}    \\[\medskipamount]
+                  p(y_1 = B, \ y_2 = 0) = \frac{3}{9}, &
+                  p(y_1 = B, \ y_2 = 1) = \frac{2}{9}
+              \end{array}
+          \]
+
+          \[
+              \begin{array}{cc}
+                  p(y_1 = A, \ y_2 = 0 \ | \text{pos}) = \frac{2}{5}, &
+                  p(y_1 = A, \ y_2 = 1 \ | \text{pos}) = \frac{1}{5}    \\[\medskipamount]
+                  p(y_1 = B, \ y_2 = 0 \ | \text{pos}) = \frac{1}{5}, &
+                  p(y_1 = B, \ y_2 = 1 \ | \text{pos}) = \frac{1}{5}
+              \end{array}
+          \]
+
+          \[
+              \begin{array}{cc}
+                  p(y_1 = A, \ y_2 = 0 \ | \text{neg}) = \frac{0}{4}, &
+                  p(y_1 = A, \ y_2 = 1 \ | \text{neg}) = \frac{1}{4}    \\[\medskipamount]
+                  p(y_1 = B, \ y_2 = 0 \ | \text{neg}) = \frac{2}{4}, &
+                  p(y_1 = B, \ y_2 = 1 \ | \text{neg}) = \frac{1}{4}
+              \end{array}
+          \]
 \end{enumerate}
 
 \center\large{\textbf{Part II}: Programming}
