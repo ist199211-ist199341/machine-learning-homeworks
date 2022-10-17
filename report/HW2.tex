@@ -608,23 +608,30 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
           Bayes.
           }
 
-          Here are three possible reasons why the predictive accuracy between kNN and Naive Bayes are different, in no particular order:
+          Here are three possible reasons why the predictive accuracy between \textit{k}NN
+          and Naive Bayes is different (we know from the previous answer
+          that \textit{k}NN's accuracy is better than Naïve Bayes'), in no particular order:
 
           \begin{itemize}
               \item We assumed all variables are independent of one another,
-                    which would be good for Naive Bayes, but that might not
+                    which would be good for Naïve Bayes, but that might not
                     be the case, thus explaining its lower accuracy.
-              \item While kNN might be accurate with a small data size, due to
-                    local similarities between the data, Naive Bayes needs a lot
+                    Our dataset has more than 700 different variables, therefore
+                    it's very likely that some of those variables are not strictly
+                    independent of one another.
+              \item While kNN might be accurate with a small dataset size, due to
+                    local similarities between the data, Naïve Bayes needs a lot
                     of data for probability density function/probability
                     mass function approximations.
-                    Our dataset is of moderate size, which might explain
-                    the lower accuracy of Naive Bayes.
+                    Even then, our data might not strictly follow a Gaussian Distribution.
+                    Our dataset is of moderate size (around 700 observations, only
+                    some of which are used for training), which might explain
+                    the lower accuracy of Naïve Bayes.
               \item If values of the same class are closely together
-                    (using, for example, euclidian distance),
-                    kNN will have very good accuracy.
-                    Since kNN does indeed have a greater accuracy than
-                    Naive Bayes, this might be the case.
+                    (according, in this case, to Euclidian distance),
+                    \textit{k}NN will have very good accuracy.
+                    Since \textit{k}NN does indeed have a greater accuracy than
+                    Naïve Bayes, this might be the case.
           \end{itemize}
 \end{enumerate}
 
