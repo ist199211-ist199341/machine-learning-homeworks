@@ -203,28 +203,66 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
           Show all parameters.
           }
 
+          To better organize the information we have, we'll start by creating a table
+          with all the training observations.
+
+          \begin{center}
+              \begin{tabular}{c|cccc}
+                  Observation & \(y_1\) & \(y_2\) & \(y_3\) & class \\
+                  \hline
+                  \(x_1\)     & A       & 0       & 1.2     & P     \\
+                  \(x_2\)     & B       & 1       & 0.8     & P     \\
+                  \(x_3\)     & A       & 1       & 0.5     & P     \\
+                  \(x_4\)     & A       & 0       & 0.9     & P     \\
+                  \(x_5\)     & B       & 0       & 0.8     & P     \\
+                  \(x_6\)     & B       & 0       & 1.0     & N     \\
+                  \(x_7\)     & B       & 0       & 0.9     & N     \\
+                  \(x_8\)     & A       & 1       & 1.2     & N     \\
+                  \(x_9\)     & B       & 1       & 0.8     & N
+              \end{tabular}
+          \end{center}
+
           As stated by the question prompt, variable sets \(\left\{y_1, y_2\right\}\)
           and \(\left\{y_3\right\}\) are independent and equally important.
-          Since we have two independent sets, we'll train a Naive Bayes.
+          Since we have two independent sets, we'll train a Naïve Bayes classifier.
 
           We'll refer to the outcome, which can be positive (pos) or
           negative (neg), as class.
 
-          To estimate $p(\text{class} | y_1 \land y_2 \land y_3)$, we can use Bayes' theorem:
+          To estimate $p(\text{class} | y_1, y_2, y_3)$, we can use Bayes' theorem:
 
           \begin{equation}\label{ex2-bayes1}
-              p(\text{class}| y_1 \land y_2 \land y_3) = \frac{p(y_1 \land y_2 \land y_3 | \text{class}) \times p(\text{class})}{p(y_1 \land y_2 \land y_3)}
+              p(\text{class}| y_1, y_2, y_3) = \frac{p(y_1, y_2, y_3 | \text{class}) \times p(\text{class})}{p(y_1, y_2, y_3)}
           \end{equation}
 
           Since we know $\left\{y_1, y_2\right\}$ and $\left\{y_3\right\}$ are independent,
-          we can rewrite $p(y_1 \land y_2 \land y_3)$ as $p(y_1 \land y_2) \cdot p(y_3)$.
+          we can rewrite $p(y_1, y_2, y_3)$ as $p(y_1, y_2) \cdot p(y_3)$.
           Rewriting \eqref{ex2-bayes1} with this, results in:
 
           \begin{equation}\label{ex2-bayes2}
-              p(\text{class}| y_1 \land y_2 \land y_3) = \frac{p(y_1 \land y_2 | \text{class}) p(y_3 | \text{class}) \times p(\text{class})}{p(y_1 \land y_2)p(y_3)}
+              p(\text{class}| y_1, y_2, y_3) = \frac{p(y_1, y_2 | \text{class}) p(y_3 | \text{class}) \times p(\text{class})}{p(y_1, y_2)p(y_3)}
           \end{equation}
 
+          Given a new observation $D$, we are able to classify it by calculating
+          $p(\text{class}|D)$ for all classes and selecting the class with the
+          highest probability as our prediction.
+
+          $$
+              \begin{aligned}
+                  \hat{z} & = \underset{c \in \{pos, neg\}}{\text{arg max}} \medspace p(\text{c} | D)                                                                                                                           \\
+                          & = \underset{c \in \{pos, neg\}}{\text{arg max}} \medspace \frac{p(y_1, y_2 | c) p(y_3 | c) \times p(c)}{p(y_1, y_2)p(y_3)}                                                                          \\
+                          & = \underset{c \in \{pos, neg\}}{\text{arg max}} \medspace p(y_1, y_2 | c) p(y_3 | c) p(c)                                  & \parbox{15em}{since we can remove parameters that don't depend on $c$}
+              \end{aligned}
+          $$
+
+
           We can therefore start calculating all these parameters.
+
+          Calculating $p(\text{pos})$, $p(\text{neg})$ and all parameters involving $y_1$ and
+          $y_2$ is straightforward, since they can be infered from the table.
+
+          There are 5 positive and 4 negative observations, out of a total of 9.
+          Therefore,
 
           \[
               \begin{array}{cc}
@@ -232,6 +270,9 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
                   p(\text{neg}) = \frac{4}{9}
               \end{array}
           \]
+
+          For the four possible combinations of $y_1$ and $y_2$, and following
+          the same logic as above,
 
           \[
               \begin{array}{cc}
@@ -241,6 +282,9 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
                   p(y_1 = B, \ y_2 = 1) = \frac{2}{9}
               \end{array}
           \]
+
+          Finally, considering each class and the four possible combinations
+          of $y_1$ and $y_2$, we can use the table to calculate the following:
 
           \[
               \begin{array}{cc}
