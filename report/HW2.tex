@@ -258,6 +258,10 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
 
           We can therefore start calculating all these parameters.
 
+          \textbf{Note:} Even though $p(y_1, y_2)$ and $p(y_3)$ are not necessary
+          to apply the model, we'll still calculate them for the sake of showing
+          all parameters.
+
           Calculating $p(\text{pos})$, $p(\text{neg})$ and all parameters involving $y_1$ and
           $y_2$ is straightforward, since they can be infered from the table.
 
@@ -303,6 +307,82 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
                   p(y_1 = B, \ y_2 = 1 \ | \text{neg}) = \frac{1}{4}
               \end{array}
           \]
+
+          Calculating now the parameters related to the variable set $\left\{y_3\right\}$. We know that $y_3$ follows a Normal Distribution.
+          Therefore,
+
+          $$
+              p\left(y_3 | \mu, \sigma^2\right)
+              = \mathcal{N}\left(y_3 | \mu, \sigma^2\right)
+              = \frac{1}{\sqrt{2 \pi} \sigma} e ^{- \frac{\left(y_3- \mu\right)^2}{2 \sigma^2}}
+          $$
+
+          We can use the observations we have to approximate a value for the
+          mean ($\mu$) and variance ($\sigma^2$).
+
+          $$
+              \begin{aligned}
+                  \mu & = \frac{\sum^{9}_{i=1} y_{3,i}}{9}                              \\
+                      & = \frac{1.2 + 0.8 + 0.5 + 0.9 + 0.8 + 1.0 + 0.9 + 1.2 + 0.8}{9} \\
+                      & = 0.9
+              \end{aligned}
+          $$
+
+          $$
+              \begin{aligned}
+                  \sigma^2 & = \frac{1}{9 - 1} \sum^9_{i=1} \left(y_{3,i} - \mu\right)^2 \\
+                           & = \dots                                                     \\
+                           & = 0.0475
+              \end{aligned}
+          $$
+
+          Therefore, $P(y_3) \sim \mathcal{N}(y_3 | \mu = 0.9, \sigma^2 = 0.0475)$.
+
+          We can repeat the process for both classes (positive and negative).
+          Starting with positive:
+
+          $$
+              \begin{array}{c|c}
+                  \begin{aligned}
+                      \mu & = \frac{\sum^{5}_{i=1} y_{3,i}}{5}      \\
+                          & = \frac{1.2 + 0.8 + 0.5 + 0.9 + 0.8}{5} \\
+                          & = 0.84
+                  \end{aligned}
+                  \quad &
+                  \quad
+                  \begin{aligned}
+                      \sigma^2 & = \frac{1}{5 - 1} \sum^5_{i=1} \left(y_{3,i} - \mu\right)^2 \\
+                               & = \dots                                                     \\
+                               & = 0.063
+                  \end{aligned}
+              \end{array}
+          $$
+
+          Therefore, $P(y_3|\text{pos}) \sim \mathcal{N}(y_3 | \mu = 0.84, \sigma^2 = 0.063)$.
+
+          And with negative:
+
+          $$
+              \begin{array}{c|c}
+                  \begin{aligned}
+                      \mu & = \frac{\sum^{4}_{i=1} y_{3,i}}{4} \\
+                          & = \frac{1.0 + 0.9 + 1.2 + 0.8}{4}  \\
+                          & = 0.975
+                  \end{aligned}
+                  \quad &
+                  \quad
+                  \begin{aligned}
+                      \sigma^2 & = \frac{1}{4 - 1} \sum^4_{i=1} \left(y_{3,i} - \mu\right)^2 \\
+                               & = \dots                                                     \\
+                               & = 0.0.0292
+                  \end{aligned}
+              \end{array}
+          $$
+
+          Therefore, $P(y_3|\text{neg}) \sim \mathcal{N}(y_3 | \mu = 0.975, \sigma^2 = 0.0292)$.
+
+          We now have all parameters necessary to apply the Naïve Bayes classifier.
+
 \end{enumerate}
 
 \center\large{\textbf{Part II}: Programming}
