@@ -1,0 +1,607 @@
+\documentclass[12pt]{article}
+\usepackage[paper=letterpaper,margin=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{newtxtext, newtxmath}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{multirow}
+\usepackage{svg}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+\setlength{\droptitle}{-6em}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{\large{Aprendizagem 2022}\vskip 0.2cm Homework II -- Group 020}
+\date{}
+\author{Diogo Correia (99211) \and Tomás Esteves (99341)}
+\begin{document}
+\maketitle
+\begin{center}
+    \large{\vskip -1.0cm\textbf{Part I}: Pen and paper}
+\end{center}
+
+Four positive observations, \(
+\left\{
+\begin{pmatrix}
+    A \\
+    0
+\end{pmatrix}
+,
+\begin{pmatrix}
+    B \\
+    1
+\end{pmatrix}
+,
+\begin{pmatrix}
+    A \\
+    1
+\end{pmatrix}
+,
+\begin{pmatrix}
+    A \\
+    0
+\end{pmatrix}
+\right\}
+\), and four negative observations, \(
+\left\{
+\begin{pmatrix}
+    B \\
+    0
+\end{pmatrix}
+,
+\begin{pmatrix}
+    B \\
+    0
+\end{pmatrix}
+,
+\begin{pmatrix}
+    A \\
+    1
+\end{pmatrix}
+,
+\begin{pmatrix}
+    B \\
+    1
+\end{pmatrix}
+\right\}
+\), were collected.
+Consider the problem of classifying observations as positive or negative.
+
+\begin{enumerate}[leftmargin=\labelsep]
+    \item {\bfseries
+          Compute the recall of a distance-weighted \textit{k}NN with a \(k=5\)
+          and distance \(d(x_1,x_2)=\text{Hamming}(x_1,x_2)+\frac{1}{2}\) using
+          leave-one-out evaluation schema (i.e., when classifying one observation,
+          use all remaining ones).
+          }\\
+          \vspace{0.5em}
+
+          We start by calculating the distance between each observation.
+
+          \begin{center}
+              \begin{tabular}{c|cccccccc}
+                  \(d(x_i,x_j)\) & \(x_1\)      & \(x_2\)      & \(x_3\)      & \(x_4\)      & \(x_5\)      & \(x_6\)      & \(x_7\)      & \(x_8\)      \\
+                  \hline
+                  \(x_1\)        & -            & 2.5          & \textbf{1.5} & \textbf{0.5} & \textbf{1.5} & \textbf{1.5} & \textbf{1.5} & 2.5          \\
+                  \(x_2\)        & 2.5          & -            & \textbf{1.5} & 2.5          & \textbf{1.5} & \textbf{1.5} & \textbf{1.5} & \textbf{0.5} \\
+                  \(x_3\)        & \textbf{1.5} & \textbf{1.5} & -            & \textbf{1.5} & 2.5          & 2.5          & \textbf{0.5} & \textbf{1.5} \\
+                  \(x_4\)        & \textbf{0.5} & 2.5          & \textbf{1.5} & -            & \textbf{1.5} & \textbf{1.5} & \textbf{1.5} & 2.5          \\
+                  \(x_5\)        & \textbf{1.5} & \textbf{1.5} & 2.5          & \textbf{1.5} & -            & \textbf{0.5} & 2.5          & \textbf{1.5} \\
+                  \(x_6\)        & \textbf{1.5} & \textbf{1.5} & 2.5          & \textbf{1.5} & \textbf{0.5} & -            & 2.5          & \textbf{1.5} \\
+                  \(x_7\)        & \textbf{1.5} & \textbf{1.5} & \textbf{0.5} & \textbf{1.5} & 2.5          & 2.5          & -            & \textbf{1.5} \\
+                  \(x_8\)        & 2.5          & \textbf{0.5} & \textbf{1.5} & 2.5          & \textbf{1.5} & \textbf{1.5} & \textbf{1.5} & -
+              \end{tabular}
+          \end{center}
+
+          We can predict the outcome for each observation, using the \textit{weighted mode}.
+
+          \[
+              \begin{aligned}
+                  \hat{z_1} & = \text{weighted\_mode} \left(\left(\frac{1}{1.5}+\frac{1}{0.5}\right)P,\left(\frac{1}{1.5}+\frac{1}{1.5}+\frac{1}{1.5}\right)N\right) = P \\
+                  \hat{z_2} & = \text{weighted\_mode} \left(\left(\frac{1}{1.5}\right)P,\left(\frac{1}{1.5}+\frac{1}{1.5}+\frac{1}{1.5}+\frac{1}{0.5}\right)N\right) = N \\
+                  \hat{z_3} & = \text{weighted\_mode} \left(\left(\frac{1}{1.5}+\frac{1}{1.5}+\frac{1}{1.5}\right)P,\left(\frac{1}{0.5}+\frac{1}{1.5}\right)N\right) = N \\
+                  \hat{z_4} & = \text{weighted\_mode} \left(\left(\frac{1}{0.5}+\frac{1}{1.5}\right)P,\left(\frac{1}{1.5}+\frac{1}{1.5}+\frac{1}{1.5}\right)N\right) = P \\
+                  \hat{z_5} & = \text{weighted\_mode} \left(\left(\frac{1}{1.5}+\frac{1}{1.5}+\frac{1}{1.5}\right)P,\left(\frac{1}{0.5}+\frac{1}{1.5}\right)N\right) = N \\
+                  \hat{z_6} & = \text{weighted\_mode} \left(\left(\frac{1}{1.5}+\frac{1}{1.5}+\frac{1}{1.5}\right)P,\left(\frac{1}{0.5}+\frac{1}{1.5}\right)N\right) = N \\
+                  \hat{z_7} & = \text{weighted\_mode} \left(\left(\frac{1}{1.5}+\frac{1}{1.5}+\frac{1}{0.5}+\frac{1}{1.5}\right)P,\left(\frac{1}{1.5}\right)N\right) = P \\
+                  \hat{z_8} & = \text{weighted\_mode} \left(\left(\frac{1}{0.5}+\frac{1}{1.5}\right)P,\left(\frac{1}{1.5}+\frac{1}{1.5}+\frac{1}{1.5}\right)N\right) = P
+              \end{aligned}
+          \]
+
+          \begin{center}
+              \begin{tabular}{c|c|c}
+                  Observation & \(z\) & \(\hat{z}\) \\
+                  \hline
+                  \(x_1\)     & P     & P           \\
+                  \(x_2\)     & P     & N           \\
+                  \(x_3\)     & P     & N           \\
+                  \(x_4\)     & P     & P           \\
+                  \(x_5\)     & N     & N           \\
+                  \(x_6\)     & N     & N           \\
+                  \(x_7\)     & N     & P           \\
+                  \(x_8\)     & N     & P
+              \end{tabular}
+          \end{center}
+
+          Then, we draw the training confusion matrix, according to the obtained results.
+
+          \begin{center}
+              \begin{tabular}{|c|c|c|c|c|}
+                  \cline{3-4}
+                  \multicolumn{2}{c}{}                & \multicolumn{2}{|c|}{\textbf{Actual}} & \multicolumn{1}{c}{}                            \\
+                  \cline{3-4}
+                  \multicolumn{2}{c|}{}               & \textbf{Positive}                     & \textbf{Negative}    & \multicolumn{1}{c}{}     \\
+                  \hline
+                  \multirow{2}{*}{\textbf{Predicted}} & \textbf{Positive}                     & 2                    & 2                    & 4 \\
+                  \cline{2-5}
+                                                      & \textbf{Negative}                     & 2                    & 2                    & 4 \\
+                  \hline
+                  \multicolumn{2}{c|}{}               & 4                                     & 4                    & 8                        \\
+                  \cline{3-5}
+              \end{tabular}
+          \end{center}
+
+          We can now calculate the recall:
+
+          \[
+              \text{recall} = \frac{\#\text{true positives}}{\#\text{positives}} = \frac{2}{4} = 0.5
+          \]
+
+\end{enumerate}
+
+{\bfseries
+An additional positive observation was acquired, \(
+\begin{pmatrix}
+    B \\
+    0
+\end{pmatrix}
+\), and a third variable \(y_3\) was independently monitored, yielding estimates
+\(
+y_3 | P = \left\{1.2, 0.8, 0.5, 0.9, 0.8\right\}
+\) and \(
+y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
+\).
+}
+
+\begin{enumerate}[leftmargin=\labelsep,resume]
+    \item {\bfseries Considering the nine training observations, learn a Bayesian classifier assuming:
+          \begin{enumerate}[label=(\roman*)]
+              \item \(y_1\) and \(y_2\) are dependent;
+              \item \(\left\{y_1, y_2\right\}\) and \(\left\{y_3\right\}\) variable sets
+                    are independent and equally important;
+              \item \(y_3\) is normally distributed.
+          \end{enumerate}
+          Show all parameters.
+          }
+
+          To better organize the information we have, we'll start by creating a table
+          with all the training observations.
+
+          \begin{center}
+              \begin{tabular}{c|cccc}
+                  Observation & \(y_1\) & \(y_2\) & \(y_3\) & class \\
+                  \hline
+                  \(x_1\)     & A       & 0       & 1.2     & P     \\
+                  \(x_2\)     & B       & 1       & 0.8     & P     \\
+                  \(x_3\)     & A       & 1       & 0.5     & P     \\
+                  \(x_4\)     & A       & 0       & 0.9     & P     \\
+                  \(x_5\)     & B       & 0       & 0.8     & P     \\
+                  \(x_6\)     & B       & 0       & 1.0     & N     \\
+                  \(x_7\)     & B       & 0       & 0.9     & N     \\
+                  \(x_8\)     & A       & 1       & 1.2     & N     \\
+                  \(x_9\)     & B       & 1       & 0.8     & N
+              \end{tabular}
+          \end{center}
+
+          As stated by the question prompt, variable sets \(\left\{y_1, y_2\right\}\)
+          and \(\left\{y_3\right\}\) are independent and equally important.
+          Since we have two independent sets, we'll train a Naïve Bayes classifier.
+
+          We'll refer to the outcome, which can be positive (pos) or
+          negative (neg), as class.
+
+          To estimate $p(\text{class} | y_1, y_2, y_3)$, we can use Bayes' theorem:
+
+          \begin{equation}\label{ex2-bayes1}
+              p(\text{class}| y_1, y_2, y_3) = \frac{p(y_1, y_2, y_3 | \text{class}) \times p(\text{class})}{p(y_1, y_2, y_3)}
+          \end{equation}
+
+          Since we know $\left\{y_1, y_2\right\}$ and $\left\{y_3\right\}$ are independent,
+          we can rewrite $p(y_1, y_2, y_3)$ as $p(y_1, y_2) \cdot p(y_3)$.
+          Rewriting \eqref{ex2-bayes1} with this, results in:
+
+          \begin{equation}\label{ex2-bayes2}
+              p(\text{class}| y_1, y_2, y_3) = \frac{p(y_1, y_2 | \text{class}) p(y_3 | \text{class}) \times p(\text{class})}{p(y_1, y_2)p(y_3)}
+          \end{equation}
+
+          Given a new observation $D$, we are able to classify it by calculating
+          $p(\text{class}|D)$ for all classes and selecting the class with the
+          highest probability as our prediction.
+
+          $$
+              \begin{aligned}
+                  \hat{z} & = \underset{c \in \{pos, neg\}}{\text{arg max}} \medspace p(\text{c} | D)                                                                                                                           \\
+                          & = \underset{c \in \{pos, neg\}}{\text{arg max}} \medspace \frac{p(y_1, y_2 | c) p(y_3 | c) \times p(c)}{p(y_1, y_2)p(y_3)}                                                                          \\
+                          & = \underset{c \in \{pos, neg\}}{\text{arg max}} \medspace p(y_1, y_2 | c) p(y_3 | c) p(c)                                  & \parbox{15em}{since we can remove parameters that don't depend on $c$}
+              \end{aligned}
+          $$
+
+
+          We can therefore start calculating all these parameters.
+
+          \textbf{Note:} Even though $p(y_1, y_2)$ and $p(y_3)$ are not necessary
+          to apply the model, we'll still calculate them for the sake of showing
+          all parameters.
+
+          Calculating $p(\text{pos})$, $p(\text{neg})$ and all parameters involving $y_1$ and
+          $y_2$ is straightforward, since they can be infered from the table.
+
+          There are 5 positive and 4 negative observations, out of a total of 9.
+          Therefore,
+
+          \[
+              \begin{array}{cc}
+                  p(\text{pos}) = \frac{5}{9} &
+                  p(\text{neg}) = \frac{4}{9}
+              \end{array}
+          \]
+
+          For the four possible combinations of $y_1$ and $y_2$, and following
+          the same logic as above,
+
+          \[
+              \begin{array}{cc}
+                  p(y_1 = A, \ y_2 = 0) = \frac{2}{9}, &
+                  p(y_1 = A, \ y_2 = 1) = \frac{2}{9}    \\[\medskipamount]
+                  p(y_1 = B, \ y_2 = 0) = \frac{3}{9}, &
+                  p(y_1 = B, \ y_2 = 1) = \frac{2}{9}
+              \end{array}
+          \]
+
+          Finally, considering each class and the four possible combinations
+          of $y_1$ and $y_2$, we can use the table to calculate the following:
+
+          \[
+              \begin{array}{cc}
+                  p(y_1 = A, \ y_2 = 0 \ | \text{pos}) = \frac{2}{5}, &
+                  p(y_1 = A, \ y_2 = 1 \ | \text{pos}) = \frac{1}{5}    \\[\medskipamount]
+                  p(y_1 = B, \ y_2 = 0 \ | \text{pos}) = \frac{1}{5}, &
+                  p(y_1 = B, \ y_2 = 1 \ | \text{pos}) = \frac{1}{5}
+              \end{array}
+          \]
+
+          \[
+              \begin{array}{cc}
+                  p(y_1 = A, \ y_2 = 0 \ | \text{neg}) = \frac{0}{4}, &
+                  p(y_1 = A, \ y_2 = 1 \ | \text{neg}) = \frac{1}{4}    \\[\medskipamount]
+                  p(y_1 = B, \ y_2 = 0 \ | \text{neg}) = \frac{2}{4}, &
+                  p(y_1 = B, \ y_2 = 1 \ | \text{neg}) = \frac{1}{4}
+              \end{array}
+          \]
+
+          Calculating now the parameters related to the variable set $\left\{y_3\right\}$. We know that $y_3$ follows a Normal Distribution.
+          Therefore,
+
+          \begin{equation}\label{ex2-normal}
+              p\left(y_3 | \mu, \sigma^2\right)
+              = \mathcal{N}\left(y_3 | \mu, \sigma^2\right)
+              = \frac{1}{\sqrt{2 \pi} \sigma} e ^{- \frac{\left(y_3- \mu\right)^2}{2 \sigma^2}}
+          \end{equation}
+
+          We can use the observations we have to approximate a value for the
+          mean ($\mu$) and variance ($\sigma^2$).
+
+          $$
+              \begin{aligned}
+                  \mu & = \frac{\sum^{9}_{i=1} y_{3,i}}{9}                              \\
+                      & = \frac{1.2 + 0.8 + 0.5 + 0.9 + 0.8 + 1.0 + 0.9 + 1.2 + 0.8}{9} \\
+                      & = 0.9
+              \end{aligned}
+          $$
+
+          $$
+              \begin{aligned}
+                  \sigma^2 & = \frac{1}{9 - 1} \sum^9_{i=1} \left(y_{3,i} - \mu\right)^2 \\
+                           & = \dots                                                     \\
+                           & = 0.0475
+              \end{aligned}
+          $$
+
+          Therefore, $P(y_3) \sim \mathcal{N}(y_3 | \mu = 0.9, \sigma^2 = 0.0475)$.
+
+          We can repeat the process for both classes (positive and negative).
+          Starting with positive:
+
+          $$
+              \begin{array}{c|c}
+                  \begin{aligned}
+                      \mu & = \frac{\sum^{5}_{i=1} y_{3,i}}{5}      \\
+                          & = \frac{1.2 + 0.8 + 0.5 + 0.9 + 0.8}{5} \\
+                          & = 0.84
+                  \end{aligned}
+                  \quad &
+                  \quad
+                  \begin{aligned}
+                      \sigma^2 & = \frac{1}{5 - 1} \sum^5_{i=1} \left(y_{3,i} - \mu\right)^2 \\
+                               & = \dots                                                     \\
+                               & = 0.063
+                  \end{aligned}
+              \end{array}
+          $$
+
+          Therefore, $P(y_3|\text{pos}) \sim \mathcal{N}(y_3 | \mu = 0.84, \sigma^2 = 0.063)$.
+
+          And with negative:
+
+          $$
+              \begin{array}{c|c}
+                  \begin{aligned}
+                      \mu & = \frac{\sum^{4}_{i=1} y_{3,i}}{4} \\
+                          & = \frac{1.0 + 0.9 + 1.2 + 0.8}{4}  \\
+                          & = 0.975
+                  \end{aligned}
+                  \quad &
+                  \quad
+                  \begin{aligned}
+                      \sigma^2 & = \frac{1}{4 - 1} \sum^4_{i=1} \left(y_{3,i} - \mu\right)^2 \\
+                               & = \dots                                                     \\
+                               & = 0.0292
+                  \end{aligned}
+              \end{array}
+          $$
+
+          Therefore, $P(y_3|\text{neg}) \sim \mathcal{N}(y_3 | \mu = 0.975, \sigma^2 = 0.0292)$.
+
+          We now have all parameters necessary to apply the Naïve Bayes classifier.
+
+\end{enumerate}
+
+\vspace{3em}
+
+{\bfseries
+    Considering three testing observations,
+    \(
+    \left\{
+    \left(
+    \begin{pmatrix}
+        A \\
+        1 \\
+        0.8
+    \end{pmatrix},
+    \text{Positive}
+    \right),
+    \left(
+    \begin{pmatrix}
+        B \\
+        1 \\
+        1
+    \end{pmatrix},
+    \text{Positive}
+    \right),
+    \left(
+    \begin{pmatrix}
+        B \\
+        0 \\
+        0.9
+    \end{pmatrix},
+    \text{Negative}
+    \right),
+    \right\}
+    \)
+}
+
+\begin{enumerate}[leftmargin=\labelsep,resume]
+    \item \textbf{Under a MAP assumption, compute $P(\text{Positive} | x)$ of each testing observation.}
+
+          In the previous question, we determined the expression of $p(\text{class} | y_1,y_2,y_3)$ \eqref{ex2-bayes2}.
+          We can now use it and replace the values for each observation.
+
+          \begin{equation}\label{ex3-bayes}
+              p(\text{pos}| y_1, y_2, y_3) = \frac{p(y_1, y_2 | \text{pos}) p(y_3 | \text{pos}) \times p(\text{pos})}{p(y_1, y_2)p(y_3)}
+          \end{equation}
+
+          However, since $p(\text{pos}|y_1,y_2,y_3) + p(\text{neg}|y_1,y_2,y_3)$ must be 1, we need to normalize the values.
+
+          Therefore, from \eqref{ex3-bayes},
+
+          \begin{equation}\label{ex3-bayes-normalized}
+              \begin{aligned}
+                  p(\text{pos}| y_1, y_2, y_3) & = \frac{
+                      \frac{p(y_1, y_2 | \text{pos}) p(y_3 | \text{pos}) \times p(\text{pos})}{p(y_1, y_2)p(y_3)}
+                  }{
+                      \frac{p(y_1, y_2 | \text{pos}) p(y_3 | \text{pos}) \times p(\text{pos})}{p(y_1, y_2)p(y_3)} +
+                      \frac{p(y_1, y_2 | \text{neg}) p(y_3 | \text{neg}) \times p(\text{neg})}{p(y_1, y_2)p(y_3)}
+                  }                                       \\
+                                               & = \frac{
+                      p(y_1, y_2 | \text{pos}) p(y_3 | \text{pos}) \times p(\text{pos})
+                  }{
+                      p(y_1, y_2 | \text{pos}) p(y_3 | \text{pos}) \times p(\text{pos}) +
+                      p(y_1, y_2 | \text{neg}) p(y_3 | \text{neg}) \times p(\text{neg})
+                  }
+              \end{aligned}
+          \end{equation}
+
+          Replacing the values on \eqref{ex3-bayes-normalized} for each observation,
+          using \eqref{ex2-normal} to calculate the values of $p(y_3)$,
+          $p(y_3|\text{pos})$ and $p(y_3|\text{neg})$,
+
+          $$
+              \begin{aligned}
+                   & p(\text{pos}, y_1=A, y_2=1, y_3=0.8)                                                     \\
+                   & = \frac{p(y_1=A, y_2=1 | \text{pos}) p(y_3=0.8 | \text{pos}) \times p(\text{pos})}{
+                      p(y_1=A, y_2=1 | \text{pos}) p(y_3=0.8 | \text{pos}) \times p(\text{pos}) +
+                      p(y_1=A, y_2=1 | \text{neg}) p(y_3=0.8 | \text{neg}) \times p(\text{neg})
+                  }                                                                                           \\
+                   & \approx \frac
+                  {\frac{1}{5} \times 1.569 \times \frac{5}{9}}
+                  {\frac{1}{5} \times 1.569 \times \frac{5}{9} + \frac{1}{4} \times 1.382 \times \frac{4}{9}} \\
+                   & \approx 0.531
+              \end{aligned}
+          $$
+
+          $$
+              \begin{aligned}
+                   & p(\text{pos}, y_1=B, y_2=1, y_3=1.0)                                                     \\
+                   & = \frac{p(y_1=B, y_2=1 | \text{pos}) p(y_3=1.0 | \text{pos}) \times p(\text{pos})}{
+                      p(y_1=B, y_2=1 | \text{pos}) p(y_3=1.0 | \text{pos}) \times p(\text{pos}) +
+                      p(y_1=B, y_2=1 | \text{neg}) p(y_3=1.0 | \text{neg}) \times p(\text{neg})
+                  }                                                                                           \\
+                   & \approx \frac
+                  {\frac{1}{5} \times 1.297 \times \frac{5}{9}}
+                  {\frac{1}{5} \times 1.297 \times \frac{5}{9} + \frac{1}{4} \times 2.311 \times \frac{4}{9}} \\
+                   & \approx 0.360
+              \end{aligned}
+          $$
+
+          $$
+              \begin{aligned}
+                   & p(\text{pos}, y_1=B, y_2=0, y_3=0.9)                                                     \\
+                   & = \frac{p(y_1=B, y_2=0 | \text{pos}) p(y_3=0.9 | \text{pos}) \times p(\text{pos})}{
+                      p(y_1=B, y_2=0 | \text{pos}) p(y_3=0.9 | \text{pos}) \times p(\text{pos}) +
+                      p(y_1=B, y_2=0 | \text{neg}) p(y_3=0.9 | \text{neg}) \times p(\text{neg})
+                  }                                                                                           \\
+                   & \approx \frac
+                  {\frac{1}{5} \times 1.545 \times \frac{5}{9}}
+                  {\frac{1}{5} \times 1.545 \times \frac{5}{9} + \frac{2}{4} \times 2.121 \times \frac{4}{9}} \\
+                   & \approx 0.267
+              \end{aligned}
+          $$
+
+    \item {\bfseries
+          Given a binary class variable, the default decision threshold of $\theta = 0.5$,
+          $$
+              f(x|\theta) = \begin{cases}
+                  \text{Positive} & P(\text{Positive}|x) > \theta \\
+                  \text{Negative} & \text{otherwise}
+              \end{cases}
+          $$
+          can be adjusted.
+          Which decision threshold - 0.3, 0.5 or 0.7 - optimizes testing accuracy?
+          }
+
+          Considering that, of the three testing observations,
+          the two positive ones had a $P(\text{Positive}|x)$ value
+          of 0.531 and 0.360, which are both greater than 0.3
+          and the only negative observation is 0.267, which is lesser
+          than 0.3 (and 0.5 and 0.7).
+
+          Therefore, of the three given thresholds (0.3, 0.5 and 0.7),
+          the only one that correctly classifies all three observations
+          is \textbf{0.3}. This results in an accuracy of 100\%.
+
+
+\end{enumerate}
+
+\pagebreak
+
+\begin{center}
+    \large{\textbf{Part II}: Programming and critical analysis}
+\end{center}
+
+\textbf{Considering the \texttt{pd\_speech.arff} dataset available at the course website.}
+
+\begin{enumerate}[leftmargin=\labelsep,resume]
+    \item {\bfseries
+          Using \texttt{sklearn}, considering a 10-fold stratified cross validation
+          (\texttt{random=3}), plot que cumulative testing confusion matrices of
+          \textit{k}NN (uniform weights, $k = 5$, Euclidean distance) and Naïve Bayes
+          (Gaussian assumption). Use all remaining classifier parameters as default.
+          }
+
+          \begin{figure}[H]
+              \centering
+              \includesvg[width = \textwidth]{assets/hw2-confusion-matrices.svg}
+              \caption{Confusion Matrices for \textit{k}NN and Naïve Bayes}
+              \label{fig:confusion-matrices}
+          \end{figure}
+
+          Related code is in the Appendix, listing \ref{listing-ex5}.
+
+    \item {\bfseries
+          Using \texttt{scipy}, test the hypothesis "\textit{k}NN is statistically
+          superior to Naïve Bayes regarding accuracy", asserting whether is true.
+          }
+
+          We'll be doing a single-tailed test, considering the following null
+          hypothesis and its alternate hypothesis,
+
+          $$
+              \begin{aligned}
+                  H_0: & \quad\text{accuracy}_{kNN} = \text{accuracy}_{\text{Naive Bayes}} \\
+                  H_1: & \quad\text{accuracy}_{kNN} > \text{accuracy}_{\text{Naive Bayes}}
+              \end{aligned}
+          $$
+
+          Using \texttt{scipy} (check Appendix, listing \ref{listing-ex6}), we get a p-value of 0.0013168.
+
+          This means hypothesis $H_0$ is rejected at all usual significancy levels
+          (1\%, 5\% and 10\%).
+
+          Therefore, we conclude that \textit{k}NN is indeed statistically superior
+          to Naïve Bayes.
+
+    \item {\bfseries
+          Enumerate three possible reasons that could underlie the observed differences in predictive accuracy between \textit{k}NN and Naïve
+          Bayes.
+          }
+
+          Here are three possible reasons why the predictive accuracy between kNN and Naive Bayes are different, in no particular order:
+
+          \begin{itemize}
+              \item We assumed all variables are independent of one another,
+                    which would be good for Naive Bayes, but that might not
+                    be the case, thus explaining its lower accuracy.
+              \item While kNN might be accurate with a small data size, due to
+                    local similarities between the data, Naive Bayes needs a lot
+                    of data for probability density function/probability
+                    mass function approximations.
+                    Our dataset is of moderate size, which might explain
+                    the lower accuracy of Naive Bayes.
+              \item If values of the same class are closely together
+                    (using, for example, euclidian distance),
+                    kNN will have very good accuracy.
+                    Since kNN does indeed have a greater accuracy than
+                    Naive Bayes, this might be the case.
+          \end{itemize}
+\end{enumerate}
+
+\pagebreak
+
+\center\large{\textbf{Appendix}\vskip 0.3cm}
+
+\lstinputlisting[label={listing-ex5},caption={Train, test and draw the confusion matrices of a kNN and Naïve Bayes classifiers for the given dataset},language=Python]{assets/hw2-code-5.py}
+
+\lstinputlisting[label={listing-ex6},caption={Calculate the p-value of hypothesis},language=Python]{assets/hw2-code-6.py}
+
+\end{document}
