@@ -523,6 +523,8 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
 
 \end{enumerate}
 
+\pagebreak
+
 \begin{center}
     \large{\textbf{Part II}: Programming and critical analysis}
 \end{center}
@@ -555,6 +557,8 @@ Considering the \texttt{pd\_speech.arff} dataset available at the course website
               \label{fig:confusion-matrices}
           \end{figure}
 
+          Related code is in the Appendix, listing \ref{listing-ex5}.
+
     \item {\bfseries
           Using \texttt{scipy}, test the hypothesis "\textit{k}NN is statistically
           superior to Naïve Bayes regarding accuracy", asserting whether is true.
@@ -570,7 +574,7 @@ Considering the \texttt{pd\_speech.arff} dataset available at the course website
               \end{aligned}
           $$
 
-          Using \texttt{scipy} (check Appendix), we get a p-value of 0.0013168.
+          Using \texttt{scipy} (check Appendix, listing \ref{listing-ex6}), we get a p-value of 0.0013168.
 
           This means hypothesis $H_0$ is rejected at all usual significancy levels
           (1\%, 5\% and 10\%).
@@ -603,6 +607,12 @@ Considering the \texttt{pd\_speech.arff} dataset available at the course website
           \end{itemize}
 \end{enumerate}
 
+\pagebreak
+
 \center\large{\textbf{Appendix}\vskip 0.3cm}
+
+\lstinputlisting[label={listing-ex5},caption={Train, test and draw the confusion matrices of a kNN and Naïve Bayes classifiers for the given dataset},language=Python]{assets/hw2-code-5.py}
+
+\lstinputlisting[label={listing-ex6},caption={Calculate the p-value of hypothesis},language=Python]{assets/hw2-code-6.py}
 
 \end{document}
