@@ -311,11 +311,11 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
           Calculating now the parameters related to the variable set $\left\{y_3\right\}$. We know that $y_3$ follows a Normal Distribution.
           Therefore,
 
-          $$
+          \begin{equation}\label{ex2-normal}
               p\left(y_3 | \mu, \sigma^2\right)
               = \mathcal{N}\left(y_3 | \mu, \sigma^2\right)
               = \frac{1}{\sqrt{2 \pi} \sigma} e ^{- \frac{\left(y_3- \mu\right)^2}{2 \sigma^2}}
-          $$
+          \end{equation}
 
           We can use the observations we have to approximate a value for the
           mean ($\mu$) and variance ($\sigma^2$).
@@ -374,7 +374,7 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
                   \begin{aligned}
                       \sigma^2 & = \frac{1}{4 - 1} \sum^4_{i=1} \left(y_{3,i} - \mu\right)^2 \\
                                & = \dots                                                     \\
-                               & = 0.0.0292
+                               & = 0.0292
                   \end{aligned}
               \end{array}
           $$
@@ -430,6 +430,8 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
           \end{equation}
 
           Replacing the values on \eqref{ex3-bayes} for each observation,
+          using \eqref{ex2-normal} to calculate the values of $p(y_3)$ and
+          $p(y_3|\text{pos})$,
 
           $$
               \begin{aligned}
@@ -453,7 +455,7 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
               \begin{aligned}
                   p(\text{pos}, y_1=B, y_2=0, y_3=0.9)
                    & = \frac{p(y_1=B, y_2=0 | \text{pos}) p(y_3=0.9 | \text{pos}) \times p(\text{pos})}{p(y_1=B, y_2=0), p(y_3=0.9)} \\
-                   & \approx \frac{\frac{1}{5} \times 1.545 \times \frac{5}{9}}{\frac{3}{9} \times 1.648}                            \\
+                   & \approx \frac{\frac{1}{5} \times 1.545 \times \frac{5}{9}}{\frac{3}{9} \times 1.830}                            \\
                    & \approx 0.281
               \end{aligned}
           $$
