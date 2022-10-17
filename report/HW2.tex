@@ -385,6 +385,81 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
 
 \end{enumerate}
 
+\vspace{3em}
+
+{\bfseries
+    Considering three testing observations,
+    \(
+    \left\{
+    \left(
+    \begin{pmatrix}
+        A \\
+        1 \\
+        0.8
+    \end{pmatrix},
+    \text{Positive}
+    \right),
+    \left(
+    \begin{pmatrix}
+        B \\
+        1 \\
+        1
+    \end{pmatrix},
+    \text{Positive}
+    \right),
+    \left(
+    \begin{pmatrix}
+        B \\
+        0 \\
+        0.9
+    \end{pmatrix},
+    \text{Negative}
+    \right),
+    \right\}
+    \)
+}
+
+\begin{enumerate}[leftmargin=\labelsep,resume]
+    \item \textbf{Under a MAP assumption, compute $P(\text{Positive} | x)$ of each testing observation.}
+
+          In the previous question, we determined the expression of $p(\text{class} | y_1,y_2,y_3)$ \eqref{ex2-bayes2}.
+          We can now use it and replace the values for each observation.
+
+          \begin{equation}\label{ex3-bayes}
+              p(\text{pos}| y_1, y_2, y_3) = \frac{p(y_1, y_2 | \text{pos}) p(y_3 | \text{pos}) \times p(\text{pos})}{p(y_1, y_2)p(y_3)}
+          \end{equation}
+
+          Replacing the values on \eqref{ex3-bayes} for each observation,
+
+          $$
+              \begin{aligned}
+                  p(\text{pos}, y_1=A, y_2=1, y_3=0.8)
+                   & = \frac{p(y_1=A, y_2=1 | \text{pos}) p(y_3=0.8 | \text{pos}) \times p(\text{pos})}{p(y_1=A, y_2=1), p(y_3=0.8)} \\
+                   & \approx \frac{\frac{1}{5} \times 1.569 \times \frac{5}{9}}{\frac{2}{9} \times 1.648}                            \\
+                   & \approx 0.476
+              \end{aligned}
+          $$
+
+          $$
+              \begin{aligned}
+                  p(\text{pos}, y_1=B, y_2=1, y_3=1.0)
+                   & = \frac{p(y_1=B, y_2=1 | \text{pos}) p(y_3=1.0 | \text{pos}) \times p(\text{pos})}{p(y_1=B, y_2=1), p(y_3=1.0)} \\
+                   & \approx \frac{\frac{1}{5} \times 1.297 \times \frac{5}{9}}{\frac{2}{9} \times 1.648}                            \\
+                   & \approx 0.394
+              \end{aligned}
+          $$
+
+          $$
+              \begin{aligned}
+                  p(\text{pos}, y_1=B, y_2=0, y_3=0.9)
+                   & = \frac{p(y_1=B, y_2=0 | \text{pos}) p(y_3=0.9 | \text{pos}) \times p(\text{pos})}{p(y_1=B, y_2=0), p(y_3=0.9)} \\
+                   & \approx \frac{\frac{1}{5} \times 1.545 \times \frac{5}{9}}{\frac{3}{9} \times 1.648}                            \\
+                   & \approx 0.281
+              \end{aligned}
+          $$
+
+\end{enumerate}
+
 \center\large{\textbf{Part II}: Programming}
 
 \begin{enumerate}[leftmargin=\labelsep]
