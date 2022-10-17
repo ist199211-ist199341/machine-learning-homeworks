@@ -124,7 +124,14 @@ Consider the problem of classifying observations as positive or negative.
               \end{tabular}
           \end{center}
 
-          We can predict the outcome for each observation, using the \textit{weighted mode}.
+          We can predict the outcome for each observation, using the \textit{weighted mode},
+          where the weight of each neighbour is given by:
+
+          $$
+              w_{i,j} = \frac{1}{d(x_i, x_j)}
+          $$
+
+          We can then predict the class for each observation,
 
           \[
               \begin{aligned}
@@ -140,6 +147,7 @@ Consider the problem of classifying observations as positive or negative.
           \]
 
           \begin{center}
+              \captionsetup{type=table}
               \begin{tabular}{c|c|c}
                   Observation & \(z\) & \(\hat{z}\) \\
                   \hline
@@ -152,11 +160,13 @@ Consider the problem of classifying observations as positive or negative.
                   \(x_7\)     & N     & P           \\
                   \(x_8\)     & N     & P
               \end{tabular}
+              \captionof{table}{Actual ($z$) and predicted ($\hat{z}$) class for each observation.}
           \end{center}
 
           Then, we draw the training confusion matrix, according to the obtained results.
 
           \begin{center}
+              \captionsetup{type=table}
               \begin{tabular}{|c|c|c|c|c|}
                   \cline{3-4}
                   \multicolumn{2}{c}{}                & \multicolumn{2}{|c|}{\textbf{Actual}} & \multicolumn{1}{c}{}                            \\
@@ -170,6 +180,7 @@ Consider the problem of classifying observations as positive or negative.
                   \multicolumn{2}{c|}{}               & 4                                     & 4                    & 8                        \\
                   \cline{3-5}
               \end{tabular}
+              \captionof{table}{Confusion matrix for the 8 given observations.}
           \end{center}
 
           We can now calculate the recall:
