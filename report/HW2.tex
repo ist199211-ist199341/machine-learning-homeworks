@@ -577,6 +577,30 @@ Considering the \texttt{pd\_speech.arff} dataset available at the course website
 
           Therefore, we conclude that \textit{k}NN is indeed statistically superior
           to Naïve Bayes.
+
+    \item {\bfseries
+          Enumerate three possible reasons that could underlie the observed differences in predictive accuracy between \textit{k}NN and Naïve
+          Bayes.
+          }
+
+          Here are three possible reasons why the predictive accuracy between kNN and Naive Bayes are different, in no particular order:
+
+          \begin{itemize}
+              \item We assumed all variables are independent of one another,
+                    which would be good for Naive Bayes, but that might not
+                    be the case, thus explaining its lower accuracy.
+              \item While kNN might be accurate with a small data size, due to
+                    local similarities between the data, Naive Bayes needs a lot
+                    of data for probability density function/probability
+                    mass function approximations.
+                    Our dataset is of moderate size, which might explain
+                    the lower accuracy of Naive Bayes.
+              \item If values of the same class are closely together
+                    (using, for example, euclidian distance),
+                    kNN will have very good accuracy.
+                    Since kNN does indeed have a greater accuracy than
+                    Naive Bayes, this might be the case.
+          \end{itemize}
 \end{enumerate}
 
 \center\large{\textbf{Appendix}\vskip 0.3cm}
