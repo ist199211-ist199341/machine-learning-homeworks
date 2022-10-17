@@ -460,6 +460,29 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
               \end{aligned}
           $$
 
+    \item {\bfseries
+          Given a binary class variable, the default decision threshold of $\theta = 0.5$,
+          $$
+              f(x|\theta) = \begin{cases}
+                  \text{Positive} & P(\text{Positive}|x) > \theta \\
+                  \text{Negative} & \text{otherwise}
+              \end{cases}
+          $$
+          can be adjusted.
+          Which decision threshold - 0.3, 0.5 or 0.7 - optimizes testing accuracy?
+          }
+
+          Considering that, of the three testing observations,
+          the two positive ones had a $P(\text{Positive}|x)$ value
+          of 0.476 and 0.394, which are both greater than 0.3
+          and the only negative observation is 0.281, which is lesser
+          than 0.3 (and 0.5 and 0.7).
+
+          Therefore, of the three given thresholds (0.3, 0.5 and 0.7),
+          the only one that correctly classifies all three observations
+          is \textbf{0.3}. This results in an accuracy of 100\%.
+
+
 \end{enumerate}
 
 \center\large{\textbf{Part II}: Programming}
