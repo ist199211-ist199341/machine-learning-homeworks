@@ -573,24 +573,31 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
 
           Related code is in the Appendix, listing \ref{listing-ex5}.
 
+          As it can be seen from the code, we used \texttt{heatmap} from \textit{seaborn} for
+          the plots and we normalized the data using \texttt{StandardScaler} from \textit{sklearn},
+          which significantly improves the performance of the \textit{k}NN classifier.
+          Answers to questions 6 and 7 will be based on the results obtained with the
+          normalized data.
+
     \item {\bfseries
           Using \texttt{scipy}, test the hypothesis "\textit{k}NN is statistically
           superior to Naïve Bayes regarding accuracy", asserting whether is true.
           }
 
-          We'll be doing a single-tailed test, considering the following null
+          We'll be doing a single-tailed test, using the accuracies obtained from
+          the results of the previous answer, considering the following null
           hypothesis and its alternate hypothesis,
 
           $$
               \begin{aligned}
-                  H_0: & \quad\text{accuracy}_{kNN} = \text{accuracy}_{\text{Naive Bayes}} \\
-                  H_1: & \quad\text{accuracy}_{kNN} > \text{accuracy}_{\text{Naive Bayes}}
+                  H_0: & \quad\text{accuracy}_{k\text{NN}} = \text{accuracy}_{\text{Naive Bayes}} \\
+                  H_1: & \quad\text{accuracy}_{k\text{NN}} > \text{accuracy}_{\text{Naive Bayes}}
               \end{aligned}
           $$
 
           Using \texttt{scipy} (check Appendix, listing \ref{listing-ex6}), we get a p-value of 0.0013168.
 
-          This means hypothesis $H_0$ is rejected at all usual significancy levels
+          This means hypothesis $H_0$ is rejected at all usual significance levels
           (1\%, 5\% and 10\%).
 
           Therefore, we conclude that \textit{k}NN is indeed statistically superior
