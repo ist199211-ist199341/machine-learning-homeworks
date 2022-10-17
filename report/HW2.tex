@@ -124,7 +124,14 @@ Consider the problem of classifying observations as positive or negative.
               \end{tabular}
           \end{center}
 
-          We can predict the outcome for each observation, using the \textit{weighted mode}.
+          We can predict the outcome for each observation, using the \textit{weighted mode},
+          where the weight of each neighbour is given by:
+
+          $$
+              w_{i,j} = \frac{1}{d(x_i, x_j)}
+          $$
+
+          We can then predict the class for each observation,
 
           \[
               \begin{aligned}
@@ -140,6 +147,7 @@ Consider the problem of classifying observations as positive or negative.
           \]
 
           \begin{center}
+              \captionsetup{type=table}
               \begin{tabular}{c|c|c}
                   Observation & \(z\) & \(\hat{z}\) \\
                   \hline
@@ -152,11 +160,13 @@ Consider the problem of classifying observations as positive or negative.
                   \(x_7\)     & N     & P           \\
                   \(x_8\)     & N     & P
               \end{tabular}
+              \captionof{table}{Actual ($z$) and predicted ($\hat{z}$) class for each observation.}
           \end{center}
 
           Then, we draw the training confusion matrix, according to the obtained results.
 
           \begin{center}
+              \captionsetup{type=table}
               \begin{tabular}{|c|c|c|c|c|}
                   \cline{3-4}
                   \multicolumn{2}{c}{}                & \multicolumn{2}{|c|}{\textbf{Actual}} & \multicolumn{1}{c}{}                            \\
@@ -170,6 +180,7 @@ Consider the problem of classifying observations as positive or negative.
                   \multicolumn{2}{c|}{}               & 4                                     & 4                    & 8                        \\
                   \cline{3-5}
               \end{tabular}
+              \captionof{table}{Confusion matrix for the 8 given observations.}
           \end{center}
 
           We can now calculate the recall:
@@ -226,7 +237,7 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
 
           As stated by the question prompt, variable sets \(\left\{y_1, y_2\right\}\)
           and \(\left\{y_3\right\}\) are independent and equally important.
-          Since we have two independent sets, we'll train a Naïve Bayes classifier.
+          Since we have two independent sets, we'll train a Bayesian classifier.
 
           We'll refer to the outcome, which can be positive (pos) or
           negative (neg), as class.
@@ -383,7 +394,7 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
 
           Therefore, $P(y_3|\text{neg}) \sim \mathcal{N}(y_3 | \mu = 0.975, \sigma^2 = 0.0292)$.
 
-          We now have all parameters necessary to apply the Naïve Bayes classifier.
+          We now have all parameters necessary to apply the Bayesian classifier to new observations.
 
 \end{enumerate}
 
@@ -500,25 +511,39 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
 
     \item {\bfseries
           Given a binary class variable, the default decision threshold of $\theta = 0.5$,
-          $$
+          \begin{equation}\label{ex4-fxtheta}
               f(x|\theta) = \begin{cases}
                   \text{Positive} & P(\text{Positive}|x) > \theta \\
                   \text{Negative} & \text{otherwise}
               \end{cases}
-          $$
+          \end{equation}
           can be adjusted.
           Which decision threshold - 0.3, 0.5 or 0.7 - optimizes testing accuracy?
           }
 
           Considering that, of the three testing observations,
           the two positive ones had a $P(\text{Positive}|x)$ value
-          of 0.531 and 0.360, which are both greater than 0.3
-          and the only negative observation is 0.267, which is lesser
-          than 0.3 (and 0.5 and 0.7).
+          of 0.531 and 0.360, and the only negative observation had a
+          value of 0.267.
+          Filling out the table below after applying \eqref{ex4-fxtheta} for
+          every combination of observation and threshold, gives us the accuracy
+          for each threshold.
+
+          \begin{center}
+              \captionsetup{type=table}
+              \begin{tabular}{c|c|c}
+                  Threshold ($\theta$) & \# correctly identified & Accuracy \\
+                  \hline
+                  $\theta = 0.3$       & 3                       & 3/3      \\
+                  $\theta = 0.5$       & 2                       & 2/3      \\
+                  $\theta = 0.7$       & 1                       & 1/3
+              \end{tabular}
+              \captionof{table}{Testing accuracy of each threshold when applied to the given set of three observations.}
+          \end{center}
 
           Therefore, of the three given thresholds (0.3, 0.5 and 0.7),
           the only one that correctly classifies all three observations
-          is \textbf{0.3}. This results in an accuracy of 100\%.
+          is \textbf{0.3}, resulting in an accuracy of 100\%.
 
 
 \end{enumerate}
@@ -548,24 +573,31 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
 
           Related code is in the Appendix, listing \ref{listing-ex5}.
 
+          As it can be seen from the code, we used \texttt{heatmap} from \textit{seaborn} for
+          the plots and we normalized the data using \texttt{StandardScaler} from \textit{sklearn},
+          which significantly improves the performance of the \textit{k}NN classifier.
+          Answers to questions 6 and 7 will be based on the results obtained with the
+          normalized data.
+
     \item {\bfseries
           Using \texttt{scipy}, test the hypothesis "\textit{k}NN is statistically
           superior to Naïve Bayes regarding accuracy", asserting whether is true.
           }
 
-          We'll be doing a single-tailed test, considering the following null
+          We'll be doing a single-tailed test, using the accuracies obtained from
+          the results of the previous answer, considering the following null
           hypothesis and its alternate hypothesis,
 
           $$
               \begin{aligned}
-                  H_0: & \quad\text{accuracy}_{kNN} = \text{accuracy}_{\text{Naive Bayes}} \\
-                  H_1: & \quad\text{accuracy}_{kNN} > \text{accuracy}_{\text{Naive Bayes}}
+                  H_0: & \quad\text{accuracy}_{k\text{NN}} = \text{accuracy}_{\text{Naive Bayes}} \\
+                  H_1: & \quad\text{accuracy}_{k\text{NN}} > \text{accuracy}_{\text{Naive Bayes}}
               \end{aligned}
           $$
 
           Using \texttt{scipy} (check Appendix, listing \ref{listing-ex6}), we get a p-value of 0.0013168.
 
-          This means hypothesis $H_0$ is rejected at all usual significancy levels
+          This means hypothesis $H_0$ is rejected at all usual significance levels
           (1\%, 5\% and 10\%).
 
           Therefore, we conclude that \textit{k}NN is indeed statistically superior
@@ -576,23 +608,30 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
           Bayes.
           }
 
-          Here are three possible reasons why the predictive accuracy between kNN and Naive Bayes are different, in no particular order:
+          Here are three possible reasons why the predictive accuracy between \textit{k}NN
+          and Naive Bayes is different (we know from the previous answer
+          that \textit{k}NN's accuracy is better than Naïve Bayes'), in no particular order:
 
           \begin{itemize}
               \item We assumed all variables are independent of one another,
-                    which would be good for Naive Bayes, but that might not
+                    which would be good for Naïve Bayes, but that might not
                     be the case, thus explaining its lower accuracy.
-              \item While kNN might be accurate with a small data size, due to
-                    local similarities between the data, Naive Bayes needs a lot
+                    Our dataset has more than 700 different variables, therefore
+                    it's very likely that some of those variables are not strictly
+                    independent of one another.
+              \item While kNN might be accurate with a small dataset size, due to
+                    local similarities between the data, Naïve Bayes needs a lot
                     of data for probability density function/probability
                     mass function approximations.
-                    Our dataset is of moderate size, which might explain
-                    the lower accuracy of Naive Bayes.
+                    Even then, our data might not strictly follow a Gaussian Distribution.
+                    Our dataset is of moderate size (around 700 observations, only
+                    some of which are used for training), which might explain
+                    the lower accuracy of Naïve Bayes.
               \item If values of the same class are closely together
-                    (using, for example, euclidian distance),
-                    kNN will have very good accuracy.
-                    Since kNN does indeed have a greater accuracy than
-                    Naive Bayes, this might be the case.
+                    (according, in this case, to Euclidian distance),
+                    \textit{k}NN will have very good accuracy.
+                    Since \textit{k}NN does indeed have a greater accuracy than
+                    Naïve Bayes, this might be the case.
           \end{itemize}
 \end{enumerate}
 
