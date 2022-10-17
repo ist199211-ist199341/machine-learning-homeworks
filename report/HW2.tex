@@ -12,6 +12,8 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{float}
+\usepackage{graphicx}
+\usepackage{subcaption}
 
 \setlength{\droptitle}{-6em}
 
@@ -485,10 +487,37 @@ y_3 | N = \left\{1, 0.9, 1.2, 0.8\right\}
 
 \end{enumerate}
 
-\center\large{\textbf{Part II}: Programming}
+\begin{center}
+    \large{\textbf{Part II}: Programming and critical analysis}
+\end{center}
 
-\begin{enumerate}[leftmargin=\labelsep]
-    \item TODO
+Considering the \texttt{pd\_speech.arff} dataset available at the course website.
+
+\begin{enumerate}[leftmargin=\labelsep,resume]
+    \item {\bfseries
+          Using \texttt{sklearn}, considering a 10-fold stratified cross validation
+          (\texttt{random=3}), plot que cumulative testing confusion matrices of
+          \textit{k}NN (uniform weights, $k = 5$, Euclidean distance) and Naïve Bayes
+          (Gaussian assumption). Use all remaining classifier parameters as default.
+          }
+
+          \begin{figure}[H]
+              \centering
+              \begin{subfigure}{0.49\textwidth}
+                  \centering
+                  \includesvg[width = \textwidth]{assets/hw2-knn-confusion-matrix.svg}
+                  \caption{\textit{k}NN Confusion Matrix}
+                  \label{fig:confusion-knn}
+              \end{subfigure}
+              \begin{subfigure}{0.49\textwidth}
+                  \centering
+                  \includesvg[width = \textwidth]{assets/hw2-naive-bayes-confusion-matrix.svg}
+                  \caption{Naïve Bayes Confusion Matrix}
+                  \label{fig:confusion-naive-bayes}
+              \end{subfigure}
+              \caption{Confusion Matrices for \textit{k}NN and Naïve Bayes}
+              \label{fig:confusion-matrices}
+          \end{figure}
 \end{enumerate}
 
 \center\large{\textbf{Appendix}\vskip 0.3cm}
