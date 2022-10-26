@@ -39,6 +39,7 @@
 \definecolor{byellow}{HTML}{ffe270}
 
 \definecolor{linkcolor}{HTML}{f57429}
+\definecolor{questioncolor}{HTML}{444444}
 
 \hypersetup{
     allcolors=linkcolor
@@ -73,11 +74,15 @@
     \large{\vskip -1.0cm\textbf{Part I}: Pen and paper}
 \end{center}
 
+{
+\color{questioncolor}\bfseries
+\noindent
 Consider the problem of learning a regression model from 5 univariate observations\\
 $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 13, 12\right)$.
+}
 
 \begin{enumerate}[leftmargin=\labelsep]
-    \item {\bfseries
+    \item {\color{questioncolor}\bfseries
           Consider the basis function, $\phi_j (x) = x^j$, for performing a 3-order
           polynomial regression,
 
@@ -211,7 +216,7 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
               \textcolor{cyellow}{-1.3009}x^3
           \end{equation}
 
-    \item {\bfseries
+    \item {\color{questioncolor}\bfseries
           Compute the training RMSE for the learnt regression model.
           }\\
           \vspace{0.5em}
@@ -269,7 +274,7 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
 
           Therefore, the RMSE is \textbf{6.843}.
 
-    \item {\bfseries
+    \item {\color{questioncolor}\bfseries
           Consider a multi-layer perceptron characterized by one hidden layer with 2 nodes.
           Using the activation function $f(x) = e^{0.1 x}$ on all units, all weights
           initialized as 1 (including biases), and the half squared error loss,
@@ -287,14 +292,53 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
     \large{\textbf{Part II}: Programming and critical analysis}
 \end{center}
 
-\textbf{TODO}
+{\color{questioncolor}\bfseries
+\noindent
+Consider the following three regressors applied on \texttt{kin8nm.arff} data
+(available at the webpage):
+\begin{itemize}
+    \item linear regression with Ridge regularization term of 0.1
+    \item two MLPs - $MLP_1$ and $MLP_2$ - each with two hidden layers of
+          size 10, hyperbolic tagent function as the activation function of all nodes,
+          a maximum of 500 iterations, and a fixed seed (\texttt{random\_state=0}).
+          $MLP_1$ should be parameterized with early stopping while $MLP_2$ should not
+          consider early stopping.
+          Remaining parameters (e.g., loss function, batch size, regularization term,
+          solver) should be set as default.
+\end{itemize}
+Using a 70-30 training-test split with a fixed seed (\texttt{random\_state=0}):
+}
 
 \begin{enumerate}[leftmargin=\labelsep,resume]
-    \item {\bfseries
-          TODO
-          }
+    \item {\color{questioncolor}\bfseries
+          Compute the MAE of the three regressors: linear regression, $MLP_1$ and $MLP_2$.
+          }\\
+          \vspace{0.5em}
 
-          TODO
+          // TODO
+
+    \item {\color{questioncolor}\bfseries
+          Plot the residues (in absolute value) using two visualizations: boxplots
+          and histograms.\\
+          \textit{Hint}: consider using \texttt{boxplot} and \texttt{hist} functions
+          from \texttt{matplotlib.pyplot} to this end.
+          }\\
+          \vspace{0.5em}
+
+          // TODO
+    \item {\color{questioncolor}\bfseries
+          How many iterations were required for $MLP_1$ and $MLP_2$ to converge?
+          }\\
+          \vspace{0.5em}
+
+          // TODO
+    \item {\color{questioncolor}\bfseries
+          What can be motivating the unexpected differences on the number of iterations?
+          Hypothesize one reason underlying the observed performance differences between the MLPs.
+          }\\
+          \vspace{0.5em}
+
+          // TODO
 
 \end{enumerate}
 
