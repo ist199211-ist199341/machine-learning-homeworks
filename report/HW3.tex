@@ -203,14 +203,71 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
 
           Replacing them in \eqref{ex1-z-hat} gives us the regression expression,
 
-          $$
-              \hat{z}(x, w)
+          \begin{equation}\label{ex1-final-z-hat}
+              \hat{z}(x)
               = \textcolor{cblue}{7.0451} +
               \textcolor{cred}{4.6409}x +
               \textcolor{cgreen}{1.9673}x^2
               \textcolor{cyellow}{-1.3009}x^3
+          \end{equation}
+
+    \item {\bfseries
+          Compute the training RMSE for the learnt regression model.
+          }\\
+          \vspace{0.5em}
+
+          The RMSE (Root Mean Square Error) is given by
+
+          \begin{equation}\label{ex2-rmse}
+              E(w) = \sqrt{\frac{1}{N} \sum_{i = 1}^{N} (z_i - \hat{z}_i)^2}
+          \end{equation}
+
+          Since we have 5 observations, $N = 5$.
+
+          Using \eqref{ex1-final-z-hat} from the previous exercise, we can determine
+          $\hat{z}$ for the 5 observations.
+          Using matrix multiplication:
+
+          $$
+              \begin{aligned}
+                  X            & = \begin{bmatrix}{}
+                                       1.0000 & 0.8000 & 0.6400 & 0.5120 \\
+                                       1.0000 & 1.0000 & 1.0000 & 1.0000 \\
+                                       1.0000 & 1.2000 & 1.4400 & 1.7280 \\
+                                       1.0000 & 1.4000 & 1.9600 & 2.7440 \\
+                                       1.0000 & 1.6000 & 2.5600 & 4.0960
+                                   \end{bmatrix} &
+                  w            & = \begin{bmatrix}{}
+                                       \textcolor{cblue}{7.0451}  \\
+                                       \textcolor{cred}{4.6409}   \\
+                                       \textcolor{cgreen}{1.9673} \\
+                                       \textcolor{cyellow}{-1.3009}
+                                   \end{bmatrix}       \\
+                  \hat{z} = Xw & = \begin{bmatrix}{}
+                                       11.3509 \\
+                                       12.3525 \\
+                                       13.1992 \\
+                                       13.8287 \\
+                                       14.1785
+                                   \end{bmatrix}
+                               &
+                  z            & = \begin{bmatrix}
+                                       24 \\ 20 \\ 10 \\ 13 \\ 12
+                                   \end{bmatrix}
+              \end{aligned}
           $$
 
+          We can now calculate RMSE, using \eqref{ex2-rmse},
+
+          $$
+              \begin{aligned}
+                  \sum_{i = 1}^{N} (z_i - \hat{z}_i)^2 & = 234.153                           \\
+                  E(w)                                 & = \sqrt{\frac{1}{5} \times 234.153} \\
+                                                       & = 6.843
+              \end{aligned}
+          $$
+
+          Therefore, the RMSE is \textbf{6.843}.
 \end{enumerate}
 
 \pagebreak
