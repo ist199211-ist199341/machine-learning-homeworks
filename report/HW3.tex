@@ -1,0 +1,184 @@
+\documentclass[12pt]{article}
+\usepackage[paper=letterpaper,margin=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{newtxtext, newtxmath}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{multirow}
+\usepackage{svg}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+\setlength{\droptitle}{-6em}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% TEXT COLORS
+% https://coolors.co/4c6085-1588e0-0cac8c-f25f5c-b89300
+\definecolor{cgray}{HTML}{4c6085}
+\definecolor{cblue}{HTML}{1588e0}
+\definecolor{cgreen}{HTML}{0cac8c}
+\definecolor{cred}{HTML}{f25f5c}
+\definecolor{cyellow}{HTML}{b89300}
+
+% BACKGROUND COLORS
+% https://coolors.co/8a9cbc-7cc0f3-66f4d8-f6908e-ffe270
+\definecolor{bgray}{HTML}{8a9cbc}
+\definecolor{bblue}{HTML}{7cc0f3}
+\definecolor{bgreen}{HTML}{66f4d8}
+\definecolor{bred}{HTML}{f6908e}
+\definecolor{byellow}{HTML}{ffe270}
+
+\lstdefinestyle{mystyle}{
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{\large{Aprendizagem 2022}\vskip 0.2cm Homework III -- Group 020}
+\date{}
+\author{Diogo Correia (99211) \and Tomás Esteves (99341)}
+\begin{document}
+\maketitle
+\begin{center}
+    \large{\vskip -1.0cm\textbf{Part I}: Pen and paper}
+\end{center}
+
+Consider the problem of learning a regression model from 5 univariate observations\\
+$\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 13, 12\right)$.
+
+\begin{enumerate}[leftmargin=\labelsep]
+    \item {\bfseries
+          Consider the basis function, $\phi_j (x) = x^j$, for performing a 3-order
+          polynomial regression,
+
+          $$
+              \hat{z}(x, w) = \sum_{j=0}^{3} w_j \phi_j (x)
+              = w_0 + w_1 x + w_2 x^2 + w_3 x^3
+          $$
+
+          Learn the Ridge regression ($l_2$ regularization) on the transformed data
+          space using the closed form solution with $\lambda = 2$.
+
+          \textit{Hint:} use \texttt{numpy} matrix operations (e.g., \texttt{linalg.pinv} for inverse)
+          to validate your calculus.
+          }\\
+          \vspace{0.5em}
+
+          $$
+              W = \left(X^T X + \lambda I\right)^{-1} \cdot X^T Z
+          $$
+
+          $$
+              X = \begin{bmatrix}{}
+                  1.0000 & 0.8000 & 0.6400 & 0.5120 \\
+                  1.0000 & 1.0000 & 1.0000 & 1.0000 \\
+                  1.0000 & 1.2000 & 1.4400 & 1.7280 \\
+                  1.0000 & 1.4000 & 1.9600 & 2.7440 \\
+                  1.0000 & 1.6000 & 2.5600 & 4.0960
+              \end{bmatrix}
+              \quad
+              \quad
+              X^T =\begin{bmatrix}{}
+                  1.0000 & 1.0000 & 1.0000 & 1.0000 & 1.0000 \\
+                  0.8000 & 1.0000 & 1.2000 & 1.4000 & 1.6000 \\
+                  0.6400 & 1.0000 & 1.4400 & 1.9600 & 2.5600 \\
+                  0.5120 & 1.0000 & 1.7280 & 2.7440 & 4.0960
+              \end{bmatrix}
+          $$
+
+          $$
+              \begin{aligned}
+                  X^T X                          & = \begin{bmatrix}
+                                                         5.0000  & 6.0000  & 7.6000  & 10.0800 \\
+                                                         6.0000  & 7.6000  & 10.0800 & 13.8784 \\
+                                                         7.6000  & 10.0800 & 13.8784 & 19.6800 \\
+                                                         10.0800 & 13.8784 & 19.6800 & 28.5549
+                                                     \end{bmatrix}                                                                                   \\
+                  X^T X + \textcolor{cblue}{2} I & = \begin{bmatrix}{}
+                                                         \colorbox{bblue}{$ 7.0000$} & 6.0000                      & 7.6000                       & 10.0800                      \\
+                                                         6.0000                      & \colorbox{bblue}{$ 9.6000$} & 10.0800                      & 13.8784                      \\
+                                                         7.6000                      & 10.0800                     & \colorbox{bblue}{$ 15.8784$} & 19.6800                      \\
+                                                         10.0800                     & 13.8784                     & 19.6800                      & \colorbox{bblue}{$ 30.5549$}
+                                                     \end{bmatrix}
+              \end{aligned}
+          $$
+          $$
+              \left(X^T X + 2I\right) ^ {-1} = \begin{bmatrix}{}
+                  0.3417  & -0.1214 & -0.0749 & -0.0093 \\
+                  -0.1214 & 0.3892  & -0.0967 & -0.0745 \\
+                  -0.0749 & -0.0967 & 0.3726  & -0.1714 \\
+                  -0.0093 & -0.0745 & -0.1714 & 0.1800
+              \end{bmatrix}
+          $$
+          $$
+              \left(X^T X + 2I\right) ^ {-1} X^T = \begin{bmatrix}{}
+                  0.1918  & 0.1360  & 0.0720  & -0.0007 & -0.0825 \\
+                  0.0899  & 0.0966  & 0.0777  & 0.0297  & -0.0512 \\
+                  -0.0015 & 0.0296  & 0.0495  & 0.0498  & 0.0224  \\
+                  -0.0864 & -0.0751 & -0.0344 & 0.0445  & 0.1701
+              \end{bmatrix}
+          $$
+          $$
+              W = \left(X^T X + 2I\right) ^ {-1} X^T Z = \begin{bmatrix}{}
+                  \textcolor{cblue}{7.0451} & \textcolor{cred}{4.6409} & \textcolor{cgreen}{1.9673} & \textcolor{cyellow}{-1.3009}
+              \end{bmatrix}
+          $$
+          $$
+              \begin{array}{cccc}
+                  \textcolor{cblue}{w_0 = 7.0451}  &
+                  \textcolor{cred}{w_1 = 4.6409}   &
+                  \textcolor{cgreen}{w_2 = 1.9673} &
+                  \textcolor{cyellow}{w_3 = -1.3009}
+              \end{array}
+          $$
+
+\end{enumerate}
+
+\pagebreak
+
+\begin{center}
+    \large{\textbf{Part II}: Programming and critical analysis}
+\end{center}
+
+\textbf{TODO}
+
+\begin{enumerate}[leftmargin=\labelsep,resume]
+    \item {\bfseries
+          TODO
+          }
+
+          TODO
+
+\end{enumerate}
+
+\pagebreak
+
+\center\large{\textbf{Appendix}\vskip 0.3cm}
+
+// TODO
+
+\end{document}

@@ -4,6 +4,7 @@ matplotlib
 nbformat
 nbconvert
 nbstripout
+numpyarray-to-latex
 pandas
 pre-commit
 seaborn
