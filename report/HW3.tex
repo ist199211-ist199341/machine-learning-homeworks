@@ -283,7 +283,59 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
           }\\
           \vspace{0.5em}
 
-          // TODO
+          We start by drawing the multi-layer perceptron, where Layer 1 is the hidden layer.
+
+          \begin{figure}[H]
+              \centering
+              \includesvg[width=7cm]{assets/hw3-multi-layer-perceptron.svg}
+              \caption{Multi-Layer Perceptron}
+              \label{fig:multi-layer-perceptron}
+          \end{figure}
+
+          All weights and biases are initialized as
+
+          $$
+              \begin{aligned}
+                  W^{[1]} & = \begin{bmatrix}
+                                  1 \\
+                                  1
+                              \end{bmatrix} &
+                  b^{[1]} & = \begin{bmatrix}
+                                  1 \\
+                                  1
+                              \end{bmatrix}  \\
+                  W^{[2]} & = \begin{bmatrix}
+                                  1 & 1 \\
+                              \end{bmatrix} &
+                  b^{[2]} & = \begin{bmatrix}
+                                  1
+                              \end{bmatrix}
+              \end{aligned}
+          $$
+
+          We can calculate the values of each layer, $x^{[i]}$, where $i$ is the
+          index of the layer, by
+
+          $$
+              \begin{array}{c}
+                  z^{[i]} = W^{[i]} \cdot x^{[i-1]} + b^{[i]} \\
+                  x^{[1]} = f(z^{[i]})
+              \end{array}
+          $$
+
+          where $f$ is the activation function, $f(x) = e^{0.1x}$ and $i > 0$.
+
+          The error function, half squared error loss, is given by:
+
+          $$
+              E(x, t) = \cfrac{1}{2}(x - t)^2
+          $$
+
+          \vspace*{0.5cm}
+
+          We can now calculate the values of each node in the multi-layer perceptron
+          with the initialized weights and biases.
+
 \end{enumerate}
 
 \pagebreak
