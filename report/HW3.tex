@@ -323,7 +323,7 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
           $$
               \begin{array}{c}
                   z^{[i]} = W^{[i]} \cdot x^{[i-1]} + b^{[i]} \\
-                  x^{[1]} = f(z^{[i]})
+                  x^{[i]} = f(z^{[i]})
               \end{array}
           $$
 
@@ -631,7 +631,7 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
           $$
               \frac{\partial z^{[i]}}{\partial W^{[i]}} = x^{[i-1]}
               \quad,\quad
-              \frac{\partial z^{[i]}}{\partial b^{[i]}} = x^{[i-1]}
+              \frac{\partial z^{[i]}}{\partial b^{[i]}} = 1
           $$
 
           Therefore:
@@ -869,7 +869,7 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
               \end{center}
 
               Remembering the target, $t = 10$,
-              the output, $x^{[2]} = 1.4042$,
+              the output, $x^{[2]} = 1.4180$,
               and $z^{[2]} = 3.4922$,
               calculate $\delta^{[2]}$ using \eqref{ex3-vars-layer-2}:
 
@@ -877,7 +877,7 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
                   $$
                       \begin{aligned}
                           \delta^{[2]} & = \left(x^{[2]} - t\right) \times 0.1 e^{0.1 z^{[2]}} \\
-                                       & = (1.4042 - 10) \times 0.1 e^{0.1 \times 3.4922}      \\
+                                       & = (1.4180 - 10) \times 0.1 e^{0.1 \times 3.4922}      \\
                                        & = -1.2169
                       \end{aligned}
                   $$
@@ -1182,7 +1182,7 @@ Using a 70-30 training-test split with a fixed seed (\texttt{random\_state=0}):
           By reading the documentation about the
           \href{https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html}{\texttt{sklearn.neural\_network.MLPRegressor}},
           we can see that the default value for the validation fraction is
-          \texttt{validation\_fraction} (default = 0.1), which means that 10\%
+          \texttt{validation\_fraction} (default value = 0.1), which means that 10\%
           of the training data is used for validation and the other 90\% data
           to train the model.
           After each iteration, the model will calculate the validation score.
