@@ -1191,8 +1191,9 @@ Using a 70-30 training-test split with a fixed seed (\texttt{random\_state=0}):
           If the score is not improving by at least \texttt{tol} (default value = 1e-4)
           for \texttt{n\_iter\_no\_change} (default value = 10) iterations,
           the model will stop training.
-          This will allow the $MLP1$ to have better performance
-          (lower MAE value, and lower residue values) than $MLP2$, but it will take a
+          The $MLP2$, by contrast, will stop when it minimizes the loss function.
+          This allows the $MLP1$, when applied to this dataset, to have better performance
+          (lower MAE value, and lower residue values) than $MLP2$, but it takes a
           lot more iterations to converge.
 
           Since the $MLP1$ uses early stopping and $MLP2$ does not, we can
@@ -1201,7 +1202,8 @@ Using a 70-30 training-test split with a fixed seed (\texttt{random\_state=0}):
           into training and testing, early stopping splits the training data
           into training and validation, this will train a model that will
           learn from the training data and will evaluate it with the valuation data.
-          This will cause the model to learn more effectively, which will cause
+          This will cause the model to learn more effectively, especially by
+          \textbf{avoiding overfitting}, which will cause
           the model to be more robust and generalize better.
           This is why the $MLP1$ has a lower MAE value and lower residue values than $MLP2$.
 
