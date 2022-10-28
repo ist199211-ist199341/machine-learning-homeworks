@@ -567,7 +567,7 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
                           1
                       \end{bmatrix}                              \\
                               & = \begin{bmatrix}{}
-                                      3.3944
+                                      3.4922
                                   \end{bmatrix}
                   \end{aligned}
               $$
@@ -576,16 +576,507 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
                   \begin{aligned}
                       x^{[2]} & = f(z^{[2]})                  \\
                               & = f\left(\begin{bmatrix}{}
-                                                 3.3944
+                                                 3.4922
                                              \end{bmatrix}\right) \\
                               & = \begin{bmatrix}{}
-                                      1.4042
+                                      1.4180
                                   \end{bmatrix}
                   \end{aligned}
               $$
 
           \end{paracol}
 
+          Now that we have the output for each of our observations, considering
+          the initial weights and biases, we can apply \textbf{backpropagation} to
+          perform a batch gradient descent update.
+
+          % TODO add explanation
+
+          We want to batch update the weights ($W^{[1]}$ and $W^{[2]}$) and biases
+          ($b^{[1]}$ and $b^{[2]}$). The new, updated values, are given by:
+
+          $$
+              \Delta W^{[i]} = - \eta \frac{\partial E}{\partial W^{[i]}}
+              \quad,\quad
+              \Delta b^{[i]} = - \eta \frac{\partial E}{\partial b^{[i]}}
+          $$
+
+          Applying the chain rule:
+
+          $$
+              \frac{\partial E}{\partial W^{[2]}} =
+              \underbrace{\frac{\partial E}{\partial x^{[2]}}
+                  \times
+                  \frac{\partial x^{[2]}}{\partial z^{[2]}}
+              }_{\delta^{[2]}}
+              \times
+              \frac{\partial z^{[2]}}{\partial W^{[2]}}
+              \quad,\quad
+              \frac{\partial E}{\partial b^{[2]}} =
+              \underbrace{\frac{\partial E}{\partial x^{[2]}}
+                  \times
+                  \frac{\partial x^{[2]}}{\partial z^{[2]}}
+              }_{\delta^{[2]}}
+              \times
+              \frac{\partial z^{[2]}}{\partial b^{[2]}}
+          $$
+          $$
+              \frac{\partial E}{\partial x^{[2]}}
+              = \frac{1}{2} \left( 2x^{[2]} - 2t \right)
+              = x^{[2]} - t
+          $$
+          $$
+              \frac{\partial x^{[i]}}{\partial z^{[i]}} = f'\left(z^{[i]}\right) = 0.1 e^{0.1 z^{[i]}}
+          $$
+          $$
+              \frac{\partial z^{[i]}}{\partial W^{[i]}} = x^{[i-1]}
+              \quad,\quad
+              \frac{\partial z^{[i]}}{\partial b^{[i]}} = x^{[i-1]}
+          $$
+
+          Therefore:
+
+          \begin{equation}\label{ex3-vars-layer-2}
+              \delta^{[2]} = (x^{[2]} - t) \circ 0.1 e^{0.1 z^{[2]}}
+              \quad,\quad
+              \Delta W^{[2]} = - 0.1 \delta^{[2]} \left(x^{[1]}\right)^T
+              \quad,\quad
+              \Delta b^{[2]} = - 0.1 \delta^{[2]}
+          \end{equation}
+
+          We can repeat this process for layer 1, yielding:
+
+          $$
+              \frac{\partial E}{\partial W^{[1]}} = \delta^{[1]} \frac{\partial z^{[1]}}{\partial W^{[1]}}
+              = \delta^{[1]} \left(x^{[0]}\right)^T
+          $$
+          \begin{equation}\label{ex3-vars-layer-1}
+              \delta^{[1]} = \left(W^{[2]}\right)^T \delta^{[2]} \circ 0.1 e^{0.1 z^{[1]}}
+              \quad,\quad
+              \Delta W^{[1]} = - 0.1 \delta^{[1]} \left(x^{[0]}\right)^T
+              \quad,\quad
+              \Delta b^{[1]} = - 0.1 \delta^{[1]}
+          \end{equation}
+
+          Calculating $\Delta W^{[2]}$, $\Delta W^{[1]}$, $\Delta b^{[2]}$ and $\Delta b^{[1]}$
+          for each observation:
+
+          \begin{paracol}{3}
+              \begin{center}
+                  \textbf{Observation: $(0.8)$}
+              \end{center}
+
+              Remembering the target, $t = 24$,
+              the output, $x^{[2]} = 1.4042$,
+              and $z^{[2]} = 3.3944$,
+              calculate $\delta^{[2]}$ using \eqref{ex3-vars-layer-2}:
+
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \delta^{[2]} & = \left(x^{[2]} - t\right) \times 0.1 e^{0.1 z^{[2]}} \\
+                                       & = (1.4042 - 24) \times 0.1 e^{0.1 \times 3.3944}      \\
+                                       & = -3.1728
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+
+              Using \eqref{ex3-vars-layer-1}, calculate $\delta^{[1]}$,
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \delta^{[1]} & = \left(W^{[2]}\right)^T \delta^{[2]} \circ 0.1 e^{0.1 z^{[1]}} \\
+                                       & = \begin{bmatrix}
+                                               1 \\ 1
+                                           \end{bmatrix}
+                          \begin{bmatrix}
+                              -3.1728
+                          \end{bmatrix}
+                          \circ
+                          0.1 e^{0.1 \begin{bmatrix}
+                                                 1.8 \\
+                                                 1.8
+                                             \end{bmatrix}}                                                      \\
+                                       & = \begin{bmatrix}
+                                               -0.3799 \\
+                                               -0.3799
+                                           \end{bmatrix}
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+
+              Finally, using \eqref{ex3-vars-layer-2} and \eqref{ex3-vars-layer-1},
+              calculate:
+
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \Delta W^{[2]} & = -0.1 \delta^{[2]} \left(x^{[1]}\right)^T \\
+                                         & = -0.1 \times (-3.1728) \begin{bmatrix}
+                                                                       1.1972 \\
+                                                                       1.1972
+                                                                   \end{bmatrix}^T    \\
+                                         & = \begin{bmatrix}
+                                                 0.3799 & 0.3799
+                                             \end{bmatrix}
+                      \end{aligned}
+                  $$
+
+                  $$
+                      \begin{aligned}
+                          \Delta b^{[2]} & = -0.1 \delta^{[2]}     \\
+                                         & = -0.1 \times (-3.1728) \\
+                                         & = 0.3173
+                      \end{aligned}
+                  $$
+
+                  $$
+                      \begin{aligned}
+                          \Delta W^{[1]} & = -0.1 \delta^{[1]} \left(x^{[0]}\right)^T \\
+                                         & = -0.1 \times \begin{bmatrix}
+                                                             -0.3799 \\
+                                                             -0.3799
+                                                         \end{bmatrix} \begin{bmatrix}
+                                                                           0.8
+                                                                       \end{bmatrix} \\
+                                         & = \begin{bmatrix}
+                                                 0.0304 \\
+                                                 0.0304
+                                             \end{bmatrix}
+                      \end{aligned}
+                  $$
+
+                  $$
+                      \begin{aligned}
+                          \Delta b^{[1]} & = -0.1 \delta^{[1]}   \\
+                                         & = -0.1 \begin{bmatrix}
+                                                      -0.3799 \\
+                                                      -0.3799
+                                                  \end{bmatrix} \\
+                                         & = \begin{bmatrix}
+                                                 0.0380 \\
+                                                 0.0380
+                                             \end{bmatrix}
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+
+              \switchcolumn
+
+              \begin{center}
+                  \textbf{Observation: $(1.0)$}
+              \end{center}
+
+              Remembering the target, $t = 20$,
+              the output, $x^{[2]} = 1.4110$,
+              and $z^{[2]} = 3.4428$,
+              calculate $\delta^{[2]}$ using \eqref{ex3-vars-layer-2}:
+
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \delta^{[2]} & = \left(x^{[2]} - t\right) \times 0.1 e^{0.1 z^{[2]}} \\
+                                       & = (1.4110 - 20) \times 0.1 e^{0.1 \times 3.4428}      \\
+                                       & = -2.6229
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+
+              Using \eqref{ex3-vars-layer-1}, calculate $\delta^{[1]}$,
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \delta^{[1]} & = \left(W^{[2]}\right)^T \delta^{[2]} \circ 0.1 e^{0.1 z^{[1]}} \\
+                                       & = \begin{bmatrix}
+                                               1 \\ 1
+                                           \end{bmatrix}
+                          \begin{bmatrix}
+                              -2.6229
+                          \end{bmatrix}
+                          \circ
+                          0.1 e^{0.1 \begin{bmatrix}
+                                                 2 \\
+                                                 2
+                                             \end{bmatrix}}                                                      \\
+                                       & = \begin{bmatrix}
+                                               -0.3204 \\
+                                               -0.3204
+                                           \end{bmatrix}
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+
+              Finally, using \eqref{ex3-vars-layer-2} and \eqref{ex3-vars-layer-1},
+              calculate:
+
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \Delta W^{[2]} & = -0.1 \delta^{[2]} \left(x^{[1]}\right)^T \\
+                                         & = -0.1 \times (-2.6229) \begin{bmatrix}
+                                                                       1.2214 \\
+                                                                       1.2214
+                                                                   \end{bmatrix}^T    \\
+                                         & = \begin{bmatrix}
+                                                 0.3204 & 0.3204
+                                             \end{bmatrix}
+                      \end{aligned}
+                  $$
+
+                  $$
+                      \begin{aligned}
+                          \Delta b^{[2]} & = -0.1 \delta^{[2]}     \\
+                                         & = -0.1 \times (-2.6229) \\
+                                         & = 0.2623
+                      \end{aligned}
+                  $$
+
+                  $$
+                      \begin{aligned}
+                          \Delta W^{[1]} & = -0.1 \delta^{[1]} \left(x^{[0]}\right)^T \\
+                                         & = -0.1 \times \begin{bmatrix}
+                                                             -0.3204 \\
+                                                             -0.3204
+                                                         \end{bmatrix} \begin{bmatrix}
+                                                                           1
+                                                                       \end{bmatrix} \\
+                                         & = \begin{bmatrix}
+                                                 0.0320 \\
+                                                 0.0320
+                                             \end{bmatrix}
+                      \end{aligned}
+                  $$
+
+                  $$
+                      \begin{aligned}
+                          \Delta b^{[1]} & = -0.1 \delta^{[1]}   \\
+                                         & = -0.1 \begin{bmatrix}
+                                                      -0.3204 \\
+                                                      -0.3204
+                                                  \end{bmatrix} \\
+                                         & = \begin{bmatrix}
+                                                 0.0320 \\
+                                                 0.0320
+                                             \end{bmatrix}
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+
+              \switchcolumn
+
+              \begin{center}
+                  \textbf{Observation: $(1.2)$}
+              \end{center}
+
+              Remembering the target, $t = 10$,
+              the output, $x^{[2]} = 1.4042$,
+              and $z^{[2]} = 3.4922$,
+              calculate $\delta^{[2]}$ using \eqref{ex3-vars-layer-2}:
+
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \delta^{[2]} & = \left(x^{[2]} - t\right) \times 0.1 e^{0.1 z^{[2]}} \\
+                                       & = (1.4042 - 10) \times 0.1 e^{0.1 \times 3.4922}      \\
+                                       & = -1.2169
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+
+              Using \eqref{ex3-vars-layer-1}, calculate $\delta^{[1]}$,
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \delta^{[1]} & = \left(W^{[2]}\right)^T \delta^{[2]} \circ 0.1 e^{0.1 z^{[1]}} \\
+                                       & = \begin{bmatrix}
+                                               1 \\ 1
+                                           \end{bmatrix}
+                          \begin{bmatrix}
+                              -1.2169
+                          \end{bmatrix}
+                          \circ
+                          0.1 e^{0.1 \begin{bmatrix}
+                                                 2.2 \\
+                                                 2.2
+                                             \end{bmatrix}}                                                      \\
+                                       & = \begin{bmatrix}
+                                               -0.1516 \\
+                                               -0.1516
+                                           \end{bmatrix}
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+
+              Finally, using \eqref{ex3-vars-layer-2} and \eqref{ex3-vars-layer-1},
+              calculate:
+
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \Delta W^{[2]} & = -0.1 \delta^{[2]} \left(x^{[1]}\right)^T \\
+                                         & = -0.1 \times (-1.2169) \begin{bmatrix}
+                                                                       1.2461 \\
+                                                                       1.2461
+                                                                   \end{bmatrix}^T    \\
+                                         & = \begin{bmatrix}
+                                                 0.1516 & 0.1516
+                                             \end{bmatrix}
+                      \end{aligned}
+                  $$
+
+                  $$
+                      \begin{aligned}
+                          \Delta b^{[2]} & = -0.1 \delta^{[2]}     \\
+                                         & = -0.1 \times (-1.2169) \\
+                                         & = 0.1217
+                      \end{aligned}
+                  $$
+
+                  $$
+                      \begin{aligned}
+                          \Delta W^{[1]} & = -0.1 \delta^{[1]} \left(x^{[0]}\right)^T \\
+                                         & = -0.1 \times \begin{bmatrix}
+                                                             -0.1516 \\
+                                                             -0.1516
+                                                         \end{bmatrix} \begin{bmatrix}
+                                                                           1.2
+                                                                       \end{bmatrix} \\
+                                         & = \begin{bmatrix}
+                                                 0.0182 \\
+                                                 0.0182
+                                             \end{bmatrix}
+                      \end{aligned}
+                  $$
+
+                  $$
+                      \begin{aligned}
+                          \Delta b^{[1]} & = -0.1 \delta^{[1]}   \\
+                                         & = -0.1 \begin{bmatrix}
+                                                      -0.1516 \\
+                                                      -0.1516
+                                                  \end{bmatrix} \\
+                                         & = \begin{bmatrix}
+                                                 0.0152 \\
+                                                 0.0152
+                                             \end{bmatrix}
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+
+          \end{paracol}
+
+          Finally, we can update the weights and biases:
+
+          $$
+              \begin{aligned}
+                  W^{[2]}_{\text{new}} & = W^{[2]}_{\text{old}} + \sum_{i=1}^{3} \Delta W^{[2]}_i \\
+                                       & = \begin{bmatrix}
+                                               1 & 1
+                                           \end{bmatrix} + \left(
+                  \begin{bmatrix}
+                          0.3799 & 0.3799
+                      \end{bmatrix}+
+                  \begin{bmatrix}
+                          0.3204 & 0.3204
+                      \end{bmatrix}+
+                  \begin{bmatrix}
+                          0.1516 & 0.1516
+                      \end{bmatrix}
+                  \right)                                                                         \\
+                                       & = \begin{bmatrix}
+                                               1.8518 & 1.8518
+                                           \end{bmatrix}
+                  \\
+                  \\
+                  b^{[2]}_{\text{new}} & = b^{[2]}_{\text{old}} + \sum_{i=1}^{3} \Delta b^{[2]}_i \\
+                                       & = \begin{bmatrix}
+                                               1
+                                           \end{bmatrix} + \left(
+                  \begin{bmatrix}
+                          0.3173
+                      \end{bmatrix}+
+                  \begin{bmatrix}
+                          0.2623
+                      \end{bmatrix}+
+                  \begin{bmatrix}
+                          0.1217
+                      \end{bmatrix}
+                  \right)                                                                         \\
+                                       & = \begin{bmatrix}
+                                               1.7013
+                                           \end{bmatrix}
+                  \\
+                  \\
+                  W^{[1]}_{\text{new}} & = W^{[1]}_{\text{old}} + \sum_{i=1}^{3} \Delta W^{[1]}_i \\
+                                       & = \begin{bmatrix}
+                                               1 \\
+                                               1
+                                           \end{bmatrix} + \left(
+                  \begin{bmatrix}
+                          0.0304 \\
+                          0.0304
+                      \end{bmatrix}+
+                  \begin{bmatrix}
+                          0.0320 \\
+                          0.0320
+                      \end{bmatrix}+
+                  \begin{bmatrix}
+                          0.0182 \\
+                          0.0182
+                      \end{bmatrix}
+                  \right)                                                                         \\
+                                       & = \begin{bmatrix}
+                                               1.0806 \\
+                                               1.0806
+                                           \end{bmatrix}
+                  \\
+                  \\
+                  b^{[1]}_{\text{new}} & = b^{[1]}_{\text{old}} + \sum_{i=1}^{3} \Delta b^{[1]}_i \\
+                                       & = \begin{bmatrix}
+                                               1 \\
+                                               1
+                                           \end{bmatrix} + \left(
+                  \begin{bmatrix}
+                          0.0380 \\
+                          0.0380
+                      \end{bmatrix}+
+                  \begin{bmatrix}
+                          0.0320 \\
+                          0.0320
+                      \end{bmatrix}+
+                  \begin{bmatrix}
+                          0.0152 \\
+                          0.0152
+                      \end{bmatrix}
+                  \right)                                                                         \\
+                                       & = \begin{bmatrix}
+                                               1.0852 \\
+                                               1.0852
+                                           \end{bmatrix}
+              \end{aligned}
+          $$
+
+          To conclude, the weights and biases after one batch gradient descent update,
+          with learning rate $\eta = 0.1$, are,
+
+          $$
+              \begin{aligned}
+                  W^{[1]} & = \begin{bmatrix}
+                                  1.0806 \\
+                                  1.0806
+                              \end{bmatrix} &
+                  b^{[1]} & = \begin{bmatrix}
+                                  1.0852 \\
+                                  1.0852
+                              \end{bmatrix}  \\
+                  W^{[2]} & = \begin{bmatrix}
+                                  1.8518 & 1.8518
+                              \end{bmatrix} &
+                  b^{[2]} & = \begin{bmatrix}
+                                  1.7013
+                              \end{bmatrix}
+              \end{aligned}
+          $$
 \end{enumerate}
 
 \pagebreak
