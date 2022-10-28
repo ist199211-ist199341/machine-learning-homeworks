@@ -14,6 +14,7 @@
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{paracol}
 
 \setlength{\droptitle}{-6em}
 
@@ -44,6 +45,9 @@
 \hypersetup{
     allcolors=linkcolor
 }
+
+\setlength{\columnseprule}{1pt}
+\def\columnseprulecolor{\color{questioncolor}}
 
 \lstdefinestyle{mystyle}{
     commentstyle=\color{codegreen},
@@ -334,7 +338,253 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
           \vspace*{0.5cm}
 
           We can now calculate the values of each node in the multi-layer perceptron
-          with the initialized weights and biases.
+          with the initialized weights and biases, for each of the three observations.
+
+          \vspace*{0.5cm}
+
+          \begin{paracol}{3}
+              \begin{center}
+                  \textbf{Observation: $(0.8)$}
+              \end{center}
+
+              $$
+                  x^{[0]} = \begin{bmatrix}
+                      0.8
+                  \end{bmatrix}
+              $$
+
+              $$
+                  \begin{aligned}
+                      z^{[1]} & = W^{[1]} \cdot x^{[0]} + b^{[1]} \\
+                              & = \begin{bmatrix}
+                                      1 \\
+                                      1
+                                  \end{bmatrix}
+                      \begin{bmatrix}
+                          0.8
+                      \end{bmatrix}
+                      +
+                      \begin{bmatrix}
+                          1 \\
+                          1
+                      \end{bmatrix}                              \\
+                              & = \begin{bmatrix}{}
+                                      1.8 \\
+                                      1.8
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              $$
+                  \begin{aligned}
+                      x^{[1]} & = f(z^{[1]})                  \\
+                              & = f\left(\begin{bmatrix}{}
+                                                 1.8 \\
+                                                 1.8
+                                             \end{bmatrix}\right) \\
+                              & = \begin{bmatrix}{}
+                                      1.1972 \\
+                                      1.1972
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              $$
+                  \begin{aligned}
+                      z^{[2]} & = W^{[2]} \cdot x^{[1]} + b^{[2]} \\
+                              & = \begin{bmatrix}
+                                      1 &
+                                      1
+                                  \end{bmatrix}
+                      \begin{bmatrix}
+                          1.1972 \\
+                          1.1972
+                      \end{bmatrix}
+                      +
+                      \begin{bmatrix}
+                          1
+                      \end{bmatrix}                              \\
+                              & = \begin{bmatrix}{}
+                                      3.3944
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              $$
+                  \begin{aligned}
+                      x^{[2]} & = f(z^{[2]})                  \\
+                              & = f\left(\begin{bmatrix}{}
+                                                 3.3944
+                                             \end{bmatrix}\right) \\
+                              & = \begin{bmatrix}{}
+                                      1.4042
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              \begin{center}
+                  \textbf{Observation: $(1.0)$}
+              \end{center}
+
+              $$
+                  x^{[0]} = \begin{bmatrix}
+                      1.0
+                  \end{bmatrix}
+              $$
+
+              $$
+                  \begin{aligned}
+                      z^{[1]} & = W^{[1]} \cdot x^{[0]} + b^{[1]} \\
+                              & = \begin{bmatrix}
+                                      1 \\
+                                      1
+                                  \end{bmatrix}
+                      \begin{bmatrix}
+                          1.0
+                      \end{bmatrix}
+                      +
+                      \begin{bmatrix}
+                          1 \\
+                          1
+                      \end{bmatrix}                              \\
+                              & = \begin{bmatrix}{}
+                                      2 \\
+                                      2
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              $$
+                  \begin{aligned}
+                      x^{[1]} & = f(z^{[1]})                  \\
+                              & = f\left(\begin{bmatrix}{}
+                                                 2 \\
+                                                 2
+                                             \end{bmatrix}\right) \\
+                              & = \begin{bmatrix}{}
+                                      1.2214 \\
+                                      1.2214
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              $$
+                  \begin{aligned}
+                      z^{[2]} & = W^{[2]} \cdot x^{[1]} + b^{[2]} \\
+                              & = \begin{bmatrix}
+                                      1 &
+                                      1
+                                  \end{bmatrix}
+                      \begin{bmatrix}
+                          1.2214 \\
+                          1.2214
+                      \end{bmatrix}
+                      +
+                      \begin{bmatrix}
+                          1
+                      \end{bmatrix}                              \\
+                              & = \begin{bmatrix}{}
+                                      3.4428
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              $$
+                  \begin{aligned}
+                      x^{[2]} & = f(z^{[2]})                  \\
+                              & = f\left(\begin{bmatrix}{}
+                                                 3.4428
+                                             \end{bmatrix}\right) \\
+                              & = \begin{bmatrix}{}
+                                      1.4110
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              \begin{center}
+                  \textbf{Observation: $(1.2)$}
+              \end{center}
+
+              $$
+                  x^{[0]} = \begin{bmatrix}
+                      1.2
+                  \end{bmatrix}
+              $$
+
+              $$
+                  \begin{aligned}
+                      z^{[1]} & = W^{[1]} \cdot x^{[0]} + b^{[1]} \\
+                              & = \begin{bmatrix}
+                                      1 \\
+                                      1
+                                  \end{bmatrix}
+                      \begin{bmatrix}
+                          1.2
+                      \end{bmatrix}
+                      +
+                      \begin{bmatrix}
+                          1 \\
+                          1
+                      \end{bmatrix}                              \\
+                              & = \begin{bmatrix}{}
+                                      2.2 \\
+                                      2.2
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              $$
+                  \begin{aligned}
+                      x^{[1]} & = f(z^{[1]})                  \\
+                              & = f\left(\begin{bmatrix}{}
+                                                 2.2 \\
+                                                 2.2
+                                             \end{bmatrix}\right) \\
+                              & = \begin{bmatrix}{}
+                                      1.2461 \\
+                                      1.2461
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              $$
+                  \begin{aligned}
+                      z^{[2]} & = W^{[2]} \cdot x^{[1]} + b^{[2]} \\
+                              & = \begin{bmatrix}
+                                      1 &
+                                      1
+                                  \end{bmatrix}
+                      \begin{bmatrix}
+                          1.2461 \\
+                          1.2461
+                      \end{bmatrix}
+                      +
+                      \begin{bmatrix}
+                          1
+                      \end{bmatrix}                              \\
+                              & = \begin{bmatrix}{}
+                                      3.3944
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              $$
+                  \begin{aligned}
+                      x^{[2]} & = f(z^{[2]})                  \\
+                              & = f\left(\begin{bmatrix}{}
+                                                 3.3944
+                                             \end{bmatrix}\right) \\
+                              & = \begin{bmatrix}{}
+                                      1.4042
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+          \end{paracol}
 
 \end{enumerate}
 
@@ -381,18 +631,18 @@ Using a 70-30 training-test split with a fixed seed (\texttt{random\_state=0}):
           \vspace{0.5em}
 
           \begin{figure}[H]
-            \centering
-            \includesvg[width = \textwidth]{assets/hw3-boxplot.svg}
-            \caption{Boxplot for the models tested}
-            \label{fig:bloxplot}
-        \end{figure}
+              \centering
+              \includesvg[width = \textwidth]{assets/hw3-boxplot.svg}
+              \caption{Boxplot for the models tested}
+              \label{fig:bloxplot}
+          \end{figure}
 
-        \begin{figure}[H]
-            \centering
-            \includesvg[width = \textwidth]{assets/hw3-histogram.svg}
-            \caption{Histogram for the models tested}
-            \label{fig:histogram}
-        \end{figure}
+          \begin{figure}[H]
+              \centering
+              \includesvg[width = \textwidth]{assets/hw3-histogram.svg}
+              \caption{Histogram for the models tested}
+              \label{fig:histogram}
+          \end{figure}
 
     \item {\color{questioncolor}\bfseries
           How many iterations were required for $MLP_1$ and $MLP_2$ to converge?
@@ -401,8 +651,8 @@ Using a 70-30 training-test split with a fixed seed (\texttt{random\_state=0}):
 
           MLP1 number of iterations: 452\\
           MLP2 number of iterations: 77
-          
-          \item {\color{questioncolor}\bfseries
+
+    \item {\color{questioncolor}\bfseries
           What can be motivating the unexpected differences on the number of iterations?
           Hypothesize one reason underlying the observed performance differences between the MLPs.
           }\\
