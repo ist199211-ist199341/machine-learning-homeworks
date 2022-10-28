@@ -315,7 +315,10 @@ Using a 70-30 training-test split with a fixed seed (\texttt{random\_state=0}):
           }\\
           \vspace{0.5em}
 
-          // TODO
+          Ridge Regularization MAE: 0.16282991588665355\\
+          MLP1 Regularization MAE: 0.0680414073796843\\
+          MLP2 Regularization MAE: 0.0978071820387748
+
 
     \item {\color{questioncolor}\bfseries
           Plot the residues (in absolute value) using two visualizations: boxplots
@@ -325,14 +328,29 @@ Using a 70-30 training-test split with a fixed seed (\texttt{random\_state=0}):
           }\\
           \vspace{0.5em}
 
-          // TODO
+          \begin{figure}[H]
+            \centering
+            \includesvg[width = \textwidth]{assets/hw3-boxplot.svg}
+            \caption{Boxplot for the models tested}
+            \label{fig:bloxplot}
+        \end{figure}
+
+        \begin{figure}[H]
+            \centering
+            \includesvg[width = \textwidth]{assets/hw3-histogram.svg}
+            \caption{Histogram for the models tested}
+            \label{fig:histogram}
+        \end{figure}
+
     \item {\color{questioncolor}\bfseries
           How many iterations were required for $MLP_1$ and $MLP_2$ to converge?
           }\\
           \vspace{0.5em}
 
-          // TODO
-    \item {\color{questioncolor}\bfseries
+          MLP1 number of iterations: 452\\
+          MLP2 number of iterations: 77
+          
+          \item {\color{questioncolor}\bfseries
           What can be motivating the unexpected differences on the number of iterations?
           Hypothesize one reason underlying the observed performance differences between the MLPs.
           }\\
@@ -345,6 +363,12 @@ Using a 70-30 training-test split with a fixed seed (\texttt{random\_state=0}):
 \pagebreak
 
 \center\large{\textbf{Appendix}\vskip 0.3cm}
+
+\lstinputlisting[label={listing-ex4},caption={Train, test and compute the MAE of the three regressors},language=Python]{assets/hw3-code-4.py}
+
+\lstinputlisting[label={listing-ex5},caption={Plot the residues using a bloxplot and a histogram},language=Python]{assets/hw3-code-5.py}
+
+\lstinputlisting[label={listing-ex6},caption={Print the number of iterations to converge of the regressors},language=Python]{assets/hw3-code-6.py}
 
 // TODO
 
