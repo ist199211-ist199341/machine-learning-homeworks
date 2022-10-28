@@ -18,7 +18,7 @@ X_train, X_test, y_train, y_test = model_selection.train_test_split(
 )
 
 # Create a Ridge Regression model
-rr = Ridge(alpha=0.01)
+rr = Ridge(alpha=0.1)
 
 # Create a Multi-Layer Perceptron model with early stopping
 mlp1 = MLPRegressor(
