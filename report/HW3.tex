@@ -41,6 +41,7 @@
 
 \definecolor{linkcolor}{HTML}{f57429}
 \definecolor{questioncolor}{HTML}{444444}
+\definecolor{listingbackground}{HTML}{f5f5f5}
 
 \hypersetup{
     allcolors=linkcolor
@@ -55,6 +56,7 @@
     numberstyle=\tiny\color{codegray},
     stringstyle=\color{codepurple},
     basicstyle=\ttfamily\footnotesize,
+    backgroundcolor=\color{listingbackground},
     breakatwhitespace=false,
     breaklines=true,
     captionpos=b,
@@ -1211,7 +1213,11 @@ Using a 70-30 training-test split with a fixed seed (\texttt{random\_state=0}):
 
 \lstinputlisting[label={listing-ex4},caption={Train, test and compute the MAE of the three regressors},language=Python]{assets/hw3-code-4.py}
 
+\vspace*{1.5cm}
+
 \lstinputlisting[label={listing-ex5},caption={Plot the residues using a bloxplot and a histogram},language=Python]{assets/hw3-code-5.py}
+
+\vspace*{1.5cm}
 
 \lstinputlisting[label={listing-ex6},caption={Print the number of iterations to converge of the regressors},language=Python]{assets/hw3-code-6.py}
 
