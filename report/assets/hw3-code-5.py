@@ -17,7 +17,7 @@ df = pd.DataFrame({"Ridge": rr_residues, "MLP1": mlp1_residues, "MLP2": mlp2_res
 # Plot the residues with a boxplot
 sax = sns.boxplot(data=df)
 
-# specfiy axis labels
+# Specfiy axis labels
 ax.set(xlabel="Models", ylabel="Residues")
 
 plt.show()

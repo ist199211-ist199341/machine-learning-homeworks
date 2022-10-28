@@ -1108,9 +1108,21 @@ Using a 70-30 training-test split with a fixed seed (\texttt{random\_state=0}):
           }\\
           \vspace{0.5em}
 
-          Ridge Regularization MAE: 0.16282991588665355\\
-          MLP1 Regularization MAE: 0.0680414073796843\\
-          MLP2 Regularization MAE: 0.0978071820387748
+          We start by applying the three regressors, as said in the question prompt,
+          and then calculate the Mean Absolute Error by using \texttt{sklearn}'s
+          \texttt{metrics.mean\_absolute\_error}.
+
+          The respective code can be found on listing \ref{listing-ex4}.
+
+          \begin{center}
+              \captionsetup{type=table}
+              \begin{tabular}{c|c|c|c}
+                                      & Ridge regularization & $MLP_1$ & $MLP_2$ \\
+                  \hline
+                  Mean Absolute Error & 0.1628               & 0.0680  & 0.0978
+              \end{tabular}
+              \captionof{table}{Mean Absolute Error for each of the three regressors}
+          \end{center}
 
 
     \item {\color{questioncolor}\bfseries
@@ -1121,17 +1133,19 @@ Using a 70-30 training-test split with a fixed seed (\texttt{random\_state=0}):
           }\\
           \vspace{0.5em}
 
+          The respective code can be found on listing \ref{listing-ex5}.
+
           \begin{figure}[H]
               \centering
-              \includesvg[width = \textwidth]{assets/hw3-boxplot.svg}
-              \caption{Boxplot for the models tested}
+              \includesvg[width = 12cm]{assets/hw3-boxplot.svg}
+              \caption{Boxplot of the residues of the three regressors}
               \label{fig:bloxplot}
           \end{figure}
 
           \begin{figure}[H]
               \centering
-              \includesvg[width = \textwidth]{assets/hw3-histogram.svg}
-              \caption{Histogram for the models tested}
+              \includesvg[width = 12cm]{assets/hw3-histogram.svg}
+              \caption{Histogram of the residues of the three regressors}
               \label{fig:histogram}
           \end{figure}
 
@@ -1140,8 +1154,20 @@ Using a 70-30 training-test split with a fixed seed (\texttt{random\_state=0}):
           }\\
           \vspace{0.5em}
 
-          MLP1 number of iterations: 452\\
-          MLP2 number of iterations: 77
+          It is possible to get the number of iterations through the
+          \texttt{n\_iter\_} property of the \texttt{MLPRegressor} object.
+
+          The respective code can be found on listing \ref{listing-ex6}.
+
+          \begin{center}
+              \captionsetup{type=table}
+              \begin{tabular}{c|c|c}
+                                       & $MLP_1$ & $MLP_2$ \\
+                  \hline
+                  Number of Iterations & 452     & 77
+              \end{tabular}
+              \captionof{table}{Number of iterations for each of the two MLP regressors}
+          \end{center}
 
     \item {\color{questioncolor}\bfseries
           What can be motivating the unexpected differences on the number of iterations?
@@ -1149,7 +1175,33 @@ Using a 70-30 training-test split with a fixed seed (\texttt{random\_state=0}):
           }\\
           \vspace{0.5em}
 
-          // TODO
+          By comparing the number of iteration of both models, we can conclude that
+          $MLP1$ takes a lot more iterations ($452 > 77$) to converge than $MLP2$.
+          This is because $MLP1$ uses early stopping, which means that the model
+          stops training when the validation score is not improving anymore.
+          By reading the documentation about the
+          \href{https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html}{\texttt{sklearn.neural\_network.MLPRegressor}},
+          we can see that the default value for the validation fraction is
+          \texttt{validation\_fraction} (default = 0.1), which means that 10\%
+          of the training data is used for validation and the other 90\% data
+          to train the model.
+          After each iteration, the model will calculate the validation score.
+          If the score is not improving by at least \texttt{tol} (default value = 1e-4)
+          for \texttt{n\_iter\_no\_change} (default value = 10) iterations,
+          the model will stop training.
+          This will allow the $MLP1$ to have better performance
+          (lower MAE value, and lower residue values) than $MLP2$, but it will take a
+          lot more iterations to converge.
+
+          Since the $MLP1$ uses early stopping and $MLP2$ does not, we can
+          attribute the difference in performance to the early stopping.
+          Due to how the early stopping works, similar to splitting the data
+          into training and testing, early stopping splits the training data
+          into training and validation, this will train a model that will
+          learn from the training data and will evaluate it with the valuation data.
+          This will cause the model to learn more effectively, which will cause
+          the model to be more robust and generalize better.
+          This is why the $MLP1$ has a lower MAE value and lower residue values than $MLP2$.
 
 \end{enumerate}
 
