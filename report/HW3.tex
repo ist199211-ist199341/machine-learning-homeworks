@@ -1,0 +1,1284 @@
+\documentclass[12pt]{article}
+\usepackage[paper=letterpaper,margin=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{newtxtext, newtxmath}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{multirow}
+\usepackage{svg}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{paracol}
+
+\setlength{\droptitle}{-6em}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% TEXT COLORS
+% https://coolors.co/4c6085-1588e0-0cac8c-f25f5c-b89300
+\definecolor{cgray}{HTML}{4c6085}
+\definecolor{cblue}{HTML}{1588e0}
+\definecolor{cgreen}{HTML}{0cac8c}
+\definecolor{cred}{HTML}{f25f5c}
+\definecolor{cyellow}{HTML}{b89300}
+
+% BACKGROUND COLORS
+% https://coolors.co/8a9cbc-7cc0f3-66f4d8-f6908e-ffe270
+\definecolor{bgray}{HTML}{8a9cbc}
+\definecolor{bblue}{HTML}{7cc0f3}
+\definecolor{bgreen}{HTML}{66f4d8}
+\definecolor{bred}{HTML}{f6908e}
+\definecolor{byellow}{HTML}{ffe270}
+
+\definecolor{linkcolor}{HTML}{f57429}
+\definecolor{questioncolor}{HTML}{444444}
+\definecolor{listingbackground}{HTML}{f5f5f5}
+
+\hypersetup{
+    allcolors=linkcolor
+}
+
+\setlength{\columnseprule}{1pt}
+\def\columnseprulecolor{\color{questioncolor}}
+
+\lstdefinestyle{mystyle}{
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    backgroundcolor=\color{listingbackground},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{\large{Aprendizagem 2022}\vskip 0.2cm Homework III -- Group 020}
+\date{}
+\author{Diogo Correia (99211) \and Tomás Esteves (99341)}
+\begin{document}
+\maketitle
+\begin{center}
+    \large{\vskip -1.0cm\textbf{Part I}: Pen and paper}
+\end{center}
+
+{
+\color{questioncolor}\bfseries
+\noindent
+Consider the problem of learning a regression model from 5 univariate observations\\
+$\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 13, 12\right)$.
+}
+
+\begin{enumerate}[leftmargin=\labelsep]
+    \item {\color{questioncolor}\bfseries
+          Consider the basis function, $\phi_j (x) = x^j$, for performing a 3-order
+          polynomial regression,
+
+          $$
+              \hat{z}(x, w) = \sum_{j=0}^{3} w_j \phi_j (x)
+              = w_0 + w_1 x + w_2 x^2 + w_3 x^3
+          $$
+
+          Learn the Ridge regression ($l_2$ regularization) on the transformed data
+          space using the closed form solution with $\lambda = 2$.
+
+          \textit{Hint:} use \texttt{numpy} matrix operations (e.g., \texttt{linalg.pinv} for inverse)
+          to validate your calculus.
+          }\\
+          \vspace{0.5em}
+
+          Considering the 5 observations, we can calculate the value of
+          $\phi_0 (x)$, $\phi_1 (x)$, $\phi_2 (x)$ and $\phi_3 (x)$ for each
+          of them.
+
+          \begin{center}
+              \captionsetup{type=table}
+              \begin{tabular}{c|cccc}
+                  $x$ & $\phi_0(x)$ & $\phi_1(x)$ & $\phi_2(x)$ & $\phi_3(x)$ \\
+                  \hline
+                  0.8 & 1           & 0.8         & 0.64        & 0.512       \\
+                  1   & 1           & 1           & 1           & 1           \\
+                  1.2 & 1           & 1.2         & 1.44        & 1.728       \\
+                  1.4 & 1           & 1.4         & 1.96        & 2.744       \\
+                  1.6 & 1           & 1.6         & 2.56        & 4.096
+              \end{tabular}
+              \captionof{table}{Value of $\phi_j(x)$ for each observation, $j=0\dots3$}
+              \label{ex1-phi-table}
+          \end{center}
+
+          We shall consider $z$ as the vector of targets for the respective observations, $
+              z = \begin{bmatrix}
+                  24 & 20 & 10 & 13 & 12
+              \end{bmatrix}^T
+          $.
+
+          Our goal is to perform a regression where the prediction is given by
+
+          \begin{equation}\label{ex1-z-hat}
+              \hat{z}(x, w)
+              = \textcolor{cblue}{w_0} +
+              \textcolor{cred}{w_1}x +
+              \textcolor{cgreen}{w_2}x^2 +
+              \textcolor{cyellow}{w_3}x^3
+          \end{equation}
+
+          We know the parameters in the Ridge regression are given by \eqref{ex1-ridge},
+          where $X$ is the matrix after applying $\phi_j(x)$ to the observations,
+          as per Table \ref{ex1-phi-table}.
+
+          \begin{equation}\label{ex1-ridge}
+              w = \left(X^T X + \lambda I\right)^{-1} \cdot X^T z
+          \end{equation}
+
+          $$
+              X = \begin{bmatrix}{}
+                  1.0000 & 0.8000 & 0.6400 & 0.5120 \\
+                  1.0000 & 1.0000 & 1.0000 & 1.0000 \\
+                  1.0000 & 1.2000 & 1.4400 & 1.7280 \\
+                  1.0000 & 1.4000 & 1.9600 & 2.7440 \\
+                  1.0000 & 1.6000 & 2.5600 & 4.0960
+              \end{bmatrix}
+              \quad
+              \quad
+              X^T =\begin{bmatrix}{}
+                  1.0000 & 1.0000 & 1.0000 & 1.0000 & 1.0000 \\
+                  0.8000 & 1.0000 & 1.2000 & 1.4000 & 1.6000 \\
+                  0.6400 & 1.0000 & 1.4400 & 1.9600 & 2.5600 \\
+                  0.5120 & 1.0000 & 1.7280 & 2.7440 & 4.0960
+              \end{bmatrix}
+          $$
+
+          We can then calculate the remaining values, until we get the vector $w$.
+
+          $$
+              \begin{aligned}
+                  X^T X                                    & = \begin{bmatrix}
+                                                                   5.0000  & 6.0000  & 7.6000  & 10.0800 \\
+                                                                   6.0000  & 7.6000  & 10.0800 & 13.8784 \\
+                                                                   7.6000  & 10.0800 & 13.8784 & 19.6800 \\
+                                                                   10.0800 & 13.8784 & 19.6800 & 28.5549
+                                                               \end{bmatrix}                                                                                   \\
+                  X^T X + \textcolor{cblue}{2} I           & = \begin{bmatrix}{}
+                                                                   \colorbox{bblue}{$ 7.0000$} & 6.0000                      & 7.6000                       & 10.0800                      \\
+                                                                   6.0000                      & \colorbox{bblue}{$ 9.6000$} & 10.0800                      & 13.8784                      \\
+                                                                   7.6000                      & 10.0800                     & \colorbox{bblue}{$ 15.8784$} & 19.6800                      \\
+                                                                   10.0800                     & 13.8784                     & 19.6800                      & \colorbox{bblue}{$ 30.5549$}
+                                                               \end{bmatrix} \\
+                  \left(X^T X + 2I\right) ^ {-1}           & = \begin{bmatrix}{}
+                                                                   0.3417  & -0.1214 & -0.0749 & -0.0093 \\
+                                                                   -0.1214 & 0.3892  & -0.0967 & -0.0745 \\
+                                                                   -0.0749 & -0.0967 & 0.3726  & -0.1714 \\
+                                                                   -0.0093 & -0.0745 & -0.1714 & 0.1800
+                                                               \end{bmatrix}                                                                                   \\
+                  \left(X^T X + 2I\right) ^ {-1} X^T       & = \begin{bmatrix}{}
+                                                                   0.1918  & 0.1360  & 0.0720  & -0.0007 & -0.0825 \\
+                                                                   0.0899  & 0.0966  & 0.0777  & 0.0297  & -0.0512 \\
+                                                                   -0.0015 & 0.0296  & 0.0495  & 0.0498  & 0.0224  \\
+                                                                   -0.0864 & -0.0751 & -0.0344 & 0.0445  & 0.1701
+                                                               \end{bmatrix}                                                                         \\
+                  w = \left(X^T X + 2I\right) ^ {-1} X^T z & = \begin{bmatrix}{}
+                                                                   \textcolor{cblue}{7.0451} & \textcolor{cred}{4.6409} & \textcolor{cgreen}{1.9673} & \textcolor{cyellow}{-1.3009}
+                                                               \end{bmatrix}^T
+              \end{aligned}
+          $$
+
+          Having calculated the vector $w$, we now know the values of each
+          weight in the regression.
+
+          $$
+              \begin{array}{cccc}
+                  \textcolor{cblue}{w_0 = 7.0451}  &
+                  \textcolor{cred}{w_1 = 4.6409}   &
+                  \textcolor{cgreen}{w_2 = 1.9673} &
+                  \textcolor{cyellow}{w_3 = -1.3009}
+              \end{array}
+          $$
+
+          Replacing them in \eqref{ex1-z-hat} gives us the regression expression,
+
+          \begin{equation}\label{ex1-final-z-hat}
+              \hat{z}(x)
+              = \textcolor{cblue}{7.0451} +
+              \textcolor{cred}{4.6409}x +
+              \textcolor{cgreen}{1.9673}x^2
+              \textcolor{cyellow}{-1.3009}x^3
+          \end{equation}
+
+    \item {\color{questioncolor}\bfseries
+          Compute the training RMSE for the learnt regression model.
+          }\\
+          \vspace{0.5em}
+
+          The RMSE (Root Mean Square Error) is given by
+
+          \begin{equation}\label{ex2-rmse}
+              \text{RMSE} = \sqrt{\frac{1}{N} \sum_{i = 1}^{N} (z_i - \hat{z}_i)^2}
+          \end{equation}
+
+          Since we have 5 observations, $N = 5$.
+
+          Using \eqref{ex1-final-z-hat} from the previous exercise, we can determine
+          $\hat{z}$ for the 5 observations.
+          Using matrix multiplication:
+
+          $$
+              \begin{aligned}
+                  X            & = \begin{bmatrix}{}
+                                       1.0000 & 0.8000 & 0.6400 & 0.5120 \\
+                                       1.0000 & 1.0000 & 1.0000 & 1.0000 \\
+                                       1.0000 & 1.2000 & 1.4400 & 1.7280 \\
+                                       1.0000 & 1.4000 & 1.9600 & 2.7440 \\
+                                       1.0000 & 1.6000 & 2.5600 & 4.0960
+                                   \end{bmatrix} &
+                  w            & = \begin{bmatrix}{}
+                                       \textcolor{cblue}{7.0451}  \\
+                                       \textcolor{cred}{4.6409}   \\
+                                       \textcolor{cgreen}{1.9673} \\
+                                       \textcolor{cyellow}{-1.3009}
+                                   \end{bmatrix}       \\
+                  \hat{z} = Xw & = \begin{bmatrix}{}
+                                       11.3509 \\
+                                       12.3525 \\
+                                       13.1992 \\
+                                       13.8287 \\
+                                       14.1785
+                                   \end{bmatrix}
+                               &
+                  z            & = \begin{bmatrix}
+                                       24 \\ 20 \\ 10 \\ 13 \\ 12
+                                   \end{bmatrix}
+              \end{aligned}
+          $$
+
+          We can now calculate RMSE, using \eqref{ex2-rmse},
+
+          $$
+              \begin{aligned}
+                  \sum_{i = 1}^{N} (z_i - \hat{z}_i)^2 & = 234.153                           \\
+                  \text{RMSE}                          & = \sqrt{\frac{1}{5} \times 234.153} \\
+                                                       & = 6.8433
+              \end{aligned}
+          $$
+
+          Therefore, the RMSE is \textbf{6.8433}.
+
+    \item {\color{questioncolor}\bfseries
+          Consider a multi-layer perceptron characterized by one hidden layer with 2 nodes.
+          Using the activation function $f(x) = e^{0.1 x}$ on all units, all weights
+          initialized as 1 (including biases), and the half squared error loss,
+          perform one batch gradient descent update (with learning rate $\eta = 0.1$)
+          for the first three observations $(0.8)$, $(1)$ and $(1.2)$.
+          }\\
+          \vspace{0.5em}
+
+          We start by drawing the multi-layer perceptron, where Layer 1 is the hidden layer.
+          Since we only have one input and one output variable, Layers 0 and 2 only
+          have a single node.
+
+          \begin{figure}[H]
+              \centering
+              \includesvg[width=7cm]{assets/hw3-multi-layer-perceptron.svg}
+              \caption{Multi-Layer Perceptron}
+              \label{fig:multi-layer-perceptron}
+          \end{figure}
+
+          All weights and biases are initialized as
+
+          $$
+              \begin{aligned}
+                  W^{[1]} & = \begin{bmatrix}
+                                  1 \\
+                                  1
+                              \end{bmatrix} &
+                  b^{[1]} & = \begin{bmatrix}
+                                  1 \\
+                                  1
+                              \end{bmatrix}  \\
+                  W^{[2]} & = \begin{bmatrix}
+                                  1 & 1 \\
+                              \end{bmatrix} &
+                  b^{[2]} & = \begin{bmatrix}
+                                  1
+                              \end{bmatrix}
+              \end{aligned}
+          $$
+
+          We can calculate the values of each layer, $x^{[i]}$, where $i$ is the
+          index of the layer, by
+
+          $$
+              \begin{array}{c}
+                  z^{[i]} = W^{[i]} \cdot x^{[i-1]} + b^{[i]} \\
+                  x^{[i]} = f(z^{[i]})
+              \end{array}
+          $$
+
+          where $f$ is the activation function, $f(x) = e^{0.1x}$ and $i > 0$.
+
+          The error function, half squared error loss, is given by:
+
+          $$
+              E(x, t) = \cfrac{1}{2}(x - t)^2
+          $$
+
+          \vspace*{0.5cm}
+
+          We can now calculate the values of each node in the multi-layer perceptron
+          with the initialized weights and biases, for each of the three observations,
+          that is, do \textbf{forward propagation}.
+
+          \vspace*{0.5cm}
+
+          \begin{paracol}{3}
+              \begin{center}
+                  \textbf{Observation: $(0.8)$}
+              \end{center}
+
+              $$
+                  x^{[0]} = \begin{bmatrix}
+                      0.8
+                  \end{bmatrix}
+              $$
+
+              $$
+                  \begin{aligned}
+                      z^{[1]} & = W^{[1]} \cdot x^{[0]} + b^{[1]} \\
+                              & = \begin{bmatrix}
+                                      1 \\
+                                      1
+                                  \end{bmatrix}
+                      \begin{bmatrix}
+                          0.8
+                      \end{bmatrix}
+                      +
+                      \begin{bmatrix}
+                          1 \\
+                          1
+                      \end{bmatrix}                              \\
+                              & = \begin{bmatrix}{}
+                                      1.8 \\
+                                      1.8
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              $$
+                  \begin{aligned}
+                      x^{[1]} & = f(z^{[1]})                  \\
+                              & = f\left(\begin{bmatrix}{}
+                                                 1.8 \\
+                                                 1.8
+                                             \end{bmatrix}\right) \\
+                              & = \begin{bmatrix}{}
+                                      1.1972 \\
+                                      1.1972
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              $$
+                  \begin{aligned}
+                      z^{[2]} & = W^{[2]} \cdot x^{[1]} + b^{[2]} \\
+                              & = \begin{bmatrix}
+                                      1 &
+                                      1
+                                  \end{bmatrix}
+                      \begin{bmatrix}
+                          1.1972 \\
+                          1.1972
+                      \end{bmatrix}
+                      +
+                      \begin{bmatrix}
+                          1
+                      \end{bmatrix}                              \\
+                              & = \begin{bmatrix}{}
+                                      3.3944
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              $$
+                  \begin{aligned}
+                      x^{[2]} & = f(z^{[2]})                  \\
+                              & = f\left(\begin{bmatrix}{}
+                                                 3.3944
+                                             \end{bmatrix}\right) \\
+                              & = \begin{bmatrix}{}
+                                      1.4042
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              \begin{center}
+                  \textbf{Observation: $(1.0)$}
+              \end{center}
+
+              $$
+                  x^{[0]} = \begin{bmatrix}
+                      1.0
+                  \end{bmatrix}
+              $$
+
+              $$
+                  \begin{aligned}
+                      z^{[1]} & = W^{[1]} \cdot x^{[0]} + b^{[1]} \\
+                              & = \begin{bmatrix}
+                                      1 \\
+                                      1
+                                  \end{bmatrix}
+                      \begin{bmatrix}
+                          1.0
+                      \end{bmatrix}
+                      +
+                      \begin{bmatrix}
+                          1 \\
+                          1
+                      \end{bmatrix}                              \\
+                              & = \begin{bmatrix}{}
+                                      2 \\
+                                      2
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              $$
+                  \begin{aligned}
+                      x^{[1]} & = f(z^{[1]})                  \\
+                              & = f\left(\begin{bmatrix}{}
+                                                 2 \\
+                                                 2
+                                             \end{bmatrix}\right) \\
+                              & = \begin{bmatrix}{}
+                                      1.2214 \\
+                                      1.2214
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              $$
+                  \begin{aligned}
+                      z^{[2]} & = W^{[2]} \cdot x^{[1]} + b^{[2]} \\
+                              & = \begin{bmatrix}
+                                      1 &
+                                      1
+                                  \end{bmatrix}
+                      \begin{bmatrix}
+                          1.2214 \\
+                          1.2214
+                      \end{bmatrix}
+                      +
+                      \begin{bmatrix}
+                          1
+                      \end{bmatrix}                              \\
+                              & = \begin{bmatrix}{}
+                                      3.4428
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              $$
+                  \begin{aligned}
+                      x^{[2]} & = f(z^{[2]})                  \\
+                              & = f\left(\begin{bmatrix}{}
+                                                 3.4428
+                                             \end{bmatrix}\right) \\
+                              & = \begin{bmatrix}{}
+                                      1.4110
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              \begin{center}
+                  \textbf{Observation: $(1.2)$}
+              \end{center}
+
+              $$
+                  x^{[0]} = \begin{bmatrix}
+                      1.2
+                  \end{bmatrix}
+              $$
+
+              $$
+                  \begin{aligned}
+                      z^{[1]} & = W^{[1]} \cdot x^{[0]} + b^{[1]} \\
+                              & = \begin{bmatrix}
+                                      1 \\
+                                      1
+                                  \end{bmatrix}
+                      \begin{bmatrix}
+                          1.2
+                      \end{bmatrix}
+                      +
+                      \begin{bmatrix}
+                          1 \\
+                          1
+                      \end{bmatrix}                              \\
+                              & = \begin{bmatrix}{}
+                                      2.2 \\
+                                      2.2
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              $$
+                  \begin{aligned}
+                      x^{[1]} & = f(z^{[1]})                  \\
+                              & = f\left(\begin{bmatrix}{}
+                                                 2.2 \\
+                                                 2.2
+                                             \end{bmatrix}\right) \\
+                              & = \begin{bmatrix}{}
+                                      1.2461 \\
+                                      1.2461
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              $$
+                  \begin{aligned}
+                      z^{[2]} & = W^{[2]} \cdot x^{[1]} + b^{[2]} \\
+                              & = \begin{bmatrix}
+                                      1 &
+                                      1
+                                  \end{bmatrix}
+                      \begin{bmatrix}
+                          1.2461 \\
+                          1.2461
+                      \end{bmatrix}
+                      +
+                      \begin{bmatrix}
+                          1
+                      \end{bmatrix}                              \\
+                              & = \begin{bmatrix}{}
+                                      3.4922
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+              $$
+                  \begin{aligned}
+                      x^{[2]} & = f(z^{[2]})                  \\
+                              & = f\left(\begin{bmatrix}{}
+                                                 3.4922
+                                             \end{bmatrix}\right) \\
+                              & = \begin{bmatrix}{}
+                                      1.4180
+                                  \end{bmatrix}
+                  \end{aligned}
+              $$
+
+          \end{paracol}
+
+          Now that we have the output for each of our observations, considering
+          the initial weights and biases, we can apply \textbf{back propagation} to
+          perform a batch gradient descent update.
+
+          We want to batch update the weights ($W^{[1]}$ and $W^{[2]}$) and biases
+          ($b^{[1]}$ and $b^{[2]}$). The new, updated values, are given by:
+
+          $$
+              \Delta W^{[i]} = - \eta \frac{\partial E}{\partial W^{[i]}}
+              \quad,\quad
+              \Delta b^{[i]} = - \eta \frac{\partial E}{\partial b^{[i]}}
+          $$
+
+          Applying the chain rule:
+
+          $$
+              \frac{\partial E}{\partial W^{[2]}} =
+              \underbrace{\frac{\partial E}{\partial x^{[2]}}
+                  \times
+                  \frac{\partial x^{[2]}}{\partial z^{[2]}}
+              }_{\delta^{[2]}}
+              \times
+              \frac{\partial z^{[2]}}{\partial W^{[2]}}
+              \quad,\quad
+              \frac{\partial E}{\partial b^{[2]}} =
+              \underbrace{\frac{\partial E}{\partial x^{[2]}}
+                  \times
+                  \frac{\partial x^{[2]}}{\partial z^{[2]}}
+              }_{\delta^{[2]}}
+              \times
+              \frac{\partial z^{[2]}}{\partial b^{[2]}}
+          $$
+          $$
+              \frac{\partial E}{\partial x^{[2]}}
+              = \frac{1}{2} \left( 2x^{[2]} - 2t \right)
+              = x^{[2]} - t
+          $$
+          $$
+              \frac{\partial x^{[i]}}{\partial z^{[i]}} = f'\left(z^{[i]}\right) = 0.1 e^{0.1 z^{[i]}}
+          $$
+          $$
+              \frac{\partial z^{[i]}}{\partial W^{[i]}} = x^{[i-1]}
+              \quad,\quad
+              \frac{\partial z^{[i]}}{\partial b^{[i]}} = 1
+          $$
+
+          Therefore:
+
+          \begin{equation}\label{ex3-vars-layer-2}
+              \delta^{[2]} = (x^{[2]} - t) \circ 0.1 e^{0.1 z^{[2]}}
+              \quad,\quad
+              \Delta W^{[2]} = - 0.1 \delta^{[2]} \left(x^{[1]}\right)^T
+              \quad,\quad
+              \Delta b^{[2]} = - 0.1 \delta^{[2]}
+          \end{equation}
+
+          We can repeat this process for layer 1, yielding:
+
+          $$
+              \frac{\partial E}{\partial W^{[1]}} = \delta^{[1]} \frac{\partial z^{[1]}}{\partial W^{[1]}}
+              = \delta^{[1]} \left(x^{[0]}\right)^T
+          $$
+          \begin{equation}\label{ex3-vars-layer-1}
+              \delta^{[1]} = \left(W^{[2]}\right)^T \delta^{[2]} \circ 0.1 e^{0.1 z^{[1]}}
+              \quad,\quad
+              \Delta W^{[1]} = - 0.1 \delta^{[1]} \left(x^{[0]}\right)^T
+              \quad,\quad
+              \Delta b^{[1]} = - 0.1 \delta^{[1]}
+          \end{equation}
+
+          Calculating $\Delta W^{[2]}$, $\Delta W^{[1]}$, $\Delta b^{[2]}$ and $\Delta b^{[1]}$
+          for each observation:
+
+          \begin{paracol}{3}
+              \begin{center}
+                  \textbf{Observation: $(0.8)$}
+              \end{center}
+
+              Remembering the target, $t = 24$,
+              the output, $x^{[2]} = 1.4042$,
+              and $z^{[2]} = 3.3944$,
+              calculate $\delta^{[2]}$ using \eqref{ex3-vars-layer-2}:
+
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \delta^{[2]} & = \left(x^{[2]} - t\right) \times 0.1 e^{0.1 z^{[2]}} \\
+                                       & = (1.4042 - 24) \times 0.1 e^{0.1 \times 3.3944}      \\
+                                       & = -3.1728
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+
+              Using \eqref{ex3-vars-layer-1}, calculate $\delta^{[1]}$,
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \delta^{[1]} & = \left(W^{[2]}\right)^T \delta^{[2]} \circ 0.1 e^{0.1 z^{[1]}} \\
+                                       & = \begin{bmatrix}
+                                               1 \\ 1
+                                           \end{bmatrix}
+                          \begin{bmatrix}
+                              -3.1728
+                          \end{bmatrix}
+                          \circ
+                          0.1 e^{0.1 \begin{bmatrix}
+                                                 1.8 \\
+                                                 1.8
+                                             \end{bmatrix}}                                                      \\
+                                       & = \begin{bmatrix}
+                                               -0.3799 \\
+                                               -0.3799
+                                           \end{bmatrix}
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+
+              Finally, using \eqref{ex3-vars-layer-2} and \eqref{ex3-vars-layer-1},
+              calculate:
+
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \Delta W^{[2]} & = -0.1 \delta^{[2]} \left(x^{[1]}\right)^T \\
+                                         & = -0.1 \times (-3.1728) \begin{bmatrix}
+                                                                       1.1972 \\
+                                                                       1.1972
+                                                                   \end{bmatrix}^T    \\
+                                         & = \textcolor{cblue}{
+                              \begin{bmatrix}
+                                  0.3799 & 0.3799
+                              \end{bmatrix}
+                          }
+                      \end{aligned}
+                  $$
+
+                  $$
+                      \begin{aligned}
+                          \Delta b^{[2]} & = -0.1 \delta^{[2]}        \\
+                                         & = -0.1 \times (-3.1728)    \\
+                                         & = \textcolor{cred}{0.3173}
+                      \end{aligned}
+                  $$
+
+                  $$
+                      \begin{aligned}
+                          \Delta W^{[1]} & = -0.1 \delta^{[1]} \left(x^{[0]}\right)^T \\
+                                         & = -0.1 \times \begin{bmatrix}
+                                                             -0.3799 \\
+                                                             -0.3799
+                                                         \end{bmatrix} \begin{bmatrix}
+                                                                           0.8
+                                                                       \end{bmatrix} \\
+                                         & = \textcolor{cgreen}{
+                              \begin{bmatrix}
+                                  0.0304 \\
+                                  0.0304
+                              \end{bmatrix}
+                          }
+                      \end{aligned}
+                  $$
+
+                  $$
+                      \begin{aligned}
+                          \Delta b^{[1]} & = -0.1 \delta^{[1]}    \\
+                                         & = -0.1 \begin{bmatrix}
+                                                      -0.3799 \\
+                                                      -0.3799
+                                                  \end{bmatrix}  \\
+                                         & = \textcolor{cyellow}{
+                              \begin{bmatrix}
+                                  0.0380 \\
+                                  0.0380
+                              \end{bmatrix}
+                          }
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+
+              \switchcolumn
+
+              \begin{center}
+                  \textbf{Observation: $(1.0)$}
+              \end{center}
+
+              Remembering the target, $t = 20$,
+              the output, $x^{[2]} = 1.4110$,
+              and $z^{[2]} = 3.4428$,
+              calculate $\delta^{[2]}$ using \eqref{ex3-vars-layer-2}:
+
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \delta^{[2]} & = \left(x^{[2]} - t\right) \times 0.1 e^{0.1 z^{[2]}} \\
+                                       & = (1.4110 - 20) \times 0.1 e^{0.1 \times 3.4428}      \\
+                                       & = -2.6229
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+
+              Using \eqref{ex3-vars-layer-1}, calculate $\delta^{[1]}$,
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \delta^{[1]} & = \left(W^{[2]}\right)^T \delta^{[2]} \circ 0.1 e^{0.1 z^{[1]}} \\
+                                       & = \begin{bmatrix}
+                                               1 \\ 1
+                                           \end{bmatrix}
+                          \begin{bmatrix}
+                              -2.6229
+                          \end{bmatrix}
+                          \circ
+                          0.1 e^{0.1 \begin{bmatrix}
+                                                 2 \\
+                                                 2
+                                             \end{bmatrix}}                                                      \\
+                                       & = \begin{bmatrix}
+                                               -0.3204 \\
+                                               -0.3204
+                                           \end{bmatrix}
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+
+              Finally, using \eqref{ex3-vars-layer-2} and \eqref{ex3-vars-layer-1},
+              calculate:
+
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \Delta W^{[2]} & = -0.1 \delta^{[2]} \left(x^{[1]}\right)^T \\
+                                         & = -0.1 \times (-2.6229) \begin{bmatrix}
+                                                                       1.2214 \\
+                                                                       1.2214
+                                                                   \end{bmatrix}^T    \\
+                                         & = \textcolor{cblue}{
+                              \begin{bmatrix}
+                                  0.3204 & 0.3204
+                              \end{bmatrix}
+                          }
+                      \end{aligned}
+                  $$
+
+                  $$
+                      \begin{aligned}
+                          \Delta b^{[2]} & = -0.1 \delta^{[2]}        \\
+                                         & = -0.1 \times (-2.6229)    \\
+                                         & = \textcolor{cred}{0.2623}
+                      \end{aligned}
+                  $$
+
+                  $$
+                      \begin{aligned}
+                          \Delta W^{[1]} & = -0.1 \delta^{[1]} \left(x^{[0]}\right)^T \\
+                                         & = -0.1 \times \begin{bmatrix}
+                                                             -0.3204 \\
+                                                             -0.3204
+                                                         \end{bmatrix} \begin{bmatrix}
+                                                                           1
+                                                                       \end{bmatrix} \\
+                                         & = \textcolor{cgreen}{
+                              \begin{bmatrix}
+                                  0.0320 \\
+                                  0.0320
+                              \end{bmatrix}
+                          }
+                      \end{aligned}
+                  $$
+
+                  $$
+                      \begin{aligned}
+                          \Delta b^{[1]} & = -0.1 \delta^{[1]}    \\
+                                         & = -0.1 \begin{bmatrix}
+                                                      -0.3204 \\
+                                                      -0.3204
+                                                  \end{bmatrix}  \\
+                                         & = \textcolor{cyellow}{
+                              \begin{bmatrix}
+                                  0.0320 \\
+                                  0.0320
+                              \end{bmatrix}
+                          }
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+
+              \switchcolumn
+
+              \begin{center}
+                  \textbf{Observation: $(1.2)$}
+              \end{center}
+
+              Remembering the target, $t = 10$,
+              the output, $x^{[2]} = 1.4180$,
+              and $z^{[2]} = 3.4922$,
+              calculate $\delta^{[2]}$ using \eqref{ex3-vars-layer-2}:
+
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \delta^{[2]} & = \left(x^{[2]} - t\right) \times 0.1 e^{0.1 z^{[2]}} \\
+                                       & = (1.4180 - 10) \times 0.1 e^{0.1 \times 3.4922}      \\
+                                       & = -1.2169
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+
+              Using \eqref{ex3-vars-layer-1}, calculate $\delta^{[1]}$,
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \delta^{[1]} & = \left(W^{[2]}\right)^T \delta^{[2]} \circ 0.1 e^{0.1 z^{[1]}} \\
+                                       & = \begin{bmatrix}
+                                               1 \\ 1
+                                           \end{bmatrix}
+                          \begin{bmatrix}
+                              -1.2169
+                          \end{bmatrix}
+                          \circ
+                          0.1 e^{0.1 \begin{bmatrix}
+                                                 2.2 \\
+                                                 2.2
+                                             \end{bmatrix}}                                                      \\
+                                       & = \begin{bmatrix}
+                                               -0.1516 \\
+                                               -0.1516
+                                           \end{bmatrix}
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+
+              Finally, using \eqref{ex3-vars-layer-2} and \eqref{ex3-vars-layer-1},
+              calculate:
+
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \Delta W^{[2]} & = -0.1 \delta^{[2]} \left(x^{[1]}\right)^T \\
+                                         & = -0.1 \times (-1.2169) \begin{bmatrix}
+                                                                       1.2461 \\
+                                                                       1.2461
+                                                                   \end{bmatrix}^T    \\
+                                         & = \textcolor{cblue}{
+                              \begin{bmatrix}
+                                  0.1516 & 0.1516
+                              \end{bmatrix}
+                          }
+                      \end{aligned}
+                  $$
+
+                  $$
+                      \begin{aligned}
+                          \Delta b^{[2]} & = -0.1 \delta^{[2]}        \\
+                                         & = -0.1 \times (-1.2169)    \\
+                                         & = \textcolor{cred}{0.1217}
+                      \end{aligned}
+                  $$
+
+                  $$
+                      \begin{aligned}
+                          \Delta W^{[1]} & = -0.1 \delta^{[1]} \left(x^{[0]}\right)^T \\
+                                         & = -0.1 \times \begin{bmatrix}
+                                                             -0.1516 \\
+                                                             -0.1516
+                                                         \end{bmatrix} \begin{bmatrix}
+                                                                           1.2
+                                                                       \end{bmatrix} \\
+                                         & = \textcolor{cgreen}{
+                              \begin{bmatrix}
+                                  0.0182 \\
+                                  0.0182
+                              \end{bmatrix}
+                          }
+                      \end{aligned}
+                  $$
+
+                  $$
+                      \begin{aligned}
+                          \Delta b^{[1]} & = -0.1 \delta^{[1]}    \\
+                                         & = -0.1 \begin{bmatrix}
+                                                      -0.1516 \\
+                                                      -0.1516
+                                                  \end{bmatrix}  \\
+                                         & = \textcolor{cyellow}{
+                              \begin{bmatrix}
+                                  0.0152 \\
+                                  0.0152
+                              \end{bmatrix}
+                          }
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+
+          \end{paracol}
+
+          Finally, we can \textbf{update the weights and biases}:
+
+          $$
+              \begin{aligned}
+                  W^{[2]}_{\text{new}} & = W^{[2]}_{\text{old}} + \sum_{i=1}^{3} \textcolor{cblue}{\Delta W^{[2]}_i}   \\
+                                       & = \begin{bmatrix}
+                                               1 & 1
+                                           \end{bmatrix} + \left(
+                  \textcolor{cblue}{
+                      \begin{bmatrix}
+                          0.3799 & 0.3799
+                      \end{bmatrix}
+                  }
+                  +
+                  \textcolor{cblue}{
+                      \begin{bmatrix}
+                          0.3204 & 0.3204
+                      \end{bmatrix}
+                  }
+                  +
+                  \textcolor{cblue}{
+                      \begin{bmatrix}
+                          0.1516 & 0.1516
+                      \end{bmatrix}
+                  }
+                  \right)                                                                                              \\
+                                       & = \begin{bmatrix}
+                                               1.8518 & 1.8518
+                                           \end{bmatrix}
+                  \\
+                  \\
+                  b^{[2]}_{\text{new}} & = b^{[2]}_{\text{old}} + \sum_{i=1}^{3} \textcolor{cred}{\Delta b^{[2]}_i}    \\
+                                       & = \begin{bmatrix}
+                                               1
+                                           \end{bmatrix} + \left(
+                  \textcolor{cred}{
+                      \begin{bmatrix}
+                          0.3173
+                      \end{bmatrix}
+                  }
+                  +
+                  \textcolor{cred}{
+                      \begin{bmatrix}
+                          0.2623
+                      \end{bmatrix}
+                  }
+                  +
+                  \textcolor{cred}{
+                      \begin{bmatrix}
+                          0.1217
+                      \end{bmatrix}
+                  }
+                  \right)                                                                                              \\
+                                       & = \begin{bmatrix}
+                                               1.7013
+                                           \end{bmatrix}
+                  \\
+                  \\
+                  W^{[1]}_{\text{new}} & = W^{[1]}_{\text{old}} + \sum_{i=1}^{3} \textcolor{cgreen}{\Delta W^{[1]}_i}  \\
+                                       & = \begin{bmatrix}
+                                               1 \\
+                                               1
+                                           \end{bmatrix} + \left(
+                  \textcolor{cgreen}{
+                      \begin{bmatrix}
+                          0.0304 \\
+                          0.0304
+                      \end{bmatrix}
+                  }
+                  +
+                  \textcolor{cgreen}{
+                      \begin{bmatrix}
+                          0.0320 \\
+                          0.0320
+                      \end{bmatrix}
+                  }
+                  +
+                  \textcolor{cgreen}{
+                      \begin{bmatrix}
+                          0.0182 \\
+                          0.0182
+                      \end{bmatrix}
+                  }
+                  \right)                                                                                              \\
+                                       & = \begin{bmatrix}
+                                               1.0806 \\
+                                               1.0806
+                                           \end{bmatrix}
+                  \\
+                  \\
+                  b^{[1]}_{\text{new}} & = b^{[1]}_{\text{old}} + \sum_{i=1}^{3} \textcolor{cyellow}{\Delta b^{[1]}_i} \\
+                                       & = \begin{bmatrix}
+                                               1 \\
+                                               1
+                                           \end{bmatrix} + \left(
+                  \textcolor{cyellow}{
+                      \begin{bmatrix}
+                          0.0380 \\
+                          0.0380
+                      \end{bmatrix}
+                  }
+                  +
+                  \textcolor{cyellow}{
+                      \begin{bmatrix}
+                          0.0320 \\
+                          0.0320
+                      \end{bmatrix}
+                  }
+                  +
+                  \textcolor{cyellow}{
+                      \begin{bmatrix}
+                          0.0152 \\
+                          0.0152
+                      \end{bmatrix}
+                  }
+                  \right)                                                                                              \\
+                                       & = \begin{bmatrix}
+                                               1.0852 \\
+                                               1.0852
+                                           \end{bmatrix}
+              \end{aligned}
+          $$
+
+          To conclude, the weights and biases after one batch gradient descent update,
+          with learning rate $\eta = 0.1$, are,
+
+          $$
+              \begin{aligned}
+                  W^{[1]} & = \begin{bmatrix}
+                                  1.0806 \\
+                                  1.0806
+                              \end{bmatrix} &
+                  b^{[1]} & = \begin{bmatrix}
+                                  1.0852 \\
+                                  1.0852
+                              \end{bmatrix}  \\
+                  W^{[2]} & = \begin{bmatrix}
+                                  1.8518 & 1.8518
+                              \end{bmatrix} &
+                  b^{[2]} & = \begin{bmatrix}
+                                  1.7013
+                              \end{bmatrix}
+              \end{aligned}
+          $$
+\end{enumerate}
+
+\pagebreak
+
+\begin{center}
+    \large{\textbf{Part II}: Programming and critical analysis}
+\end{center}
+
+{\color{questioncolor}\bfseries
+\noindent
+Consider the following three regressors applied on \texttt{kin8nm.arff} data
+(available at the webpage):
+\begin{itemize}
+    \item linear regression with Ridge regularization term of 0.1
+    \item two MLPs - $MLP_1$ and $MLP_2$ - each with two hidden layers of
+          size 10, hyperbolic tagent function as the activation function of all nodes,
+          a maximum of 500 iterations, and a fixed seed (\texttt{random\_state=0}).
+          $MLP_1$ should be parameterized with early stopping while $MLP_2$ should not
+          consider early stopping.
+          Remaining parameters (e.g., loss function, batch size, regularization term,
+          solver) should be set as default.
+\end{itemize}
+Using a 70-30 training-test split with a fixed seed (\texttt{random\_state=0}):
+}
+
+\begin{enumerate}[leftmargin=\labelsep,resume]
+    \item {\color{questioncolor}\bfseries
+          Compute the MAE of the three regressors: linear regression, $MLP_1$ and $MLP_2$.
+          }\\
+          \vspace{0.5em}
+
+          We start by applying the three regressors, as said in the question prompt,
+          and then calculate the Mean Absolute Error by using \texttt{sklearn}'s
+          \texttt{metrics.mean\_absolute\_error}.
+
+          The respective code can be found on listing \ref{listing-ex4}.
+
+          \begin{center}
+              \captionsetup{type=table}
+              \begin{tabular}{c|c|c|c}
+                                      & Ridge regularization & $MLP_1$ & $MLP_2$ \\
+                  \hline
+                  Mean Absolute Error & 0.1628               & 0.0680  & 0.0978
+              \end{tabular}
+              \captionof{table}{Mean Absolute Error for each of the three regressors}
+          \end{center}
+
+
+    \item {\color{questioncolor}\bfseries
+          Plot the residues (in absolute value) using two visualizations: boxplots
+          and histograms.\\
+          \textit{Hint}: consider using \texttt{boxplot} and \texttt{hist} functions
+          from \texttt{matplotlib.pyplot} to this end.
+          }\\
+          \vspace{0.5em}
+
+          The residues of each regressor can be calculated as
+          the absolute difference between the expected value and the
+          predicted value, for each observation.
+
+          The respective code can be found on listing \ref{listing-ex5}.
+
+          \begin{figure}[H]
+              \centering
+              \includesvg[width = 12cm]{assets/hw3-boxplot.svg}
+              \caption{Boxplot of the residues of the three regressors}
+              \label{fig:bloxplot}
+          \end{figure}
+
+          \begin{figure}[H]
+              \centering
+              \includesvg[width = 12cm]{assets/hw3-histogram.svg}
+              \caption{Histogram of the residues of the three regressors}
+              \label{fig:histogram}
+          \end{figure}
+
+    \item {\color{questioncolor}\bfseries
+          How many iterations were required for $MLP_1$ and $MLP_2$ to converge?
+          }\\
+          \vspace{0.5em}
+
+          It is possible to get the number of iterations through the
+          \texttt{n\_iter\_} property of the \texttt{MLPRegressor} object.
+
+          The respective code can be found on listing \ref{listing-ex6}.
+
+          \begin{center}
+              \captionsetup{type=table}
+              \begin{tabular}{c|c|c}
+                                       & $MLP_1$ & $MLP_2$ \\
+                  \hline
+                  Number of Iterations & 452     & 77
+              \end{tabular}
+              \captionof{table}{Number of iterations for each of the two MLP regressors}
+          \end{center}
+
+    \item {\color{questioncolor}\bfseries
+          What can be motivating the unexpected differences on the number of iterations?
+          Hypothesize one reason underlying the observed performance differences between the MLPs.
+          }\\
+          \vspace{0.5em}
+
+          By comparing the number of iteration of both models, we can conclude that
+          $MLP1$ takes a lot more iterations ($452 > 77$) to converge than $MLP2$.
+          This is because $MLP1$ uses early stopping, which means that the model
+          stops training when the validation score is not improving anymore.
+          By reading the documentation about the
+          \href{https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html}{\texttt{sklearn.neural\_network.MLPRegressor}},
+          we can see that the default value for the validation fraction is
+          \texttt{validation\_fraction} (default value = 0.1), which means that 10\%
+          of the training data is used for validation and the other 90\% data
+          to train the model.
+          After each iteration, the model will calculate the validation score.
+          If the score is not improving by at least \texttt{tol} (default value = 1e-4)
+          for \texttt{n\_iter\_no\_change} (default value = 10) iterations,
+          the model will stop training.
+          The $MLP2$, by contrast, will stop when it minimizes the loss function.
+          This allows the $MLP1$, when applied to this dataset, to have better performance
+          (lower MAE value, and lower residue values) than $MLP2$, but it takes a
+          lot more iterations to converge.
+
+          Since the $MLP1$ uses early stopping and $MLP2$ does not, we can
+          attribute the difference in performance to the early stopping.
+          Due to how the early stopping works, similar to splitting the data
+          into training and testing, early stopping splits the training data
+          into training and validation sets.
+          While training the model, the training set will be used for fitting
+          while the validation set will be used for calculating the validation
+          score of the model.
+          This will cause the model to learn more effectively, which will cause
+          the model to be more robust and generalize better, especially by
+          \textbf{avoiding overfitting}.
+          This is why the $MLP1$ has a lower MAE value and lower residue values than $MLP2$,
+          and thus better performance.
+
+\end{enumerate}
+
+\pagebreak
+
+\center\large{\textbf{Appendix}\vskip 0.3cm}
+
+\lstinputlisting[label={listing-ex4},caption={Train, test and compute the MAE of the three regressors},language=Python]{assets/hw3-code-4.py}
+
+\vspace*{1.5cm}
+
+\lstinputlisting[label={listing-ex5},caption={Plot the residues using a bloxplot and a histogram},language=Python]{assets/hw3-code-5.py}
+
+\vspace*{1.5cm}
+
+\lstinputlisting[label={listing-ex6},caption={Print the number of iterations to converge of the regressors},language=Python]{assets/hw3-code-6.py}
+
+\end{document}
