@@ -230,7 +230,7 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
           The RMSE (Root Mean Square Error) is given by
 
           \begin{equation}\label{ex2-rmse}
-              E(w) = \sqrt{\frac{1}{N} \sum_{i = 1}^{N} (z_i - \hat{z}_i)^2}
+              \text{RMSE} = \sqrt{\frac{1}{N} \sum_{i = 1}^{N} (z_i - \hat{z}_i)^2}
           \end{equation}
 
           Since we have 5 observations, $N = 5$.
@@ -719,17 +719,19 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
                                                                        1.1972 \\
                                                                        1.1972
                                                                    \end{bmatrix}^T    \\
-                                         & = \begin{bmatrix}
-                                                 0.3799 & 0.3799
-                                             \end{bmatrix}
+                                         & = \textcolor{cblue}{
+                              \begin{bmatrix}
+                                  0.3799 & 0.3799
+                              \end{bmatrix}
+                          }
                       \end{aligned}
                   $$
 
                   $$
                       \begin{aligned}
-                          \Delta b^{[2]} & = -0.1 \delta^{[2]}     \\
-                                         & = -0.1 \times (-3.1728) \\
-                                         & = 0.3173
+                          \Delta b^{[2]} & = -0.1 \delta^{[2]}        \\
+                                         & = -0.1 \times (-3.1728)    \\
+                                         & = \textcolor{cred}{0.3173}
                       \end{aligned}
                   $$
 
@@ -742,24 +744,28 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
                                                          \end{bmatrix} \begin{bmatrix}
                                                                            0.8
                                                                        \end{bmatrix} \\
-                                         & = \begin{bmatrix}
-                                                 0.0304 \\
-                                                 0.0304
-                                             \end{bmatrix}
+                                         & = \textcolor{cgreen}{
+                              \begin{bmatrix}
+                                  0.0304 \\
+                                  0.0304
+                              \end{bmatrix}
+                          }
                       \end{aligned}
                   $$
 
                   $$
                       \begin{aligned}
-                          \Delta b^{[1]} & = -0.1 \delta^{[1]}   \\
+                          \Delta b^{[1]} & = -0.1 \delta^{[1]}    \\
                                          & = -0.1 \begin{bmatrix}
                                                       -0.3799 \\
                                                       -0.3799
-                                                  \end{bmatrix} \\
-                                         & = \begin{bmatrix}
-                                                 0.0380 \\
-                                                 0.0380
-                                             \end{bmatrix}
+                                                  \end{bmatrix}  \\
+                                         & = \textcolor{cyellow}{
+                              \begin{bmatrix}
+                                  0.0380 \\
+                                  0.0380
+                              \end{bmatrix}
+                          }
                       \end{aligned}
                   $$
               \end{footnotesize}
@@ -820,17 +826,19 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
                                                                        1.2214 \\
                                                                        1.2214
                                                                    \end{bmatrix}^T    \\
-                                         & = \begin{bmatrix}
-                                                 0.3204 & 0.3204
-                                             \end{bmatrix}
+                                         & = \textcolor{cblue}{
+                              \begin{bmatrix}
+                                  0.3204 & 0.3204
+                              \end{bmatrix}
+                          }
                       \end{aligned}
                   $$
 
                   $$
                       \begin{aligned}
-                          \Delta b^{[2]} & = -0.1 \delta^{[2]}     \\
-                                         & = -0.1 \times (-2.6229) \\
-                                         & = 0.2623
+                          \Delta b^{[2]} & = -0.1 \delta^{[2]}        \\
+                                         & = -0.1 \times (-2.6229)    \\
+                                         & = \textcolor{cred}{0.2623}
                       \end{aligned}
                   $$
 
@@ -843,24 +851,28 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
                                                          \end{bmatrix} \begin{bmatrix}
                                                                            1
                                                                        \end{bmatrix} \\
-                                         & = \begin{bmatrix}
-                                                 0.0320 \\
-                                                 0.0320
-                                             \end{bmatrix}
+                                         & = \textcolor{cgreen}{
+                              \begin{bmatrix}
+                                  0.0320 \\
+                                  0.0320
+                              \end{bmatrix}
+                          }
                       \end{aligned}
                   $$
 
                   $$
                       \begin{aligned}
-                          \Delta b^{[1]} & = -0.1 \delta^{[1]}   \\
+                          \Delta b^{[1]} & = -0.1 \delta^{[1]}    \\
                                          & = -0.1 \begin{bmatrix}
                                                       -0.3204 \\
                                                       -0.3204
-                                                  \end{bmatrix} \\
-                                         & = \begin{bmatrix}
-                                                 0.0320 \\
-                                                 0.0320
-                                             \end{bmatrix}
+                                                  \end{bmatrix}  \\
+                                         & = \textcolor{cyellow}{
+                              \begin{bmatrix}
+                                  0.0320 \\
+                                  0.0320
+                              \end{bmatrix}
+                          }
                       \end{aligned}
                   $$
               \end{footnotesize}
@@ -921,17 +933,19 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
                                                                        1.2461 \\
                                                                        1.2461
                                                                    \end{bmatrix}^T    \\
-                                         & = \begin{bmatrix}
-                                                 0.1516 & 0.1516
-                                             \end{bmatrix}
+                                         & = \textcolor{cblue}{
+                              \begin{bmatrix}
+                                  0.1516 & 0.1516
+                              \end{bmatrix}
+                          }
                       \end{aligned}
                   $$
 
                   $$
                       \begin{aligned}
-                          \Delta b^{[2]} & = -0.1 \delta^{[2]}     \\
-                                         & = -0.1 \times (-1.2169) \\
-                                         & = 0.1217
+                          \Delta b^{[2]} & = -0.1 \delta^{[2]}        \\
+                                         & = -0.1 \times (-1.2169)    \\
+                                         & = \textcolor{cred}{0.1217}
                       \end{aligned}
                   $$
 
@@ -944,24 +958,28 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
                                                          \end{bmatrix} \begin{bmatrix}
                                                                            1.2
                                                                        \end{bmatrix} \\
-                                         & = \begin{bmatrix}
-                                                 0.0182 \\
-                                                 0.0182
-                                             \end{bmatrix}
+                                         & = \textcolor{cgreen}{
+                              \begin{bmatrix}
+                                  0.0182 \\
+                                  0.0182
+                              \end{bmatrix}
+                          }
                       \end{aligned}
                   $$
 
                   $$
                       \begin{aligned}
-                          \Delta b^{[1]} & = -0.1 \delta^{[1]}   \\
+                          \Delta b^{[1]} & = -0.1 \delta^{[1]}    \\
                                          & = -0.1 \begin{bmatrix}
                                                       -0.1516 \\
                                                       -0.1516
-                                                  \end{bmatrix} \\
-                                         & = \begin{bmatrix}
-                                                 0.0152 \\
-                                                 0.0152
-                                             \end{bmatrix}
+                                                  \end{bmatrix}  \\
+                                         & = \textcolor{cyellow}{
+                              \begin{bmatrix}
+                                  0.0152 \\
+                                  0.0152
+                              \end{bmatrix}
+                          }
                       \end{aligned}
                   $$
               \end{footnotesize}
@@ -972,86 +990,118 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
 
           $$
               \begin{aligned}
-                  W^{[2]}_{\text{new}} & = W^{[2]}_{\text{old}} + \sum_{i=1}^{3} \Delta W^{[2]}_i \\
+                  W^{[2]}_{\text{new}} & = W^{[2]}_{\text{old}} + \sum_{i=1}^{3} \textcolor{cblue}{\Delta W^{[2]}_i}   \\
                                        & = \begin{bmatrix}
                                                1 & 1
                                            \end{bmatrix} + \left(
-                  \begin{bmatrix}
+                  \textcolor{cblue}{
+                      \begin{bmatrix}
                           0.3799 & 0.3799
-                      \end{bmatrix}+
-                  \begin{bmatrix}
+                      \end{bmatrix}
+                  }
+                  +
+                  \textcolor{cblue}{
+                      \begin{bmatrix}
                           0.3204 & 0.3204
-                      \end{bmatrix}+
-                  \begin{bmatrix}
+                      \end{bmatrix}
+                  }
+                  +
+                  \textcolor{cblue}{
+                      \begin{bmatrix}
                           0.1516 & 0.1516
                       \end{bmatrix}
-                  \right)                                                                         \\
+                  }
+                  \right)                                                                                              \\
                                        & = \begin{bmatrix}
                                                1.8518 & 1.8518
                                            \end{bmatrix}
                   \\
                   \\
-                  b^{[2]}_{\text{new}} & = b^{[2]}_{\text{old}} + \sum_{i=1}^{3} \Delta b^{[2]}_i \\
+                  b^{[2]}_{\text{new}} & = b^{[2]}_{\text{old}} + \sum_{i=1}^{3} \textcolor{cred}{\Delta b^{[2]}_i}    \\
                                        & = \begin{bmatrix}
                                                1
                                            \end{bmatrix} + \left(
-                  \begin{bmatrix}
+                  \textcolor{cred}{
+                      \begin{bmatrix}
                           0.3173
-                      \end{bmatrix}+
-                  \begin{bmatrix}
+                      \end{bmatrix}
+                  }
+                  +
+                  \textcolor{cred}{
+                      \begin{bmatrix}
                           0.2623
-                      \end{bmatrix}+
-                  \begin{bmatrix}
+                      \end{bmatrix}
+                  }
+                  +
+                  \textcolor{cred}{
+                      \begin{bmatrix}
                           0.1217
                       \end{bmatrix}
-                  \right)                                                                         \\
+                  }
+                  \right)                                                                                              \\
                                        & = \begin{bmatrix}
                                                1.7013
                                            \end{bmatrix}
                   \\
                   \\
-                  W^{[1]}_{\text{new}} & = W^{[1]}_{\text{old}} + \sum_{i=1}^{3} \Delta W^{[1]}_i \\
+                  W^{[1]}_{\text{new}} & = W^{[1]}_{\text{old}} + \sum_{i=1}^{3} \textcolor{cgreen}{\Delta W^{[1]}_i}  \\
                                        & = \begin{bmatrix}
                                                1 \\
                                                1
                                            \end{bmatrix} + \left(
-                  \begin{bmatrix}
+                  \textcolor{cgreen}{
+                      \begin{bmatrix}
                           0.0304 \\
                           0.0304
-                      \end{bmatrix}+
-                  \begin{bmatrix}
+                      \end{bmatrix}
+                  }
+                  +
+                  \textcolor{cgreen}{
+                      \begin{bmatrix}
                           0.0320 \\
                           0.0320
-                      \end{bmatrix}+
-                  \begin{bmatrix}
+                      \end{bmatrix}
+                  }
+                  +
+                  \textcolor{cgreen}{
+                      \begin{bmatrix}
                           0.0182 \\
                           0.0182
                       \end{bmatrix}
-                  \right)                                                                         \\
+                  }
+                  \right)                                                                                              \\
                                        & = \begin{bmatrix}
                                                1.0806 \\
                                                1.0806
                                            \end{bmatrix}
                   \\
                   \\
-                  b^{[1]}_{\text{new}} & = b^{[1]}_{\text{old}} + \sum_{i=1}^{3} \Delta b^{[1]}_i \\
+                  b^{[1]}_{\text{new}} & = b^{[1]}_{\text{old}} + \sum_{i=1}^{3} \textcolor{cyellow}{\Delta b^{[1]}_i} \\
                                        & = \begin{bmatrix}
                                                1 \\
                                                1
                                            \end{bmatrix} + \left(
-                  \begin{bmatrix}
+                  \textcolor{cyellow}{
+                      \begin{bmatrix}
                           0.0380 \\
                           0.0380
-                      \end{bmatrix}+
-                  \begin{bmatrix}
+                      \end{bmatrix}
+                  }
+                  +
+                  \textcolor{cyellow}{
+                      \begin{bmatrix}
                           0.0320 \\
                           0.0320
-                      \end{bmatrix}+
-                  \begin{bmatrix}
+                      \end{bmatrix}
+                  }
+                  +
+                  \textcolor{cyellow}{
+                      \begin{bmatrix}
                           0.0152 \\
                           0.0152
                       \end{bmatrix}
-                  \right)                                                                         \\
+                  }
+                  \right)                                                                                              \\
                                        & = \begin{bmatrix}
                                                1.0852 \\
                                                1.0852
