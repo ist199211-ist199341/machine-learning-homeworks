@@ -273,12 +273,12 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
           $$
               \begin{aligned}
                   \sum_{i = 1}^{N} (z_i - \hat{z}_i)^2 & = 234.153                           \\
-                  E(w)                                 & = \sqrt{\frac{1}{5} \times 234.153} \\
-                                                       & = 6.843
+                  \text{RMSE}                          & = \sqrt{\frac{1}{5} \times 234.153} \\
+                                                       & = 6.8433
               \end{aligned}
           $$
 
-          Therefore, the RMSE is \textbf{6.843}.
+          Therefore, the RMSE is \textbf{6.8433}.
 
     \item {\color{questioncolor}\bfseries
           Consider a multi-layer perceptron characterized by one hidden layer with 2 nodes.
@@ -290,6 +290,8 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
           \vspace{0.5em}
 
           We start by drawing the multi-layer perceptron, where Layer 1 is the hidden layer.
+          Since we only have one input and one output variable, Layers 0 and 2 only
+          have a single node.
 
           \begin{figure}[H]
               \centering
@@ -340,7 +342,8 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
           \vspace*{0.5cm}
 
           We can now calculate the values of each node in the multi-layer perceptron
-          with the initialized weights and biases, for each of the three observations.
+          with the initialized weights and biases, for each of the three observations,
+          that is, do \textbf{forward propagation}.
 
           \vspace*{0.5cm}
 
@@ -589,10 +592,8 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
           \end{paracol}
 
           Now that we have the output for each of our observations, considering
-          the initial weights and biases, we can apply \textbf{backpropagation} to
+          the initial weights and biases, we can apply \textbf{back propagation} to
           perform a batch gradient descent update.
-
-          % TODO add explanation
 
           We want to batch update the weights ($W^{[1]}$ and $W^{[2]}$) and biases
           ($b^{[1]}$ and $b^{[2]}$). The new, updated values, are given by:
@@ -967,7 +968,7 @@ $\left((0.8), (1), (1.2), (1.4), (1.6)\right)$ with targets $\left(24, 20, 10, 1
 
           \end{paracol}
 
-          Finally, we can update the weights and biases:
+          Finally, we can \textbf{update the weights and biases}:
 
           $$
               \begin{aligned}
@@ -1135,6 +1136,10 @@ Using a 70-30 training-test split with a fixed seed (\texttt{random\_state=0}):
           }\\
           \vspace{0.5em}
 
+          The residues of each regressor can be calculated as
+          the absolute difference between the expected value and the
+          predicted value, for each observation.
+
           The respective code can be found on listing \ref{listing-ex5}.
 
           \begin{figure}[H]
@@ -1200,12 +1205,15 @@ Using a 70-30 training-test split with a fixed seed (\texttt{random\_state=0}):
           attribute the difference in performance to the early stopping.
           Due to how the early stopping works, similar to splitting the data
           into training and testing, early stopping splits the training data
-          into training and validation, this will train a model that will
-          learn from the training data and will evaluate it with the valuation data.
-          This will cause the model to learn more effectively, especially by
-          \textbf{avoiding overfitting}, which will cause
-          the model to be more robust and generalize better.
-          This is why the $MLP1$ has a lower MAE value and lower residue values than $MLP2$.
+          into training and validation sets.
+          While training the model, the training set will be used for fitting
+          while the validation set will be used for calculating the validation
+          score of the model.
+          This will cause the model to learn more effectively, which will cause
+          the model to be more robust and generalize better, especially by
+          \textbf{avoiding overfitting}.
+          This is why the $MLP1$ has a lower MAE value and lower residue values than $MLP2$,
+          and thus better performance.
 
 \end{enumerate}
 
