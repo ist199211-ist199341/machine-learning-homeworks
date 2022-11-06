@@ -1,0 +1,226 @@
+\documentclass[12pt]{article}
+\usepackage[paper=letterpaper,margin=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{newtxtext, newtxmath}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{multirow}
+\usepackage{svg}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{paracol}
+
+\setlength{\droptitle}{-6em}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% TEXT COLORS
+% https://coolors.co/4c6085-1588e0-0cac8c-f25f5c-b89300
+\definecolor{cgray}{HTML}{4c6085}
+\definecolor{cblue}{HTML}{1588e0}
+\definecolor{cgreen}{HTML}{0cac8c}
+\definecolor{cred}{HTML}{f25f5c}
+\definecolor{cyellow}{HTML}{b89300}
+
+% BACKGROUND COLORS
+% https://coolors.co/8a9cbc-7cc0f3-66f4d8-f6908e-ffe270
+\definecolor{bgray}{HTML}{8a9cbc}
+\definecolor{bblue}{HTML}{7cc0f3}
+\definecolor{bgreen}{HTML}{66f4d8}
+\definecolor{bred}{HTML}{f6908e}
+\definecolor{byellow}{HTML}{ffe270}
+
+\definecolor{linkcolor}{HTML}{f57429}
+\definecolor{questioncolor}{HTML}{444444}
+\definecolor{listingbackground}{HTML}{f5f5f5}
+
+\hypersetup{
+    allcolors=linkcolor
+}
+
+\setlength{\columnseprule}{1pt}
+\def\columnseprulecolor{\color{questioncolor}}
+
+\lstdefinestyle{mystyle}{
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    backgroundcolor=\color{listingbackground},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{\large{Aprendizagem 2022}\vskip 0.2cm Homework IV -- Group 020}
+\date{}
+\author{Diogo Correia (99211) \and Tomás Esteves (99341)}
+\begin{document}
+\maketitle
+\begin{center}
+    \large{\vskip -1.0cm\textbf{Part I}: Pen and paper}
+\end{center}
+
+{
+\color{questioncolor}\bfseries
+\noindent
+Given the bivariate observations $
+    \left\{
+    \begin{pmatrix}
+        1 \\
+        2
+    \end{pmatrix},
+    \begin{pmatrix}
+        -1 \\
+        1
+    \end{pmatrix},
+    \begin{pmatrix}
+        1 \\
+        0
+    \end{pmatrix}
+    \right\}
+$, and the multivariate Gaussian mixture
+$$
+    u_1 = \begin{pmatrix}
+        2 \\
+        2
+    \end{pmatrix}
+    \quad,\quad
+    u_2 = \begin{pmatrix}
+        0 \\
+        0
+    \end{pmatrix}
+    \quad,\quad
+    \varSigma_1 = \begin{pmatrix}
+        2 & 1 \\
+        1 & 2
+    \end{pmatrix}
+    \quad,\quad
+    \varSigma_2 = \begin{pmatrix}
+        2 & 0 \\
+        0 & 2
+    \end{pmatrix}
+    \quad,\quad
+    \pi_1 = 0.5
+    \quad,\quad
+    \pi_2 = 0.5
+$$
+}
+
+\begin{enumerate}[leftmargin=\labelsep]
+    \item {\color{questioncolor}\bfseries
+          Perform one epoch of the EM clustering algorithm and determine the new parameters.
+          Indicate all calculus step by step (you can use a computer, however disclose
+          intermediary steps).
+          }\\
+          \vspace{0.5em}
+
+          // TODO
+
+    \item {\color{questioncolor}\bfseries
+          Given the updated parameters computed in the previous question:
+          }\\
+          \vspace{-1.0em}
+
+          \begin{enumerate}
+              \item {\color{questioncolor}\bfseries
+                    perform a hard assignment of observations to clusters under a
+                    MAP assumption.
+                    }\\
+                    \vspace{0.5em}
+                    // TODO
+              \item {\color{questioncolor}\bfseries
+                    compute the silhouette of the larger cluster using the
+                    Euclidean distance.
+                    }\\
+                    \vspace{0.5em}
+                    // TODO
+          \end{enumerate}
+\end{enumerate}
+
+\pagebreak
+
+\begin{center}
+    \large{\textbf{Part II}: Programming and critical analysis}
+\end{center}
+
+{\color{questioncolor}\bfseries
+\noindent
+Recall the \texttt{pd\_speech.arff} dataset from earlier homeworks, centered on
+the Parkinson diagnosis from speech features.
+For the following exercises, normalize the data using \texttt{sklearn}'s
+MinMaxScaler.
+}
+
+\begin{enumerate}[leftmargin=\labelsep]
+    \item {\color{questioncolor}\bfseries
+          Using \texttt{sklearn}, apply \textit{k}-means clustering fully unsupervisedly
+          (without targets) on the normalized data with $k = 3$ and three different
+          seeds (using \texttt{random} $\in \{0,1,2\}$).
+          Assess the silhouette and purity of the produced solutions.
+          }\\
+          \vspace{0.5em}
+
+          // TODO
+
+    \item {\color{questioncolor}\bfseries
+          What is causing the non-determinism?
+          }\\
+          \vspace{0.5em}
+
+          // TODO
+
+    \item {\color{questioncolor}\bfseries
+          Using a scatter plot, visualize side-by-side the labeled data using labels:
+          i) the original Parkinson diagnosis, and ii) the previously learned $k = 3$
+          clusters (\texttt{random} = 0).
+          To this end, select the two most informative features as axes and color
+          observations according to their label.
+          For feature selection, select the two input variables with highest
+          variance on the MinMax normalized data.
+          }\\
+          \vspace{0.5em}
+
+          // TODO
+
+    \item {\color{questioncolor}\bfseries
+          The fraction of variance explained by a principal component is the ratio
+          between the variance of that component (i.e., its eigenvalue) and total
+          variance (i.e., sum of all eigenvalues).
+          How many principal components are necessary to explain more than 80\%
+          of variability?\\
+          Hint: explore the \texttt{DimReduction} notebook to be familiar
+          with PCA in \texttt{sklearn}.
+          }\\
+          \vspace{0.5em}
+
+          // TODO
+
+\end{enumerate}
+
+\pagebreak
+
+\center\large{\textbf{Appendix}\vskip 0.3cm}
+
+// TODO
+
+\end{document}
