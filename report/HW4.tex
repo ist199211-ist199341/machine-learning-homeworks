@@ -550,73 +550,73 @@ $$
                   $$
                       \begin{aligned}
                           \varSigma_1' & = \frac{1}{N_1} \sum_{i} \gamma_{1, i} \cdot
-                          \left(x_i - \colorbox{bgreen}{$u_1$}\right) \cdot (x_i - \colorbox{bgreen}{$u_1$})^T                          \\
-                                       & = \frac{1}{N_1} \times ( \textcolor{cblue}{\gamma_{1,1} \cdot (x_1 - u_1) \cdot (x_1 - u_1)^T} \\
-                                       & \quad + \textcolor{cred}{\gamma_{1,2} \cdot (x_2 - u_1) \cdot (x_2 - u_1)^T}                   \\
-                                       & \quad + \textcolor{corange}{\gamma_{1,3} \cdot (x_3 - u_1) \cdot (x_3 - u_1)^T})               \\
-                                       & = \frac{1}{1.25157} \times ( \textcolor{cblue}{0.74279 \cdot \left(
-                              \begin{pmatrix}
-                                  1 \\
-                                  2
-                              \end{pmatrix}
-                              -
-                              \begin{pmatrix}
-                                  2 \\
-                                  2
-                              \end{pmatrix}
-                              \right) \cdot \left(
-                              \begin{pmatrix}
-                                  1 \\
-                                  2
-                              \end{pmatrix}
-                              -
-                              \begin{pmatrix}
-                                  2 \\
-                                  2
-                              \end{pmatrix}
-                          \right)^T}                                                                                                    \\
+                          \left(x_i - \colorbox{bgreen}{$u_1$}\right) \cdot \left(x_i - \colorbox{bgreen}{$u_1$}\right)^T                   \\
+                                       & = \frac{1}{N_1} \times \Big( \textcolor{cblue}{\gamma_{1,1} \cdot (x_1 - u_1) \cdot (x_1 - u_1)^T} \\
+                                       & \quad + \textcolor{cred}{\gamma_{1,2} \cdot (x_2 - u_1) \cdot (x_2 - u_1)^T}                       \\
+                                       & \quad + \textcolor{corange}{\gamma_{1,3} \cdot (x_3 - u_1) \cdot (x_3 - u_1)^T}\Big)               \\
+                                       & = \frac{1}{1.25157} \times \Bigg( \textcolor{cblue}{0.74279 \cdot \left(
+                                  \begin{pmatrix}
+                                      1 \\
+                                      2
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      2 \\
+                                      2
+                                  \end{pmatrix}
+                                  \right) \cdot \left(
+                                  \begin{pmatrix}
+                                      1 \\
+                                      2
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      2 \\
+                                      2
+                                  \end{pmatrix}
+                          \right)^T}                                                                                                        \\
                                        & \quad + \textcolor{cred}{0.15584 \cdot \left(
-                              \begin{pmatrix}
-                                  -1 \\
-                                  1
-                              \end{pmatrix}
-                              -
-                              \begin{pmatrix}
-                                  2 \\
-                                  2
-                              \end{pmatrix}
-                              \right) \cdot \left(
-                              \begin{pmatrix}
-                                  -1 \\
-                                  1
-                              \end{pmatrix}
-                              -
-                              \begin{pmatrix}
-                                  2 \\
-                                  2
-                              \end{pmatrix}
-                          \right)^T}                                                                                                    \\
+                                  \begin{pmatrix}
+                                      -1 \\
+                                      1
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      2 \\
+                                      2
+                                  \end{pmatrix}
+                                  \right) \cdot \left(
+                                  \begin{pmatrix}
+                                      -1 \\
+                                      1
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      2 \\
+                                      2
+                                  \end{pmatrix}
+                          \right)^T}                                                                                                        \\
                                        & \quad + \textcolor{corange}{0.35294 \cdot \left(
-                              \begin{pmatrix}
-                                  1 \\
-                                  0
-                              \end{pmatrix}
-                              -
-                              \begin{pmatrix}
-                                  2 \\
-                                  2
-                              \end{pmatrix}
-                              \right) \cdot \left(
-                              \begin{pmatrix}
-                                  1 \\
-                                  0
-                              \end{pmatrix}
-                              -
-                              \begin{pmatrix}
-                                  2 \\
-                                  2
-                              \end{pmatrix}
-                          \right)^T}                                                                                                    \\
+                                  \begin{pmatrix}
+                                      1 \\
+                                      0
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      2 \\
+                                      2
+                                  \end{pmatrix}
+                                  \right) \cdot \left(
+                                  \begin{pmatrix}
+                                      1 \\
+                                      0
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      2 \\
+                                      2
+                                  \end{pmatrix}
+                          \right)^T}\Bigg)                                                                                                  \\
                                        & = \begin{pmatrix}{}
                                                0.43605 & 0.07757 \\
                                                0.07757 & 0.77846
@@ -664,73 +664,73 @@ $$
                   $$
                       \begin{aligned}
                           \varSigma_2' & = \frac{1}{N_2} \sum_{i} \gamma_{2, i} \cdot
-                          \left(x_i - \colorbox{byellow}{$u_2$}\right) \cdot (x_i - \colorbox{byellow}{$u_2$})^T                        \\
-                                       & = \frac{1}{N_2} \times ( \textcolor{cblue}{\gamma_{2,1} \cdot (x_1 - u_2) \cdot (x_1 - u_2)^T} \\
-                                       & \quad + \textcolor{cred}{\gamma_{2,2} \cdot (x_2 - u_2) \cdot (x_2 - u_2)^T}                   \\
-                                       & \quad + \textcolor{corange}{\gamma_{2,3} \cdot (x_3 - u_2) \cdot (x_3 - u_2)^T})               \\
-                                       & = \frac{1}{1.74843} \times ( \textcolor{cblue}{0.25721 \cdot \left(
-                              \begin{pmatrix}
-                                  1 \\
-                                  2
-                              \end{pmatrix}
-                              -
-                              \begin{pmatrix}
-                                  0 \\
-                                  0
-                              \end{pmatrix}
-                              \right) \cdot \left(
-                              \begin{pmatrix}
-                                  1 \\
-                                  2
-                              \end{pmatrix}
-                              -
-                              \begin{pmatrix}
-                                  0 \\
-                                  0
-                              \end{pmatrix}
-                          \right)^T}                                                                                                    \\
+                          \left(x_i - \colorbox{byellow}{$u_2$}\right) \cdot \left(x_i - \colorbox{byellow}{$u_2$}\right)^T                 \\
+                                       & = \frac{1}{N_2} \times \Big( \textcolor{cblue}{\gamma_{2,1} \cdot (x_1 - u_2) \cdot (x_1 - u_2)^T} \\
+                                       & \quad + \textcolor{cred}{\gamma_{2,2} \cdot (x_2 - u_2) \cdot (x_2 - u_2)^T}                       \\
+                                       & \quad + \textcolor{corange}{\gamma_{2,3} \cdot (x_3 - u_2) \cdot (x_3 - u_2)^T}\Big)               \\
+                                       & = \frac{1}{1.74843} \times \Bigg( \textcolor{cblue}{0.25721 \cdot \left(
+                                  \begin{pmatrix}
+                                      1 \\
+                                      2
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      0 \\
+                                      0
+                                  \end{pmatrix}
+                                  \right) \cdot \left(
+                                  \begin{pmatrix}
+                                      1 \\
+                                      2
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      0 \\
+                                      0
+                                  \end{pmatrix}
+                          \right)^T}                                                                                                        \\
                                        & \quad + \textcolor{cred}{0.84416 \cdot \left(
-                              \begin{pmatrix}
-                                  -1 \\
-                                  1
-                              \end{pmatrix}
-                              -
-                              \begin{pmatrix}
-                                  0 \\
-                                  0
-                              \end{pmatrix}
-                              \right) \cdot \left(
-                              \begin{pmatrix}
-                                  -1 \\
-                                  1
-                              \end{pmatrix}
-                              -
-                              \begin{pmatrix}
-                                  0 \\
-                                  0
-                              \end{pmatrix}
-                          \right)^T}                                                                                                    \\
+                                  \begin{pmatrix}
+                                      -1 \\
+                                      1
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      0 \\
+                                      0
+                                  \end{pmatrix}
+                                  \right) \cdot \left(
+                                  \begin{pmatrix}
+                                      -1 \\
+                                      1
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      0 \\
+                                      0
+                                  \end{pmatrix}
+                          \right)^T}                                                                                                        \\
                                        & \quad + \textcolor{corange}{0.64706 \cdot \left(
-                              \begin{pmatrix}
-                                  1 \\
-                                  0
-                              \end{pmatrix}
-                              -
-                              \begin{pmatrix}
-                                  0 \\
-                                  0
-                              \end{pmatrix}
-                              \right) \cdot \left(
-                              \begin{pmatrix}
-                                  1 \\
-                                  0
-                              \end{pmatrix}
-                              -
-                              \begin{pmatrix}
-                                  0 \\
-                                  0
-                              \end{pmatrix}
-                          \right)^T}                                                                                                    \\
+                                  \begin{pmatrix}
+                                      1 \\
+                                      0
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      0 \\
+                                      0
+                                  \end{pmatrix}
+                                  \right) \cdot \left(
+                                  \begin{pmatrix}
+                                      1 \\
+                                      0
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      0 \\
+                                      0
+                                  \end{pmatrix}
+                          \right)^T} \Bigg)                                                                                                 \\
                                        & = \begin{pmatrix}{}
                                                0.99882  & -0.21531 \\
                                                -0.21531 & 0.46748
