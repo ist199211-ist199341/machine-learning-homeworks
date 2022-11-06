@@ -191,7 +191,7 @@ $$
                   0.5                                                       \\
               \end{tabular}
               \captionof{table}{Initial parameters for the 2 clusters in the multivariate Gaussian mixture}
-              \label{ex1-phi-table}
+              \label{ex1-initial-params-table}
           \end{center}
 
           \textbf{Expectation (E-step)}
@@ -439,8 +439,354 @@ $$
 
           \textbf{Maximization (M-step)}
 
-          // TODO
+          In this step we will update the clusters' parameters, that is, the components
+          of the mutlvariate Gaussian mixture.
 
+          For each cluster, $c_k$, we will calculate the following,
+
+          \begin{equation}\label{ex1-nk}
+              N_k = \sum_i \gamma_{ki}
+          \end{equation}
+          \begin{equation}\label{ex1-new-uk}
+              u_k' = \frac{1}{N_k} \sum_{i} \gamma_{ki} \cdot x_i
+          \end{equation}
+          \begin{equation}\label{ex1-new-sigmak}
+              \varSigma_k' = \frac{1}{N_k} \sum_{i} \gamma_{ki} \cdot \left(x_i - u_k\right) \cdot (x_i - u_k)^T
+          \end{equation}
+
+          Considering $N = \sum_k N_k$,
+
+          \begin{equation}\label{ex1-new-pik}
+              \pi_k' = \frac{N_k}{N}
+          \end{equation}
+
+          We can now update the values for both clusters.
+
+          \begin{paracol}{2}
+              \begin{center}
+                  \textbf{\colorbox{bgreen}{Cluster 1}}
+              \end{center}
+
+              \switchcolumn
+
+              \begin{center}
+                  \textbf{\colorbox{byellow}{Cluster 2}}
+              \end{center}
+          \end{paracol}
+
+          \begin{center}
+              We start by calculating the sum of the weights of each observation,
+              for each cluster, $N_k$, using \eqref{ex1-nk},
+          \end{center}
+
+          \begin{paracol}{2}
+              $$
+                  \begin{aligned}
+                      N_1 & = \sum_{i} \gamma_{1, i}                                                                                  \\
+                          & = \textcolor{cred}{\gamma_{1, 1}} + \textcolor{cblue}{\gamma_{1, 2}} + \textcolor{corange}{\gamma_{1, 3}} \\
+                          & = \textcolor{cred}{0.74279} + \textcolor{cblue}{0.15584} + \textcolor{corange}{0.35294}                   \\
+                          & = 1.25157
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      N_2 & = \sum_{i} \gamma_{2, i}                                                                                  \\
+                          & = \textcolor{cred}{\gamma_{2, 1}} + \textcolor{cblue}{\gamma_{2, 2}} + \textcolor{corange}{\gamma_{2, 3}} \\
+                          & = \textcolor{cred}{0.25721} + \textcolor{cblue}{0.84416} + \textcolor{corange}{0.64706}                   \\
+                          & = 1.74843
+                  \end{aligned}
+              $$
+          \end{paracol}
+
+          \begin{center}
+              We can use this to calculate $N$, the sum of $N_1$ and $N_2$,
+          \end{center}
+          $$
+              N = N_1 + N_2 = 1.25157 + 1.74843 = 3.0
+          $$
+
+          \begin{center}
+              We can now update the values of $u_k$, $\varSigma_k$ and $\pi_k$ for
+              each of the clusters, using \eqref{ex1-new-uk}, \eqref{ex1-new-sigmak} and
+              \eqref{ex1-new-pik} respectively.
+          \end{center}
+
+
+          \begin{paracol}{2}
+              \begin{small}
+                  $$
+                      \begin{aligned}
+                          u_1' & = \frac{1}{N_1} \sum_{i} \gamma_{1, i} \cdot x_i  \\
+                               & = \frac{\textcolor{cblue}{\gamma_{1,1} \cdot x_1}
+                              + \textcolor{cred}{\gamma_{1,2} \cdot x_2}
+                          + \textcolor{corange}{\gamma_{1,3} \cdot x_3}}{N_1}      \\
+                               & = \frac{\textcolor{cblue}{0.74279 \cdot
+                                  \begin{pmatrix}
+                                      1 \\
+                                      2
+                                  \end{pmatrix}
+                              } + \textcolor{cred}{0.15584 \cdot
+                                  \begin{pmatrix}
+                                      -1 \\
+                                      1
+                                  \end{pmatrix}
+                              } + \textcolor{corange}{0.35294 \cdot
+                                  \begin{pmatrix}
+                                      1 \\
+                                      0
+                                  \end{pmatrix}
+                          }}{1.25157}                                              \\
+                               & = \begin{pmatrix}
+                                       0.75096 \\
+                                       1.31149
+                                   \end{pmatrix}
+                      \end{aligned}
+                  $$
+              \end{small}
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \varSigma_1' & = \frac{1}{N_1} \sum_{i} \gamma_{1, i} \cdot
+                          \left(x_i - \colorbox{bgreen}{$u_1$}\right) \cdot (x_i - \colorbox{bgreen}{$u_1$})^T                          \\
+                                       & = \frac{1}{N_1} \times ( \textcolor{cblue}{\gamma_{1,1} \cdot (x_1 - u_1) \cdot (x_1 - u_1)^T} \\
+                                       & \quad + \textcolor{cred}{\gamma_{1,2} \cdot (x_2 - u_1) \cdot (x_2 - u_1)^T}                   \\
+                                       & \quad + \textcolor{corange}{\gamma_{1,3} \cdot (x_3 - u_1) \cdot (x_3 - u_1)^T})               \\
+                                       & = \frac{1}{1.25157} \times ( \textcolor{cblue}{0.74279 \cdot \left(
+                              \begin{pmatrix}
+                                  1 \\
+                                  2
+                              \end{pmatrix}
+                              -
+                              \begin{pmatrix}
+                                  2 \\
+                                  2
+                              \end{pmatrix}
+                              \right) \cdot \left(
+                              \begin{pmatrix}
+                                  1 \\
+                                  2
+                              \end{pmatrix}
+                              -
+                              \begin{pmatrix}
+                                  2 \\
+                                  2
+                              \end{pmatrix}
+                          \right)^T}                                                                                                    \\
+                                       & \quad + \textcolor{cred}{0.15584 \cdot \left(
+                              \begin{pmatrix}
+                                  -1 \\
+                                  1
+                              \end{pmatrix}
+                              -
+                              \begin{pmatrix}
+                                  2 \\
+                                  2
+                              \end{pmatrix}
+                              \right) \cdot \left(
+                              \begin{pmatrix}
+                                  -1 \\
+                                  1
+                              \end{pmatrix}
+                              -
+                              \begin{pmatrix}
+                                  2 \\
+                                  2
+                              \end{pmatrix}
+                          \right)^T}                                                                                                    \\
+                                       & \quad + \textcolor{corange}{0.35294 \cdot \left(
+                              \begin{pmatrix}
+                                  1 \\
+                                  0
+                              \end{pmatrix}
+                              -
+                              \begin{pmatrix}
+                                  2 \\
+                                  2
+                              \end{pmatrix}
+                              \right) \cdot \left(
+                              \begin{pmatrix}
+                                  1 \\
+                                  0
+                              \end{pmatrix}
+                              -
+                              \begin{pmatrix}
+                                  2 \\
+                                  2
+                              \end{pmatrix}
+                          \right)^T}                                                                                                    \\
+                                       & = \begin{pmatrix}{}
+                                               0.43605 & 0.07757 \\
+                                               0.07757 & 0.77846
+                                           \end{pmatrix}
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+              $$
+                  \pi_1' = \frac{N_1}{N} = \frac{1.25157}{3.0} = 0.41719
+              $$
+
+              \switchcolumn
+
+              \begin{small}
+                  $$
+                      \begin{aligned}
+                          u_2' & = \frac{1}{N_2} \sum_{i} \gamma_{2, i} \cdot x_i  \\
+                               & = \frac{\textcolor{cblue}{\gamma_{2,1} \cdot x_1}
+                              + \textcolor{cred}{\gamma_{2,2} \cdot x_2}
+                          + \textcolor{corange}{\gamma_{2,3} \cdot x_3}}{N_2}      \\
+                               & = \frac{\textcolor{cblue}{0.25721 \cdot
+                                  \begin{pmatrix}
+                                      1 \\
+                                      2
+                                  \end{pmatrix}
+                              } + \textcolor{cred}{0.84416 \cdot
+                                  \begin{pmatrix}
+                                      -1 \\
+                                      1
+                                  \end{pmatrix}
+                              } + \textcolor{corange}{0.64706 \cdot
+                                  \begin{pmatrix}
+                                      1 \\
+                                      0
+                                  \end{pmatrix}
+                          }}{1.74843}                                              \\
+                               & = \begin{pmatrix}
+                                       0.03438 \\
+                                       0.77703
+                                   \end{pmatrix}
+                      \end{aligned}
+                  $$
+              \end{small}
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \varSigma_2' & = \frac{1}{N_2} \sum_{i} \gamma_{2, i} \cdot
+                          \left(x_i - \colorbox{byellow}{$u_2$}\right) \cdot (x_i - \colorbox{byellow}{$u_2$})^T                        \\
+                                       & = \frac{1}{N_2} \times ( \textcolor{cblue}{\gamma_{2,1} \cdot (x_1 - u_2) \cdot (x_1 - u_2)^T} \\
+                                       & \quad + \textcolor{cred}{\gamma_{2,2} \cdot (x_2 - u_2) \cdot (x_2 - u_2)^T}                   \\
+                                       & \quad + \textcolor{corange}{\gamma_{2,3} \cdot (x_3 - u_2) \cdot (x_3 - u_2)^T})               \\
+                                       & = \frac{1}{1.74843} \times ( \textcolor{cblue}{0.25721 \cdot \left(
+                              \begin{pmatrix}
+                                  1 \\
+                                  2
+                              \end{pmatrix}
+                              -
+                              \begin{pmatrix}
+                                  0 \\
+                                  0
+                              \end{pmatrix}
+                              \right) \cdot \left(
+                              \begin{pmatrix}
+                                  1 \\
+                                  2
+                              \end{pmatrix}
+                              -
+                              \begin{pmatrix}
+                                  0 \\
+                                  0
+                              \end{pmatrix}
+                          \right)^T}                                                                                                    \\
+                                       & \quad + \textcolor{cred}{0.84416 \cdot \left(
+                              \begin{pmatrix}
+                                  -1 \\
+                                  1
+                              \end{pmatrix}
+                              -
+                              \begin{pmatrix}
+                                  0 \\
+                                  0
+                              \end{pmatrix}
+                              \right) \cdot \left(
+                              \begin{pmatrix}
+                                  -1 \\
+                                  1
+                              \end{pmatrix}
+                              -
+                              \begin{pmatrix}
+                                  0 \\
+                                  0
+                              \end{pmatrix}
+                          \right)^T}                                                                                                    \\
+                                       & \quad + \textcolor{corange}{0.64706 \cdot \left(
+                              \begin{pmatrix}
+                                  1 \\
+                                  0
+                              \end{pmatrix}
+                              -
+                              \begin{pmatrix}
+                                  0 \\
+                                  0
+                              \end{pmatrix}
+                              \right) \cdot \left(
+                              \begin{pmatrix}
+                                  1 \\
+                                  0
+                              \end{pmatrix}
+                              -
+                              \begin{pmatrix}
+                                  0 \\
+                                  0
+                              \end{pmatrix}
+                          \right)^T}                                                                                                    \\
+                                       & = \begin{pmatrix}{}
+                                               0.99882  & -0.21531 \\
+                                               -0.21531 & 0.46748
+                                           \end{pmatrix}
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+              $$
+                  \pi_2' = \frac{N_2}{N} = \frac{1.74843}{3.0} = 0.58281
+              $$
+
+          \end{paracol}
+
+          \vspace*{0.5cm}
+
+          \textbf{Evaluate the log likelihood}
+
+          Since we are only performing one epoch of the EM clustering algorithm,
+          we can skip this step.
+
+          \vspace*{1.0cm}
+
+          \textbf{Conclusion}
+
+          After performing one epoch of the EM clustering algorithm, we end
+          up with the following parameters for each cluster.
+
+          \begin{center}
+              \captionsetup{type=table}
+              \begin{tabular}{c|ccc}
+                  Cluster                       & $u$ & $\varSigma$ & $\pi$ \\
+                  \hline
+                  \colorbox{bgreen}{Cluster 1}  &
+                  $\begin{pmatrix}
+                           0.75096 \\
+                           1.31149
+                       \end{pmatrix}$              &
+                  $\begin{pmatrix}{}
+                           0.43605 & 0.07757 \\
+                           0.07757 & 0.77846
+                       \end{pmatrix}$          &
+                  0.41719                                                   \\
+                  \colorbox{byellow}{Cluster 2} &
+                  $\begin{pmatrix}
+                           0.03438 \\
+                           0.77703
+                       \end{pmatrix}$              &
+                  $\begin{pmatrix}{}
+                           0.99882  & -0.21531 \\
+                           -0.21531 & 0.46748
+                       \end{pmatrix}$        &
+                  0.58281                                                   \\
+              \end{tabular}
+              \captionof{table}{Parameters for the 2 clusters in the multivariate Gaussian mixture after one epoch of the EM clustering algorithm}
+              \label{ex1-final-params-table}
+          \end{center}
 
     \item {\color{questioncolor}\bfseries
           Given the updated parameters computed in the previous question:
