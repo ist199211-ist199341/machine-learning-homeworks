@@ -1235,19 +1235,30 @@ MinMaxScaler.
           }\\
           \vspace{0.5em}
 
-          By reading the documentation of the \href{https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html}{\texttt{KMeans class}}
-          in sklearn, at the moment of initialization of the \texttt{KMeans} class,
-          the \texttt{random\_state} parameter is set to a value in the set $\{0,1,2\}$.
-          Since the \texttt{init} parameter is set with the default value (\texttt{k-means++}),
-          it will choose from a set of 10 (\texttt{n\_init} size with default value of 10) points (chosen by the seed value set in the \texttt{random\_state} paramater),
-          the one with the best value for inertia. This calculation is theorically proven to be optimal.
+          To understand why \texttt{sklearn}'s \texttt{cluster.KMeans} is not deterministic,
+          we must first understand how it works.
+          To initialize the centroids' positions, \texttt{KMeans} uses the \texttt{k-means++}
+          algorithm by default (and it is what we're using here).
+          This algorithm starts by selecting a random point of the dataset as the first
+          initial cluster centroid, followed by randomly selecting the remaining $k-1$ centroids,
+          given that the points furthest away have a greater chance of being selected.
+          In other words, this means the initial cluster centroids are selected
+          \textit{"using sampling based on an empirical probability distribution of
+              the points' contribution to the overall inertia"}, as per the
+          \href{https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html}{documentation},
+          therefore being generally distant from each other.
 
-          This can explain why the results for the seed 0 and 2 are equal.
-          Although the set of 10 points is chosen randomly, both sets could have points in common,
-          including the one with the best value for inertia, and since it's the best point in their respective sets, it will be chosen for the initialization of the centroids.
+          The algorithm will then proceed based on these initial centroids.
+          It is also worth noting that this process is repeated \texttt{n\_init} times (by default, 10),
+          preserving the best output (i.e. the one that minimizes inertia).
 
-          As seen in the theorical and practical classes, the initial centroids positions can have a big impact on the solutions produced.
-          And we can see this in the values that we obtain with diferent states.
+          All of this means the algorithm is inheritly non-deterministic: the initial cluster
+          centroids are selected randomly (not truly randomly, as we've seen, but some randomness is involved)
+          and might converge to different positions (i.e. different local minimums) in different runs.
+
+          We can see this happening on the chosen seeds: seeds \textcolor{cred}{0}
+          and \textcolor{corange}{2} converge to the same centroid positions,
+          while seed \textcolor{cblue}{1} converges to different centroid positions.
 
     \item {\color{questioncolor}\bfseries
           Using a scatter plot, visualize side-by-side the labeled data using labels:
