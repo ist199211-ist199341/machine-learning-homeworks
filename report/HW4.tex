@@ -1052,56 +1052,57 @@ MinMaxScaler.
           \vspace{0.5em}
 
           \begin{paracol}{3}
-            \begin{center}
-                \textbf{Random State = \textcolor{cred}0}
+              \begin{center}
+                  \textbf{Random State = \textcolor{cred}0}
 
-                \textbf{Silhouette (euclidean)}: 0.04797
+                  \textbf{Silhouette (euclidean)}: 0.04797
 
-                \textbf{Purity}: 0.76720
+                  \textbf{Purity}: 0.76720
 
-            \end{center}
+              \end{center}
 
-            \switchcolumn
+              \switchcolumn
 
-            \begin{center}
-                \textbf{Random State = \textcolor{cblue}1}
+              \begin{center}
+                  \textbf{Random State = \textcolor{cblue}1}
 
-                \textbf{Silhouette (euclidean)}: 0.04590
+                  \textbf{Silhouette (euclidean)}: 0.04590
 
-                \textbf{Purity}: 0.76323
+                  \textbf{Purity}: 0.76323
 
-            \end{center}
+              \end{center}
 
-            \switchcolumn
+              \switchcolumn
 
-            \begin{center}
-                \textbf{Random State = \textcolor{corange}2}
+              \begin{center}
+                  \textbf{Random State = \textcolor{corange}2}
 
-                \textbf{Silhouette (euclidean)}: 0.04797
+                  \textbf{Silhouette (euclidean)}: 0.04797
 
-                \textbf{Purity}: 0.76720
+                  \textbf{Purity}: 0.76720
 
-            \end{center}
+              \end{center}
 
-        \end{paracol}
+          \end{paracol}
 
     \item {\color{questioncolor}\bfseries
           What is causing the non-determinism?
           }\\
           \vspace{0.5em}
 
-        By reading the documentation of the \href{https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html}{\texttt{KMeans class}}
-        in sklearn, at the moment of initialization of the \texttt{KMeans} class, the \texttt{random\_state} parameter is set to a value in the set \{0,1,2\}.
-        Since the \texttt{init} parameter is set with the default value (\texttt{k-means++}),
-        it will choose from a set of 10 (\texttt{n\_init} size with default value of 10) points (chosen by the seed value set in the \texttt{random\_state} paramater),
-        the one with the best value for inertia. This calculation is theorically proven to be optimal. 
+          By reading the documentation of the \href{https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html}{\texttt{KMeans class}}
+          in sklearn, at the moment of initialization of the \texttt{KMeans} class,
+          the \texttt{random\_state} parameter is set to a value in the set $\{0,1,2\}$.
+          Since the \texttt{init} parameter is set with the default value (\texttt{k-means++}),
+          it will choose from a set of 10 (\texttt{n\_init} size with default value of 10) points (chosen by the seed value set in the \texttt{random\_state} paramater),
+          the one with the best value for inertia. This calculation is theorically proven to be optimal.
 
-        This can explain why the results for the seed 0 and 2 are equal.
-        Although the set of 10 points is chosen randomly, both sets could have points in common,
-        including the one with the best value for inertia, and since it's the best point in their respective sets, it will be chosen for the initialization of the centroids. 
+          This can explain why the results for the seed 0 and 2 are equal.
+          Although the set of 10 points is chosen randomly, both sets could have points in common,
+          including the one with the best value for inertia, and since it's the best point in their respective sets, it will be chosen for the initialization of the centroids.
 
-        As seen in the theorical and practical classes, the initial centroids positions can have a big impact on the solutions produced.
-        And we can see this in the values that we obtain with diferent states.
+          As seen in the theorical and practical classes, the initial centroids positions can have a big impact on the solutions produced.
+          And we can see this in the values that we obtain with diferent states.
 
     \item {\color{questioncolor}\bfseries
           Using a scatter plot, visualize side-by-side the labeled data using labels:
@@ -1130,7 +1131,7 @@ MinMaxScaler.
 
           By reading the documentation of the \href{https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html}{PCA class} in sklearn,
           at the moment of initalization of the \texttt{PCA} we can give the \texttt{n\_components} parameter a value between 0 and 1 (in this case 0.8),
-          and set the \texttt{svd\_solver} parameter with the value \texttt{full}. 
+          and set the \texttt{svd\_solver} parameter with the value \texttt{full}.
           With these parameters, the PCA will return the number of components that explain more than 80\% of the variance.
           Therefore 31 components are necessary to explain more than 80\% of variability.
 
