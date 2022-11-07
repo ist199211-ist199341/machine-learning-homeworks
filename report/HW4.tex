@@ -1288,12 +1288,17 @@ MinMaxScaler.
           \vspace{0.5em}
 
           By reading the documentation of the
-          \href{https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html}{\texttt{PCA} class}
-          in sklearn, at the moment of initalization of the \texttt{PCA} we can give
+          \href{https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html}{\texttt{decomposition.PCA} class}
+          in \texttt{sklearn}, at the moment of initalization of the \texttt{PCA} we can give
           the \texttt{n\_components} parameter a value between 0 and 1 (in this case 0.8),
           and set the \texttt{svd\_solver} parameter with the value \texttt{full}.
           With these parameters, the PCA will return the number of components that explain more than 80\% of the variance.
-          Therefore \textbf{31} components are necessary to explain more than 80\% of variability.
+
+
+          Fitting this model to our normalized data set and consulting the parameter
+          \texttt{n\_components\_} of the model, gives us the number of principal components
+          as requested by the question.
+          Therefore, \textbf{31} principal components are necessary to explain more than 80\% of variability.
 
           The respective code can be found on listing \ref{listing-ex4}.
 
