@@ -1024,7 +1024,149 @@ $$
                     Euclidean distance.
                     }\\
                     \vspace{0.5em}
-                    // TODO
+
+                    The larger cluster is \colorbox{byellow}{Cluster 2}.
+
+                    The silhouette of each point, $s(x_i)$, is given by,
+                    \begin{equation}\label{ex2b-ai-bi}
+                        a_i = \frac{1}{n_k - 1} \sum_{j \in c_k \backslash \{i\}} d(x_i, x_j)
+                        \quad,\quad
+                        b_i = \min_{k' \ne k} \frac{1}{n_k'} \sum_{j \in c_{k'}} d(x_i, x_j)
+                    \end{equation}
+                    \begin{equation}\label{ex2b-s-xi}
+                        s(x_i) = \frac{b_i - a_i}{\max(a_i,b_i)}
+                    \end{equation}
+                    where $d(x_i, x_j)$ is the Euclidean distance between $x_i$ and $x_j$.
+
+                    It is relevant to note that $a_i$ is the mean of the distances of observation $x_i$ to other
+                    observations in its cluster, while $b_i$ is the mean of the distances of
+                    that same observation to the observations in another cluster (the cluster
+                    that yeilds the lowest value).
+
+                    The silhouette of a cluster, $s(c_k)$ is the mean of the silhouette of its observations,
+                    \begin{equation}\label{ex2b-s-ck}
+                        s(c_k) = \frac{1}{n_k} \sum_{i \in c_k} s_i
+                    \end{equation}
+
+                    Observations \textcolor{cblue}{$x_2$} and \textcolor{corange}{$x_3$}
+                    belong to \colorbox{byellow}{Cluster 2}, therefore we'll calculate their
+                    silhouettes:
+
+                    \vspace*{0.5cm}
+
+                    \begin{paracol}{2}
+                        \begin{center}
+                            \textbf{Observation: \textcolor{cblue}{$x_2 = \begin{pmatrix}
+                                            -1 \\
+                                            1
+                                        \end{pmatrix}$}}
+                        \end{center}
+
+                        \switchcolumn
+
+                        \begin{center}
+                            \textbf{Observation: \textcolor{corange}{$x_3 = \begin{pmatrix}
+                                            1 \\
+                                            0
+                                        \end{pmatrix}$}}
+                        \end{center}
+                    \end{paracol}
+
+                    \begin{center}
+                        We can calculate the distances to other observations in
+                        the same cluster (\colorbox{byellow}{Cluster 2}), $a_i$, using
+                        \eqref{ex2b-ai-bi}.
+                    \end{center}
+
+                    \begin{paracol}{2}
+
+                        $$
+                            \begin{aligned}
+                                \textcolor{cblue}{a_2} & = \frac{||\textcolor{cblue}{x_2} - \textcolor{corange}{x_3}||_2}{2 - 1} \\
+                                                       & = ||\textcolor{cblue}{x_2} - \textcolor{corange}{x_3}||_2               \\
+                                                       & = \sqrt{\left(-1 -1\right)^2 + \left(1 - 0\right)^2}                    \\
+                                                       & = 2.23607
+                            \end{aligned}
+                        $$
+
+                        \switchcolumn
+
+                        $$
+                            \begin{aligned}
+                                \textcolor{corange}{a_3} & = \frac{||\textcolor{corange}{x_3} - \textcolor{cblue}{x_2}||_2}{2 - 1} \\
+                                                         & = ||\textcolor{corange}{x_3} - \textcolor{cblue}{x_2}||_2               \\
+                                                         & = \sqrt{\left(1 -\left(-1\right)\right)^2 + \left(0 - 1\right)^2}       \\
+                                                         & = 2.23607
+                            \end{aligned}
+                        $$
+
+                    \end{paracol}
+
+                    \begin{center}
+                        We can calculate the distances to other observations in
+                        the other cluster (\colorbox{bgreen}{Cluster 1}), $b_i$, using
+                        \eqref{ex2b-ai-bi}.
+                    \end{center}
+
+                    \begin{paracol}{2}
+
+                        $$
+                            \begin{aligned}
+                                \textcolor{cblue}{b_2} & = \frac{||\textcolor{cblue}{x_2} - \textcolor{cred}{x_1}||_2}{1} \\
+                                                       & = ||\textcolor{cblue}{x_2} - \textcolor{cred}{x_1}||_2           \\
+                                                       & = \sqrt{\left(-1 -1\right)^2 + \left(1 - 2\right)^2}             \\
+                                                       & = 2.23607
+                            \end{aligned}
+                        $$
+
+                        \switchcolumn
+
+                        $$
+                            \begin{aligned}
+                                \textcolor{corange}{b_3} & = \frac{||\textcolor{corange}{x_3} - \textcolor{cred}{x_1}||_2}{1} \\
+                                                         & = ||\textcolor{corange}{x_3} - \textcolor{cred}{x_1}||_2           \\
+                                                         & = \sqrt{\left(1 - 1\right)^2 + \left(0 - 2\right)^2}               \\
+                                                         & = 2.0
+                            \end{aligned}
+                        $$
+
+                    \end{paracol}
+
+                    \begin{center}
+                        We can now calculate the silhouette of each observation, $s(x_i)$,
+                        using \eqref{ex2b-s-xi}.
+                    \end{center}
+
+                    \begin{paracol}{2}
+
+                        $$
+                            \begin{aligned}
+                                \textcolor{cblue}{s(x_2)} & = \frac{b_2 - a_2}{\max(a_2, b_2)}  \\
+                                                          & = \frac{2.23607 - 2.23607}{2.23607} \\
+                                                          & = 0
+                            \end{aligned}
+                        $$
+
+                        \switchcolumn
+
+                        $$
+                            \begin{aligned}
+                                \textcolor{corange}{s(x_3)} & = \frac{b_3 - a_3}{\max(a_3, b_3)} \\
+                                                            & = \frac{2.0 - 2.23607}{2.23607}    \\
+                                                            & = -0.10557
+                            \end{aligned}
+                        $$
+
+                    \end{paracol}
+
+                    Finally, we're able to calculate the silhouette of \colorbox{byellow}{Cluster 2},
+                    $s(c_2)$, using \eqref{ex2b-s-ck},
+
+                    $$
+                        \colorbox{byellow}{$s(c_k)$} = \frac{\textcolor{cblue}{s(x_2)} + \textcolor{corange}{s(x_3)}}{2}
+                        = \frac{0 - 0.10557}{2} = -0.05279
+                    $$
+
           \end{enumerate}
 \end{enumerate}
 
