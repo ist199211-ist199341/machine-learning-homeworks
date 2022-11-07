@@ -832,14 +832,31 @@ MinMaxScaler.
           }\\
           \vspace{0.5em}
 
-          // TODO
+        k = 0 Silhouette (euclidean): 0.04797\\
+        k = 1 Silhouette (euclidean): 0.04590\\
+        k = 2 Silhouette (euclidean): 0.04797
+
+        k = 0 Purity: 0.76720\\
+        k = 1 Purity: 0.76323\\
+        k = 2 Purity: 0.76720
 
     \item {\color{questioncolor}\bfseries
           What is causing the non-determinism?
           }\\
           \vspace{0.5em}
 
-          // TODO
+        By reading the documentation of the \href{https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html}{\texttt{KMeans class}}
+        in sklearn, at the moment of initialization of the \texttt{KMeans} class, the \texttt{random\_state} parameter is set to a value in the set \{0,1,2\}.
+        Since the \texttt{init} parameter is set with the default value (\texttt{k-means++}),
+        it will choose from a set of 10 (\texttt{n\_init} size with default value of 10) points (chosen by the seed value set in the \texttt{random\_state} paramater),
+        the one with the best value for inertia. This calculation is theorically proven to be optimal. 
+
+        This can explain why the results for the seed 0 and 2 are equal.
+        Although the set of 10 points is chosen randomly, both sets could have points in common,
+        including the one with the best value for inertia, and since it's the best point in their respective sets, it will be chosen for the initialization of the centroids. 
+
+        As seen in the theorical and practical classes, the initial centroids positions can have a big impact on the solutions produced.
+        And we can see this in the values that we obtain with diferent states.
 
     \item {\color{questioncolor}\bfseries
           Using a scatter plot, visualize side-by-side the labeled data using labels:
@@ -852,7 +869,8 @@ MinMaxScaler.
           }\\
           \vspace{0.5em}
 
-          // TODO
+          By analysing the normalized data, we choose the features with the highest variance to be the ones that will be used in the scatter plot.
+          The most informative features are: \texttt{tqwt\_entropy\_shannon\_dec\_16}, \texttt{tqwt\_kurtosisValue\_dec\_34}
 
     \item {\color{questioncolor}\bfseries
           The fraction of variance explained by a principal component is the ratio
@@ -865,7 +883,7 @@ MinMaxScaler.
           }\\
           \vspace{0.5em}
 
-          // TODO
+          31 componentss are necessary to explain more than 80\% of variability.
 
 \end{enumerate}
 
@@ -873,6 +891,15 @@ MinMaxScaler.
 
 \center\large{\textbf{Appendix}\vskip 0.3cm}
 
-// TODO
+\lstinputlisting[label={listing-ex1},caption={Apply 3 k-means and assess the silhouette and purity of the produced solutions},language=Python]{assets/hw4-code-1.py}
+
+\vspace*{1.5cm}
+
+\lstinputlisting[label={listing-ex3},caption={Scatter plot of the the original data and the cluster (k = 3) with random = 0},language=Python]{assets/hw4-code-2.py}
+
+\vspace*{1.5cm}
+
+\lstinputlisting[label={listing-ex4},caption={Number of principal components that are necessary to explain more than 80\% of variablity},language=Python]{assets/hw4-code-3.py}
+
 
 \end{document}
