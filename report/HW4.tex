@@ -1206,12 +1206,13 @@ MinMaxScaler.
           Using \texttt{sklearn}'s \texttt{KMeans} class, we can apply a
           \textit{k}-means clustering algorithm.\\
           We opted to use Euclidean distance for the silhouette, since no other distance
-          function was specified and it is \texttt{sklearn}'s default for the
+          function was specified in the question prompt
+          and it is \texttt{sklearn}'s default for the
           \texttt{metrics.silhouette\_score} function.\\
           For the purity score, we opted to use the \texttt{purity\_score} function
           available in the course's N5 (Clustering) Notebook.
 
-          The respective code can be found on listing \ref{listing-ex1}.
+          Therefore, for each seed, we get the following results:
 
           \begin{center}
               \captionsetup{type=table}
@@ -1225,6 +1226,8 @@ MinMaxScaler.
               \captionof{table}{Silhouette (Euclidean) and purity scores for \texttt{random} $\in \{0,1,2\}$}
               \label{ex1p-silhouette-purity}
           \end{center}
+
+          The respective code can be found on listing \ref{listing-ex1}.
 
     \item {\color{questioncolor}\bfseries
           What is causing the non-determinism?
