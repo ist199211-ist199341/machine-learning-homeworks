@@ -40,7 +40,7 @@ for i in range(0, 3):
 
     # Compute silhouette
     print(
-        f"k = {i} | Silhouette (euclidean): {metrics.silhouette_score(X, y_pred, metric='euclidean'):6.5f}"
+        f"random_state = {i} | Silhouette (euclidean): {metrics.silhouette_score(X, y_pred, metric='euclidean'):6.5f}"
     )
 
 
@@ -55,4 +55,4 @@ for i in range(0, 3):
     y_pred = kmeans_models[i].labels_
 
     # Compute purity
-    print(f"k = {i} | Purity: {purity_score(y_true, y_pred):6.5f}")
+    print(f"random_state = {i} | Purity: {purity_score(y_true, y_pred):6.5f}")

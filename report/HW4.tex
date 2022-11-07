@@ -1051,13 +1051,39 @@ MinMaxScaler.
           }\\
           \vspace{0.5em}
 
-        k = 0 Silhouette (euclidean): 0.04797\\
-        k = 1 Silhouette (euclidean): 0.04590\\
-        k = 2 Silhouette (euclidean): 0.04797
+          \begin{paracol}{3}
+            \begin{center}
+                \textbf{Random State = \textcolor{cred}0}
 
-        k = 0 Purity: 0.76720\\
-        k = 1 Purity: 0.76323\\
-        k = 2 Purity: 0.76720
+                \textbf{Silhouette (euclidean)}: 0.04797
+
+                \textbf{Purity}: 0.76720
+
+            \end{center}
+
+            \switchcolumn
+
+            \begin{center}
+                \textbf{Random State = \textcolor{cblue}1}
+
+                \textbf{Silhouette (euclidean)}: 0.04590
+
+                \textbf{Purity}: 0.76323
+
+            \end{center}
+
+            \switchcolumn
+
+            \begin{center}
+                \textbf{Random State = \textcolor{corange}2}
+
+                \textbf{Silhouette (euclidean)}: 0.04797
+
+                \textbf{Purity}: 0.76720
+
+            \end{center}
+
+        \end{paracol}
 
     \item {\color{questioncolor}\bfseries
           What is causing the non-determinism?
@@ -1102,7 +1128,11 @@ MinMaxScaler.
           }\\
           \vspace{0.5em}
 
-          31 componentss are necessary to explain more than 80\% of variability.
+          By reading the documentation of the \href{https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html}{PCA class} in sklearn,
+          at the moment of initalization of the \texttt{PCA} we can give the \texttt{n\_components} parameter a value between 0 and 1 (in this case 0.8),
+          and set the \texttt{svd\_solver} parameter with the value \texttt{full}. 
+          With these parameters, the PCA will return the number of components that explain more than 80\% of the variance.
+          Therefore 31 components are necessary to explain more than 80\% of variability.
 
 \end{enumerate}
 
