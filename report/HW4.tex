@@ -1193,39 +1193,28 @@ MinMaxScaler.
           }\\
           \vspace{0.5em}
 
-          \begin{paracol}{3}
-              \begin{center}
-                  \textbf{Random State = \textcolor{cred}0}
+          Using \texttt{sklearn}'s \texttt{KMeans} class, we can apply a
+          \textit{k}-means clustering algorithm.\\
+          We opted to use Euclidean distance for the silhouette, since no other distance
+          function was specified and it is \texttt{sklearn}'s default for the
+          \texttt{metrics.silhouette\_score} function.\\
+          For the purity score, we opted to use the \texttt{purity\_score} function
+          available in the course's N5 (Clustering) Notebook.
 
-                  \textbf{Silhouette (euclidean)}: 0.04797
+          The respective code can be found on listing \ref{listing-ex1}.
 
-                  \textbf{Purity}: 0.76720
-
-              \end{center}
-
-              \switchcolumn
-
-              \begin{center}
-                  \textbf{Random State = \textcolor{cblue}1}
-
-                  \textbf{Silhouette (euclidean)}: 0.04590
-
-                  \textbf{Purity}: 0.76323
-
-              \end{center}
-
-              \switchcolumn
-
-              \begin{center}
-                  \textbf{Random State = \textcolor{corange}2}
-
-                  \textbf{Silhouette (euclidean)}: 0.04797
-
-                  \textbf{Purity}: 0.76720
-
-              \end{center}
-
-          \end{paracol}
+          \begin{center}
+              \captionsetup{type=table}
+              \begin{tabular}{c|cc}
+                  \texttt{random}        & Silhouette (Euclidean) & Purity  \\
+                  \hline
+                  \textcolor{cred}{0}    & 0.11362                & 0.76720 \\
+                  \textcolor{cblue}{1}   & 0.11404                & 0.76323 \\
+                  \textcolor{corange}{2} & 0.11362                & 0.76720
+              \end{tabular}
+              \captionof{table}{Silhouette (Euclidean) and purity scores for \texttt{random} $\in \{0,1,2\}$}
+              \label{ex1p-silhouette-purity}
+          \end{center}
 
     \item {\color{questioncolor}\bfseries
           What is causing the non-determinism?

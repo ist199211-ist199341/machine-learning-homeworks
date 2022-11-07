@@ -19,12 +19,11 @@ y_true = df["class"]
 # Normalize data
 X_normalized = MinMaxScaler().fit_transform(X)
 
-X_normalized = pd.DataFrame(X_normalized, columns=df.columns[:-1])
+X_normalized = pd.DataFrame(X_normalized, columns=X.columns)
 
 kmeans_models = []
 
-for i in range(0, 3):
-
+for i in range(3):
     # parameterize clustering
     kmeans_algo = cluster.KMeans(n_clusters=3, random_state=i)
 
@@ -34,14 +33,14 @@ for i in range(0, 3):
     # append the model to the list
     kmeans_models.append(kmeans_model)
 
-for i in range(0, 3):
-
-    y_pred = kmeans_models[i].labels_
+for model in kmeans_models:
+    random_state = model.random_state
+    y_pred = model.labels_
 
     # Compute silhouette
-    print(
-        f"random_state = {i} | Silhouette (euclidean): {metrics.silhouette_score(X, y_pred, metric='euclidean'):6.5f}"
-    )
+    silhouette = metrics.silhouette_score(X_normalized, y_pred, metric="euclidean")
+
+    print(f"random_state = {random_state} | Silhouette (euclidean): {silhouette:6.5f}")
 
 
 def purity_score(y_true, y_pred):
@@ -50,9 +49,10 @@ def purity_score(y_true, y_pred):
     return np.sum(np.amax(confusion_matrix, axis=0)) / np.sum(confusion_matrix)
 
 
-for i in range(0, 3):
-
-    y_pred = kmeans_models[i].labels_
+for model in kmeans_models:
+    random_state = model.random_state
+    y_pred = model.labels_
 
     # Compute purity
-    print(f"random_state = {i} | Purity: {purity_score(y_true, y_pred):6.5f}")
+    purity = purity_score(y_true, y_pred)
+    print(f"random_state = {random_state} | Purity: {purity:6.5f}")
