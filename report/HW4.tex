@@ -1253,7 +1253,6 @@ MinMaxScaler.
 
           The respective code can be found on listing \ref{listing-ex3}.
 
-
           \begin{figure}[H]
               \centering
               \includesvg[width=17cm]{assets/hw4-scatterplots.svg}
@@ -1272,11 +1271,15 @@ MinMaxScaler.
           }\\
           \vspace{0.5em}
 
-          By reading the documentation of the \href{https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html}{PCA class} in sklearn,
-          at the moment of initalization of the \texttt{PCA} we can give the \texttt{n\_components} parameter a value between 0 and 1 (in this case 0.8),
+          By reading the documentation of the
+          \href{https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html}{\texttt{PCA} class}
+          in sklearn, at the moment of initalization of the \texttt{PCA} we can give
+          the \texttt{n\_components} parameter a value between 0 and 1 (in this case 0.8),
           and set the \texttt{svd\_solver} parameter with the value \texttt{full}.
           With these parameters, the PCA will return the number of components that explain more than 80\% of the variance.
-          Therefore 31 components are necessary to explain more than 80\% of variability.
+          Therefore \textbf{31} components are necessary to explain more than 80\% of variability.
+
+          The respective code can be found on listing \ref{listing-ex4}.
 
 \end{enumerate}
 
