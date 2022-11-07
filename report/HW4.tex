@@ -15,6 +15,7 @@
 \usepackage{graphicx}
 \usepackage{subcaption}
 \usepackage{paracol}
+\usepackage{changepage}
 
 \setlength{\droptitle}{-6em}
 
@@ -799,7 +800,225 @@ $$
                     MAP assumption.
                     }\\
                     \vspace{0.5em}
-                    // TODO
+
+                    As we've done in exercise 1, we can use \eqref{ex1-posterior} to calculate the
+                    posterior probabilities of each cluster for each observation, in order to assign
+                    them to a cluster.
+
+                    \vspace*{0.5cm}
+
+
+          \end{enumerate}
+
+          \begin{paracol}{3}
+              \begin{center}
+                  \textbf{Observation: \textcolor{cred}{$x_1 = \begin{pmatrix}
+                                  1 \\
+                                  2
+                              \end{pmatrix}$}}
+              \end{center}
+
+              \switchcolumn
+
+              \begin{center}
+                  \textbf{Observation: \textcolor{cblue}{$x_2 = \begin{pmatrix}
+                                  -1 \\
+                                  1
+                              \end{pmatrix}$}}
+              \end{center}
+
+              \switchcolumn
+
+              \begin{center}
+                  \textbf{Observation: \textcolor{corange}{$x_3 = \begin{pmatrix}
+                                  1 \\
+                                  0
+                              \end{pmatrix}$}}
+              \end{center}
+
+          \end{paracol}
+
+          \begin{center}
+              We'll start by calculating the likelihood, using \eqref{ex1-likelihood},
+              for each cluster,
+          \end{center}
+
+          \begin{paracol}{3}
+              $$
+                  \begin{aligned}
+                      p(\textcolor{cred}{x_1}|\colorbox{bgreen}{$c=1$})  & = \mathcal{N}(\textcolor{cred}{x_1}|\colorbox{bgreen}{$u_{1}'$}, \colorbox{bgreen}{$\Sigma_{1}'$})   \\
+                                                                         & = 0.19570                                                                                            \\
+                      p(\textcolor{cred}{x_1}|\colorbox{byellow}{$c=2$}) & = \mathcal{N}(\textcolor{cred}{x_1}|\colorbox{byellow}{$u_{2}'$}, \colorbox{byellow}{$\Sigma_{2}'$}) \\
+                                                                         & = 0.01352
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      p(\textcolor{cblue}{x_2}|\colorbox{bgreen}{$c=1$})  & = \mathcal{N}(\textcolor{cblue}{x_2}|\colorbox{bgreen}{$u_{1}'$}, \colorbox{bgreen}{$\Sigma_{1}'$})   \\
+                                                                          & = 0.00820                                                                                             \\
+                      p(\textcolor{cblue}{x_2}|\colorbox{byellow}{$c=2$}) & = \mathcal{N}(\textcolor{cblue}{x_2}|\colorbox{byellow}{$u_{2}'$}, \colorbox{byellow}{$\Sigma_{2}'$}) \\
+                                                                          & = 0.14365
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      p(\textcolor{corange}{x_3}|\colorbox{bgreen}{$c=1$})  & = \mathcal{N}(\textcolor{corange}{x_3}|\colorbox{bgreen}{$u_{1}'$}, \colorbox{bgreen}{$\Sigma_{1}'$})   \\
+                                                                            & = 0.07717                                                                                               \\
+                      p(\textcolor{corange}{x_3}|\colorbox{byellow}{$c=2$}) & = \mathcal{N}(\textcolor{corange}{x_3}|\colorbox{byellow}{$u_{2}'$}, \colorbox{byellow}{$\Sigma_{2}'$}) \\
+                                                                            & = 0.10478
+                  \end{aligned}
+              $$
+
+          \end{paracol}
+
+          \begin{center}
+              Then, we multiply it by $p(c_k)$, as per \eqref{ex1-joint}, yielding
+              the joint probability for each cluster,
+          \end{center}
+
+          \begin{paracol}{3}
+              \begin{scriptsize}
+                  $$
+                      \begin{aligned}
+                          p(\textcolor{cred}{x_1},\colorbox{bgreen}{$c=1$})  & = p(\textcolor{cred}{x_1}|\colorbox{bgreen}{$c=1$})p(\colorbox{bgreen}{$c=1$})   \\
+                                                                             & = 0.19570 \times 0.41719                                                         \\
+                                                                             & = 0.08164                                                                        \\
+                          p(\textcolor{cred}{x_1},\colorbox{byellow}{$c=2$}) & = p(\textcolor{cred}{x_1}|\colorbox{byellow}{$c=2$})p(\colorbox{byellow}{$c=2$}) \\
+                                                                             & = 0.01352 \times 0.58281                                                         \\
+                                                                             & = 0.00788
+                      \end{aligned}
+                  $$
+              \end{scriptsize}
+
+              \switchcolumn
+
+              \begin{scriptsize}
+                  $$
+                      \begin{aligned}
+                          p(\textcolor{cblue}{x_2},\colorbox{bgreen}{$c=1$})  & = p(\textcolor{cblue}{x_2}|\colorbox{bgreen}{$c=1$})p(\colorbox{bgreen}{$c=1$})   \\
+                                                                              & = 0.00820 \times 0.41719                                                          \\
+                                                                              & = 0.00342                                                                         \\
+                          p(\textcolor{cblue}{x_2},\colorbox{byellow}{$c=2$}) & = p(\textcolor{cblue}{x_2}|\colorbox{byellow}{$c=2$})p(\colorbox{byellow}{$c=2$}) \\
+                                                                              & = 0.14365 \times 0.58281                                                          \\
+                                                                              & = 0.08372
+                      \end{aligned}
+                  $$
+              \end{scriptsize}
+
+              \switchcolumn
+
+              \begin{scriptsize}
+                  $$
+                      \begin{aligned}
+                          p(\textcolor{corange}{x_3},\colorbox{bgreen}{$c=1$})  & = p(\textcolor{corange}{x_3}|\colorbox{bgreen}{$c=1$})p(\colorbox{bgreen}{$c=1$})   \\
+                                                                                & = 0.07717 \times 0.41719                                                            \\
+                                                                                & = 0.03219                                                                           \\
+                          p(\textcolor{corange}{x_3},\colorbox{byellow}{$c=2$}) & = p(\textcolor{corange}{x_3}|\colorbox{byellow}{$c=2$})p(\colorbox{byellow}{$c=2$}) \\
+                                                                                & = 0.10478 \times 0.58281                                                            \\
+                                                                                & = 0.06107
+                      \end{aligned}
+                  $$
+              \end{scriptsize}
+
+          \end{paracol}
+
+          \begin{center}
+              We can now calculate the value of $p(x_i)$, given by \eqref{ex1-sum-joint},
+          \end{center}
+
+          \begin{paracol}{3}
+              $$
+                  \begin{aligned}
+                      p(\textcolor{cred}{x_1}) & = \sum_k p(\textcolor{cred}{x_1}, c_k) \\
+                                               & = 0.08164 + 0.00788                    \\
+                                               & = 0.08952
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      p(\textcolor{cblue}{x_2}) & = \sum_k p(\textcolor{cblue}{x_2}, c_k) \\
+                                                & = 0.00342 + 0.08372                     \\
+                                                & = 0.08714
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      p(\textcolor{corange}{x_3}) & = \sum_k p(\textcolor{corange}{x_3}, c_k) \\
+                                                  & = 0.03219 + 0.06107                       \\
+                                                  & = 0.09326
+                  \end{aligned}
+              $$
+
+          \end{paracol}
+
+          \begin{center}
+              Finally, we can calculate the posterior probability, using \eqref{ex1-posterior}, for each cluster,
+          \end{center}
+
+          \begin{paracol}{3}
+              $$
+                  \begin{aligned}
+                      p(\colorbox{bgreen}{$c=1$}|\textcolor{cred}{x_1})  & = \frac{p(\textcolor{cred}{x_1},\colorbox{bgreen}{$c=1$})}{p(\textcolor{cred}{x_1})}  \\
+                                                                         & = \frac{0.08164}{0.08952}                                                             \\
+                                                                         & = 0.91198                                                                             \\
+                      p(\colorbox{byellow}{$c=2$}|\textcolor{cred}{x_1}) & = \frac{p(\textcolor{cred}{x_1},\colorbox{byellow}{$c=2$})}{p(\textcolor{cred}{x_1})} \\
+                                                                         & = \frac{0.00788}{0.08952}                                                             \\
+                                                                         & = 0.08802
+                  \end{aligned}
+              $$
+
+              Therefore, \textcolor{cred}{$x_1$} is assigned to\\
+              \colorbox{bgreen}{Cluster 1}.
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      p(\colorbox{bgreen}{$c=1$}|\textcolor{cblue}{x_2})  & = \frac{p(\textcolor{cblue}{x_2},\colorbox{bgreen}{$c=1$})}{p(\textcolor{cblue}{x_2})}  \\
+                                                                          & = \frac{0.00342}{0.08372}                                                               \\
+                                                                          & = 0.03924                                                                               \\
+                      p(\colorbox{byellow}{$c=2$}|\textcolor{cblue}{x_2}) & = \frac{p(\textcolor{cblue}{x_2},\colorbox{byellow}{$c=2$})}{p(\textcolor{cblue}{x_2})} \\
+                                                                          & = \frac{0.08372}{0.08714}                                                               \\
+                                                                          & = 0.96076
+                  \end{aligned}
+              $$
+
+              Therefore, \textcolor{cblue}{$x_2$} is assigned to\\
+              \colorbox{byellow}{Cluster 2}.
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      p(\colorbox{bgreen}{$c=1$}|\textcolor{corange}{x_3})  & = \frac{p(\textcolor{corange}{x_3},\colorbox{bgreen}{$c=1$})}{p(\textcolor{corange}{x_3})}  \\
+                                                                            & = \frac{0.03219}{0.06107}                                                                   \\
+                                                                            & = 0.34519                                                                                   \\
+                      p(\colorbox{byellow}{$c=2$}|\textcolor{corange}{x_3}) & = \frac{p(\textcolor{corange}{x_3},\colorbox{byellow}{$c=2$})}{p(\textcolor{corange}{x_3})} \\
+                                                                            & = \frac{0.06107}{0.09326}                                                                   \\
+                                                                            & = 0.65481
+                  \end{aligned}
+              $$
+
+              Therefore, \textcolor{corange}{$x_3$} is assigned to\\
+              \colorbox{byellow}{Cluster 2}.
+
+          \end{paracol}
+
+          \vspace*{0.5cm}
+
+          \begin{enumerate}[resume]
               \item {\color{questioncolor}\bfseries
                     compute the silhouette of the larger cluster using the
                     Euclidean distance.
