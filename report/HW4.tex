@@ -1,0 +1,1333 @@
+\documentclass[12pt]{article}
+\usepackage[paper=letterpaper,margin=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{newtxtext, newtxmath}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{multirow}
+\usepackage{svg}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage[font=footnotesize]{caption}
+\usepackage{subcaption}
+\usepackage{paracol}
+\usepackage{changepage}
+
+\setlength{\droptitle}{-6em}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% TEXT COLORS
+% https://coolors.co/4c6085-1588e0-0cac8c-f25f5c-b89300
+\definecolor{cgray}{HTML}{4c6085}
+\definecolor{cblue}{HTML}{1588e0}
+\definecolor{cgreen}{HTML}{0cac8c}
+\definecolor{cred}{HTML}{f25f5c}
+\definecolor{cyellow}{HTML}{b89300}
+\definecolor{corange}{HTML}{f58b00}
+
+% BACKGROUND COLORS
+% https://coolors.co/8a9cbc-7cc0f3-66f4d8-f6908e-ffe270
+\definecolor{bgray}{HTML}{8a9cbc}
+\definecolor{bblue}{HTML}{7cc0f3}
+\definecolor{bgreen}{HTML}{66f4d8}
+\definecolor{bred}{HTML}{f6908e}
+\definecolor{byellow}{HTML}{ffe270}
+\definecolor{borange}{HTML}{ffca85}
+
+\definecolor{linkcolor}{HTML}{f57429}
+\definecolor{questioncolor}{HTML}{444444}
+\definecolor{listingbackground}{HTML}{f5f5f5}
+
+\hypersetup{
+    allcolors=linkcolor
+}
+
+\setlength{\columnseprule}{1pt}
+\def\columnseprulecolor{\color{questioncolor}}
+
+\lstdefinestyle{mystyle}{
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    backgroundcolor=\color{listingbackground},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{\large{Aprendizagem 2022}\vskip 0.2cm Homework IV -- Group 020}
+\date{}
+\author{Diogo Correia (99211) \and Tomás Esteves (99341)}
+\begin{document}
+\maketitle
+\begin{center}
+    \large{\vskip -1.0cm\textbf{Part I}: Pen and paper}
+\end{center}
+
+{
+\color{questioncolor}\bfseries
+\noindent
+Given the bivariate observations $
+    \left\{
+    \begin{pmatrix}
+        1 \\
+        2
+    \end{pmatrix},
+    \begin{pmatrix}
+        -1 \\
+        1
+    \end{pmatrix},
+    \begin{pmatrix}
+        1 \\
+        0
+    \end{pmatrix}
+    \right\}
+$, and the multivariate Gaussian mixture
+$$
+    u_1 = \begin{pmatrix}
+        2 \\
+        2
+    \end{pmatrix}
+    \quad,\quad
+    u_2 = \begin{pmatrix}
+        0 \\
+        0
+    \end{pmatrix}
+    \quad,\quad
+    \varSigma_1 = \begin{pmatrix}
+        2 & 1 \\
+        1 & 2
+    \end{pmatrix}
+    \quad,\quad
+    \varSigma_2 = \begin{pmatrix}
+        2 & 0 \\
+        0 & 2
+    \end{pmatrix}
+    \quad,\quad
+    \pi_1 = 0.5
+    \quad,\quad
+    \pi_2 = 0.5
+$$
+}
+
+\begin{enumerate}[leftmargin=\labelsep]
+    \item {\color{questioncolor}\bfseries
+          Perform one epoch of the EM clustering algorithm and determine the new parameters.
+          Indicate all calculus step by step (you can use a computer, however disclose
+          intermediary steps).
+          }\\
+          \vspace{0.5em}
+
+          The EM (Expectation-Maximization) algorithm has four major steps:
+          Initialization, Expectation, Maximization and Evaluate.
+
+          \textbf{Initialization}
+
+          We'll start by labeling each observation,
+
+          $$
+              \textcolor{cred}{x_1 = \begin{pmatrix}
+                      1 \\
+                      2
+                  \end{pmatrix}}
+              \quad,\quad
+              \textcolor{cblue}{x_2 = \begin{pmatrix}
+                      -1 \\
+                      1
+                  \end{pmatrix}}
+              \quad,\quad
+              \textcolor{corange}{x_3 = \begin{pmatrix}
+                      1 \\
+                      0
+                  \end{pmatrix}}
+          $$
+
+          and considering the initial parameters, $u_1$, $u_2$, $\varSigma_1$,
+          $\varSigma_2$, $\pi_1$ and $\pi_2$ as given by the question prompt,
+
+
+          \begin{center}
+              \captionsetup{type=table}
+              \begin{tabular}{c|ccc}
+                  Cluster                       & $u$ & $\varSigma$ & $\pi$ \\
+                  \hline
+                  \colorbox{bgreen}{Cluster 1}  &
+                  $\begin{pmatrix}
+                           2 \\
+                           2
+                       \end{pmatrix}$              &
+                  $\begin{pmatrix}
+                           2 & 1 \\
+                           1 & 2
+                       \end{pmatrix}$              &
+                  0.5                                                       \\
+                  \colorbox{byellow}{Cluster 2} &
+                  $\begin{pmatrix}
+                           0 \\
+                           0
+                       \end{pmatrix}$              &
+                  $\begin{pmatrix}
+                           2 & 0 \\
+                           0 & 2
+                       \end{pmatrix}$              &
+                  0.5                                                       \\
+              \end{tabular}
+              \captionof{table}{Initial parameters for the 2 clusters in the multivariate Gaussian mixture}
+              \label{ex1-initial-params-table}
+          \end{center}
+
+          \textbf{Expectation (E-step)}
+
+          In this step we must assign each point to the cluster that yields
+          the highest posterior probability.
+
+          The posterior probability, $p(c_k | x_i)$, is given by
+
+          \begin{equation}\label{ex1-posterior}
+              \gamma_{ki} = p(c_k | x_i) = \frac{p(x_i|c_k)p(c_k)}{p(x_i)}
+          \end{equation}
+
+          We know the likelihood, $p(x_i|c_k)$, in the context of this multivariate Gaussian mixture, is given by
+
+          \begin{equation}\label{ex1-likelihood}
+              p(x_i|c_k) = \mathcal{N}(x_i|u_{k}, \Sigma_{k})
+              = \frac{1}{2\pi \times |\varSigma|^{1/2}}
+              \exp\left(-\frac{1}{2} \left(x_i - u_k\right)^T \varSigma^{-1}\left(x_i - u_k\right)\right)
+          \end{equation}
+
+          Then, it is possible to calculate the joint probability, $p(x_i, c_k)$,
+
+          \begin{equation}\label{ex1-joint}
+              p(x_i,c_k) = p(x_i|c_k)p(c_k) = p(x_i|c_k) \pi_k
+          \end{equation}
+
+          Finally, we can calculate the value of $p(x_i)$, which does not depend
+          on the cluster, and is defined by the sum of $p(x_i, c_k)$, for each cluster,
+
+          \begin{equation}\label{ex1-sum-joint}
+              p(x_i) = \sum_k p(x_i, c_k)
+          \end{equation}
+
+          We now have all the building blocks to calculate the posterior probabilities
+          for each combination of observation, $x_i$ and cluster, $c_k$.
+
+          \vspace*{0.5cm}
+
+          \begin{paracol}{3}
+              \begin{center}
+                  \textbf{Observation: \textcolor{cred}{$x_1 = \begin{pmatrix}
+                                  1 \\
+                                  2
+                              \end{pmatrix}$}}
+              \end{center}
+
+              \switchcolumn
+
+              \begin{center}
+                  \textbf{Observation: \textcolor{cblue}{$x_2 = \begin{pmatrix}
+                                  -1 \\
+                                  1
+                              \end{pmatrix}$}}
+              \end{center}
+
+              \switchcolumn
+
+              \begin{center}
+                  \textbf{Observation: \textcolor{corange}{$x_3 = \begin{pmatrix}
+                                  1 \\
+                                  0
+                              \end{pmatrix}$}}
+              \end{center}
+
+          \end{paracol}
+
+          \begin{center}
+              We'll start by calculating the likelihood, using \eqref{ex1-likelihood},
+              for each cluster,
+          \end{center}
+
+          \begin{paracol}{3}
+              $$
+                  \begin{aligned}
+                      p(\textcolor{cred}{x_1}|\colorbox{bgreen}{$c=1$})  & = \mathcal{N}(\textcolor{cred}{x_1}|\colorbox{bgreen}{$u_{1}$}, \colorbox{bgreen}{$\Sigma_{1}$})   \\
+                                                                         & = 0.06584                                                                                          \\
+                      p(\textcolor{cred}{x_1}|\colorbox{byellow}{$c=2$}) & = \mathcal{N}(\textcolor{cred}{x_1}|\colorbox{byellow}{$u_{2}$}, \colorbox{byellow}{$\Sigma_{2}$}) \\
+                                                                         & = 0.02280
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      p(\textcolor{cblue}{x_2}|\colorbox{bgreen}{$c=1$})  & = \mathcal{N}(\textcolor{cblue}{x_2}|\colorbox{bgreen}{$u_{1}$}, \colorbox{bgreen}{$\Sigma_{1}$})   \\
+                                                                          & = 0.00891                                                                                           \\
+                      p(\textcolor{cblue}{x_2}|\colorbox{byellow}{$c=2$}) & = \mathcal{N}(\textcolor{cblue}{x_2}|\colorbox{byellow}{$u_{2}$}, \colorbox{byellow}{$\Sigma_{2}$}) \\
+                                                                          & = 0.04827
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      p(\textcolor{corange}{x_3}|\colorbox{bgreen}{$c=1$})  & = \mathcal{N}(\textcolor{corange}{x_3}|\colorbox{bgreen}{$u_{1}$}, \colorbox{bgreen}{$\Sigma_{1}$})   \\
+                                                                            & = 0.03380                                                                                             \\
+                      p(\textcolor{corange}{x_3}|\colorbox{byellow}{$c=2$}) & = \mathcal{N}(\textcolor{corange}{x_3}|\colorbox{byellow}{$u_{2}$}, \colorbox{byellow}{$\Sigma_{2}$}) \\
+                                                                            & = 0.06197
+                  \end{aligned}
+              $$
+
+          \end{paracol}
+
+          \begin{center}
+              Then, we multiply it by $p(c_k)$, as per \eqref{ex1-joint}, yielding
+              the joint probability for each cluster,
+          \end{center}
+
+          \begin{paracol}{3}
+              \begin{scriptsize}
+                  $$
+                      \begin{aligned}
+                          p(\textcolor{cred}{x_1},\colorbox{bgreen}{$c=1$})  & = p(\textcolor{cred}{x_1}|\colorbox{bgreen}{$c=1$})p(\colorbox{bgreen}{$c=1$})   \\
+                                                                             & = 0.06584 \times 0.5                                                             \\
+                                                                             & = 0.03292                                                                        \\
+                          p(\textcolor{cred}{x_1},\colorbox{byellow}{$c=2$}) & = p(\textcolor{cred}{x_1}|\colorbox{byellow}{$c=2$})p(\colorbox{byellow}{$c=2$}) \\
+                                                                             & = 0.02280 \times 0.5                                                             \\
+                                                                             & = 0.01140
+                      \end{aligned}
+                  $$
+              \end{scriptsize}
+
+              \switchcolumn
+
+              \begin{scriptsize}
+                  $$
+                      \begin{aligned}
+                          p(\textcolor{cblue}{x_2},\colorbox{bgreen}{$c=1$})  & = p(\textcolor{cblue}{x_2}|\colorbox{bgreen}{$c=1$})p(\colorbox{bgreen}{$c=1$})   \\
+                                                                              & = 0.00891 \times 0.5                                                              \\
+                                                                              & = 0.00446                                                                         \\
+                          p(\textcolor{cblue}{x_2},\colorbox{byellow}{$c=2$}) & = p(\textcolor{cblue}{x_2}|\colorbox{byellow}{$c=2$})p(\colorbox{byellow}{$c=2$}) \\
+                                                                              & = 0.04827 \times 0.5                                                              \\
+                                                                              & = 0.02413
+                      \end{aligned}
+                  $$
+              \end{scriptsize}
+
+              \switchcolumn
+
+              \begin{scriptsize}
+                  $$
+                      \begin{aligned}
+                          p(\textcolor{corange}{x_3},\colorbox{bgreen}{$c=1$})  & = p(\textcolor{corange}{x_3}|\colorbox{bgreen}{$c=1$})p(\colorbox{bgreen}{$c=1$})   \\
+                                                                                & = 0.03380 \times 0.5                                                                \\
+                                                                                & = 0.01690                                                                           \\
+                          p(\textcolor{corange}{x_3},\colorbox{byellow}{$c=2$}) & = p(\textcolor{corange}{x_3}|\colorbox{byellow}{$c=2$})p(\colorbox{byellow}{$c=2$}) \\
+                                                                                & = 0.06197 \times 0.5                                                                \\
+                                                                                & = 0.03099
+                      \end{aligned}
+                  $$
+              \end{scriptsize}
+
+          \end{paracol}
+
+          \begin{center}
+              We can now calculate the value of $p(x_i)$, given by \eqref{ex1-sum-joint},
+          \end{center}
+
+          \vspace*{0.5cm}
+
+          \begin{paracol}{3}
+              $$
+                  \begin{aligned}
+                      p(\textcolor{cred}{x_1}) & = \sum_k p(\textcolor{cred}{x_1}, c_k) \\
+                                               & = 0.03292 + 0.01140                    \\
+                                               & = 0.04432
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      p(\textcolor{cblue}{x_2}) & = \sum_k p(\textcolor{cblue}{x_2}, c_k) \\
+                                                & = 0.00446 + 0.02413                     \\
+                                                & = 0.02859
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      p(\textcolor{corange}{x_3}) & = \sum_k p(\textcolor{corange}{x_3}, c_k) \\
+                                                  & = 0.01690 + 0.03099                       \\
+                                                  & = 0.04789
+                  \end{aligned}
+              $$
+
+          \end{paracol}
+
+          \begin{center}
+              Finally, we can calculate the posterior probability, using \eqref{ex1-posterior}, for each cluster,
+          \end{center}
+
+          \begin{paracol}{3}
+              $$
+                  \begin{aligned}
+                      p(\colorbox{bgreen}{$c=1$}|\textcolor{cred}{x_1})  & = \frac{p(\textcolor{cred}{x_1},\colorbox{bgreen}{$c=1$})}{p(\textcolor{cred}{x_1})}  \\
+                                                                         & = \frac{0.03292}{0.04432}                                                             \\
+                                                                         & = 0.74279                                                                             \\
+                      p(\colorbox{byellow}{$c=2$}|\textcolor{cred}{x_1}) & = \frac{p(\textcolor{cred}{x_1},\colorbox{byellow}{$c=2$})}{p(\textcolor{cred}{x_1})} \\
+                                                                         & = \frac{0.01140}{0.04432}                                                             \\
+                                                                         & = 0.25721
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      p(\colorbox{bgreen}{$c=1$}|\textcolor{cblue}{x_2})  & = \frac{p(\textcolor{cblue}{x_2},\colorbox{bgreen}{$c=1$})}{p(\textcolor{cblue}{x_2})}  \\
+                                                                          & = \frac{0.00446}{0.02859}                                                               \\
+                                                                          & = 0.15584                                                                               \\
+                      p(\colorbox{byellow}{$c=2$}|\textcolor{cblue}{x_2}) & = \frac{p(\textcolor{cblue}{x_2},\colorbox{byellow}{$c=2$})}{p(\textcolor{cblue}{x_2})} \\
+                                                                          & = \frac{0.02413}{0.02859}                                                               \\
+                                                                          & = 0.84416
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      p(\colorbox{bgreen}{$c=1$}|\textcolor{corange}{x_3})  & = \frac{p(\textcolor{corange}{x_3},\colorbox{bgreen}{$c=1$})}{p(\textcolor{corange}{x_3})}  \\
+                                                                            & = \frac{0.01690}{0.04789}                                                                   \\
+                                                                            & = 0.35294                                                                                   \\
+                      p(\colorbox{byellow}{$c=2$}|\textcolor{corange}{x_3}) & = \frac{p(\textcolor{corange}{x_3},\colorbox{byellow}{$c=2$})}{p(\textcolor{corange}{x_3})} \\
+                                                                            & = \frac{0.03099}{0.04789}                                                                   \\
+                                                                            & = 0.64706
+                  \end{aligned}
+              $$
+
+          \end{paracol}
+
+          \vspace*{0.5cm}
+
+          \textbf{Maximization (M-step)}
+
+          In this step we will update the clusters' parameters, that is, the components
+          of the mutlvariate Gaussian mixture.
+
+          For each cluster, $c_k$, we will calculate the following,
+
+          \begin{equation}\label{ex1-nk}
+              N_k = \sum_i \gamma_{ki}
+          \end{equation}
+          \begin{equation}\label{ex1-new-uk}
+              u_k' = \frac{1}{N_k} \sum_{i} \gamma_{ki} \cdot x_i
+          \end{equation}
+          \begin{equation}\label{ex1-new-sigmak}
+              \varSigma_k' = \frac{1}{N_k} \sum_{i} \gamma_{ki} \cdot \left(x_i - u_k\right) \cdot (x_i - u_k)^T
+          \end{equation}
+
+          Considering $N = \sum_k N_k$, we can also update the priors,
+
+          \begin{equation}\label{ex1-new-pik}
+              \pi_k' = \frac{N_k}{N}
+          \end{equation}
+
+          We can now update the values for both clusters.
+
+          \vspace*{1.0cm}
+
+          \begin{paracol}{2}
+              \begin{center}
+                  \textbf{\colorbox{bgreen}{Cluster 1}}
+              \end{center}
+
+              \switchcolumn
+
+              \begin{center}
+                  \textbf{\colorbox{byellow}{Cluster 2}}
+              \end{center}
+          \end{paracol}
+
+          \begin{center}
+              We start by calculating the sum of the weights of each observation,
+              for each cluster, $N_k$, using \eqref{ex1-nk},
+          \end{center}
+
+          \begin{paracol}{2}
+              $$
+                  \begin{aligned}
+                      N_1 & = \sum_{i} \gamma_{1, i}                                                                                  \\
+                          & = \textcolor{cred}{\gamma_{1, 1}} + \textcolor{cblue}{\gamma_{1, 2}} + \textcolor{corange}{\gamma_{1, 3}} \\
+                          & = \textcolor{cred}{0.74279} + \textcolor{cblue}{0.15584} + \textcolor{corange}{0.35294}                   \\
+                          & = 1.25157
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      N_2 & = \sum_{i} \gamma_{2, i}                                                                                  \\
+                          & = \textcolor{cred}{\gamma_{2, 1}} + \textcolor{cblue}{\gamma_{2, 2}} + \textcolor{corange}{\gamma_{2, 3}} \\
+                          & = \textcolor{cred}{0.25721} + \textcolor{cblue}{0.84416} + \textcolor{corange}{0.64706}                   \\
+                          & = 1.74843
+                  \end{aligned}
+              $$
+          \end{paracol}
+
+          \begin{center}
+              We can use this to calculate $N$, the sum of $N_1$ and $N_2$,
+          \end{center}
+          $$
+              N = N_1 + N_2 = 1.25157 + 1.74843 = 3.0
+          $$
+
+          \begin{center}
+              We can now update the values of $u_k$, $\varSigma_k$ and $\pi_k$ for
+              each of the clusters, using \eqref{ex1-new-uk}, \eqref{ex1-new-sigmak} and
+              \eqref{ex1-new-pik} respectively.
+          \end{center}
+
+
+          \begin{paracol}{2}
+              \begin{small}
+                  $$
+                      \begin{aligned}
+                          u_1' & = \frac{1}{N_1} \sum_{i} \gamma_{1, i} \cdot x_i  \\
+                               & = \frac{\textcolor{cblue}{\gamma_{1,1} \cdot x_1}
+                              + \textcolor{cred}{\gamma_{1,2} \cdot x_2}
+                          + \textcolor{corange}{\gamma_{1,3} \cdot x_3}}{N_1}      \\
+                               & = \frac{\textcolor{cblue}{0.74279 \cdot
+                                  \begin{pmatrix}
+                                      1 \\
+                                      2
+                                  \end{pmatrix}
+                              } + \textcolor{cred}{0.15584 \cdot
+                                  \begin{pmatrix}
+                                      -1 \\
+                                      1
+                                  \end{pmatrix}
+                              } + \textcolor{corange}{0.35294 \cdot
+                                  \begin{pmatrix}
+                                      1 \\
+                                      0
+                                  \end{pmatrix}
+                          }}{1.25157}                                              \\
+                               & = \begin{pmatrix}
+                                       0.75096 \\
+                                       1.31149
+                                   \end{pmatrix}
+                      \end{aligned}
+                  $$
+              \end{small}
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \varSigma_1' & = \frac{1}{N_1} \sum_{i} \gamma_{1, i} \cdot
+                          \left(x_i - \colorbox{bgreen}{$u_1$}\right) \cdot \left(x_i - \colorbox{bgreen}{$u_1$}\right)^T                   \\
+                                       & = \frac{1}{N_1} \times \Big( \textcolor{cblue}{\gamma_{1,1} \cdot (x_1 - u_1) \cdot (x_1 - u_1)^T} \\
+                                       & \quad + \textcolor{cred}{\gamma_{1,2} \cdot (x_2 - u_1) \cdot (x_2 - u_1)^T}                       \\
+                                       & \quad + \textcolor{corange}{\gamma_{1,3} \cdot (x_3 - u_1) \cdot (x_3 - u_1)^T}\Big)               \\
+                                       & = \frac{1}{1.25157} \times \Bigg( \textcolor{cblue}{0.74279 \cdot \left(
+                                  \begin{pmatrix}
+                                      1 \\
+                                      2
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      2 \\
+                                      2
+                                  \end{pmatrix}
+                                  \right) \cdot \left(
+                                  \begin{pmatrix}
+                                      1 \\
+                                      2
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      2 \\
+                                      2
+                                  \end{pmatrix}
+                          \right)^T}                                                                                                        \\
+                                       & \quad + \textcolor{cred}{0.15584 \cdot \left(
+                                  \begin{pmatrix}
+                                      -1 \\
+                                      1
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      2 \\
+                                      2
+                                  \end{pmatrix}
+                                  \right) \cdot \left(
+                                  \begin{pmatrix}
+                                      -1 \\
+                                      1
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      2 \\
+                                      2
+                                  \end{pmatrix}
+                          \right)^T}                                                                                                        \\
+                                       & \quad + \textcolor{corange}{0.35294 \cdot \left(
+                                  \begin{pmatrix}
+                                      1 \\
+                                      0
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      2 \\
+                                      2
+                                  \end{pmatrix}
+                                  \right) \cdot \left(
+                                  \begin{pmatrix}
+                                      1 \\
+                                      0
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      2 \\
+                                      2
+                                  \end{pmatrix}
+                          \right)^T}\Bigg)                                                                                                  \\
+                                       & = \begin{pmatrix}{}
+                                               0.43605 & 0.07757 \\
+                                               0.07757 & 0.77846
+                                           \end{pmatrix}
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+              $$
+                  \pi_1' = \frac{N_1}{N} = \frac{1.25157}{3.0} = 0.41719
+              $$
+
+              \switchcolumn
+
+              \begin{small}
+                  $$
+                      \begin{aligned}
+                          u_2' & = \frac{1}{N_2} \sum_{i} \gamma_{2, i} \cdot x_i  \\
+                               & = \frac{\textcolor{cblue}{\gamma_{2,1} \cdot x_1}
+                              + \textcolor{cred}{\gamma_{2,2} \cdot x_2}
+                          + \textcolor{corange}{\gamma_{2,3} \cdot x_3}}{N_2}      \\
+                               & = \frac{\textcolor{cblue}{0.25721 \cdot
+                                  \begin{pmatrix}
+                                      1 \\
+                                      2
+                                  \end{pmatrix}
+                              } + \textcolor{cred}{0.84416 \cdot
+                                  \begin{pmatrix}
+                                      -1 \\
+                                      1
+                                  \end{pmatrix}
+                              } + \textcolor{corange}{0.64706 \cdot
+                                  \begin{pmatrix}
+                                      1 \\
+                                      0
+                                  \end{pmatrix}
+                          }}{1.74843}                                              \\
+                               & = \begin{pmatrix}
+                                       0.03438 \\
+                                       0.77703
+                                   \end{pmatrix}
+                      \end{aligned}
+                  $$
+              \end{small}
+              \begin{footnotesize}
+                  $$
+                      \begin{aligned}
+                          \varSigma_2' & = \frac{1}{N_2} \sum_{i} \gamma_{2, i} \cdot
+                          \left(x_i - \colorbox{byellow}{$u_2$}\right) \cdot \left(x_i - \colorbox{byellow}{$u_2$}\right)^T                 \\
+                                       & = \frac{1}{N_2} \times \Big( \textcolor{cblue}{\gamma_{2,1} \cdot (x_1 - u_2) \cdot (x_1 - u_2)^T} \\
+                                       & \quad + \textcolor{cred}{\gamma_{2,2} \cdot (x_2 - u_2) \cdot (x_2 - u_2)^T}                       \\
+                                       & \quad + \textcolor{corange}{\gamma_{2,3} \cdot (x_3 - u_2) \cdot (x_3 - u_2)^T}\Big)               \\
+                                       & = \frac{1}{1.74843} \times \Bigg( \textcolor{cblue}{0.25721 \cdot \left(
+                                  \begin{pmatrix}
+                                      1 \\
+                                      2
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      0 \\
+                                      0
+                                  \end{pmatrix}
+                                  \right) \cdot \left(
+                                  \begin{pmatrix}
+                                      1 \\
+                                      2
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      0 \\
+                                      0
+                                  \end{pmatrix}
+                          \right)^T}                                                                                                        \\
+                                       & \quad + \textcolor{cred}{0.84416 \cdot \left(
+                                  \begin{pmatrix}
+                                      -1 \\
+                                      1
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      0 \\
+                                      0
+                                  \end{pmatrix}
+                                  \right) \cdot \left(
+                                  \begin{pmatrix}
+                                      -1 \\
+                                      1
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      0 \\
+                                      0
+                                  \end{pmatrix}
+                          \right)^T}                                                                                                        \\
+                                       & \quad + \textcolor{corange}{0.64706 \cdot \left(
+                                  \begin{pmatrix}
+                                      1 \\
+                                      0
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      0 \\
+                                      0
+                                  \end{pmatrix}
+                                  \right) \cdot \left(
+                                  \begin{pmatrix}
+                                      1 \\
+                                      0
+                                  \end{pmatrix}
+                                  -
+                                  \begin{pmatrix}
+                                      0 \\
+                                      0
+                                  \end{pmatrix}
+                          \right)^T} \Bigg)                                                                                                 \\
+                                       & = \begin{pmatrix}{}
+                                               0.99882  & -0.21531 \\
+                                               -0.21531 & 0.46748
+                                           \end{pmatrix}
+                      \end{aligned}
+                  $$
+              \end{footnotesize}
+              $$
+                  \pi_2' = \frac{N_2}{N} = \frac{1.74843}{3.0} = 0.58281
+              $$
+
+          \end{paracol}
+
+          \vspace*{0.5cm}
+
+          \textbf{Evaluate the log likelihood}
+
+          Since we are only performing one epoch of the EM clustering algorithm,
+          we can skip this step.
+
+          \vspace*{1.0cm}
+
+          \textbf{Conclusion}
+
+          After performing one epoch of the EM clustering algorithm, we end
+          up with the following parameters for each cluster.
+
+          \begin{center}
+              \captionsetup{type=table}
+              \begin{tabular}{c|ccc}
+                  Cluster                       & $u$ & $\varSigma$ & $\pi$ \\
+                  \hline
+                  \colorbox{bgreen}{Cluster 1}  &
+                  $\begin{pmatrix}
+                           0.75096 \\
+                           1.31149
+                       \end{pmatrix}$              &
+                  $\begin{pmatrix}{}
+                           0.43605 & 0.07757 \\
+                           0.07757 & 0.77846
+                       \end{pmatrix}$          &
+                  0.41719                                                   \\
+                  \colorbox{byellow}{Cluster 2} &
+                  $\begin{pmatrix}
+                           0.03438 \\
+                           0.77703
+                       \end{pmatrix}$              &
+                  $\begin{pmatrix}{}
+                           0.99882  & -0.21531 \\
+                           -0.21531 & 0.46748
+                       \end{pmatrix}$        &
+                  0.58281                                                   \\
+              \end{tabular}
+              \captionof{table}{Parameters for the 2 clusters in the multivariate Gaussian mixture after one epoch of the EM clustering algorithm}
+              \label{ex1-final-params-table}
+          \end{center}
+
+    \item {\color{questioncolor}\bfseries
+          Given the updated parameters computed in the previous question:
+          }\\
+          \vspace{-1.0em}
+
+          \begin{enumerate}
+              \item {\color{questioncolor}\bfseries
+                    perform a hard assignment of observations to clusters under a
+                    MAP assumption.
+                    }\\
+                    \vspace{0.5em}
+
+                    As we've done in exercise 1, we can use \eqref{ex1-posterior} to calculate the
+                    posterior probabilities of each cluster for each observation, in order to assign
+                    them to a cluster.
+
+                    \vspace*{0.5cm}
+
+
+          \end{enumerate}
+
+          \begin{paracol}{3}
+              \begin{center}
+                  \textbf{Observation: \textcolor{cred}{$x_1 = \begin{pmatrix}
+                                  1 \\
+                                  2
+                              \end{pmatrix}$}}
+              \end{center}
+
+              \switchcolumn
+
+              \begin{center}
+                  \textbf{Observation: \textcolor{cblue}{$x_2 = \begin{pmatrix}
+                                  -1 \\
+                                  1
+                              \end{pmatrix}$}}
+              \end{center}
+
+              \switchcolumn
+
+              \begin{center}
+                  \textbf{Observation: \textcolor{corange}{$x_3 = \begin{pmatrix}
+                                  1 \\
+                                  0
+                              \end{pmatrix}$}}
+              \end{center}
+
+          \end{paracol}
+
+          \begin{center}
+              We'll start by calculating the likelihood, using \eqref{ex1-likelihood},
+              for each cluster,
+          \end{center}
+
+          \begin{paracol}{3}
+              $$
+                  \begin{aligned}
+                      p(\textcolor{cred}{x_1}|\colorbox{bgreen}{$c=1$})  & = \mathcal{N}(\textcolor{cred}{x_1}|\colorbox{bgreen}{$u_{1}'$}, \colorbox{bgreen}{$\Sigma_{1}'$})   \\
+                                                                         & = 0.19570                                                                                            \\
+                      p(\textcolor{cred}{x_1}|\colorbox{byellow}{$c=2$}) & = \mathcal{N}(\textcolor{cred}{x_1}|\colorbox{byellow}{$u_{2}'$}, \colorbox{byellow}{$\Sigma_{2}'$}) \\
+                                                                         & = 0.01352
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      p(\textcolor{cblue}{x_2}|\colorbox{bgreen}{$c=1$})  & = \mathcal{N}(\textcolor{cblue}{x_2}|\colorbox{bgreen}{$u_{1}'$}, \colorbox{bgreen}{$\Sigma_{1}'$})   \\
+                                                                          & = 0.00820                                                                                             \\
+                      p(\textcolor{cblue}{x_2}|\colorbox{byellow}{$c=2$}) & = \mathcal{N}(\textcolor{cblue}{x_2}|\colorbox{byellow}{$u_{2}'$}, \colorbox{byellow}{$\Sigma_{2}'$}) \\
+                                                                          & = 0.14365
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      p(\textcolor{corange}{x_3}|\colorbox{bgreen}{$c=1$})  & = \mathcal{N}(\textcolor{corange}{x_3}|\colorbox{bgreen}{$u_{1}'$}, \colorbox{bgreen}{$\Sigma_{1}'$})   \\
+                                                                            & = 0.07717                                                                                               \\
+                      p(\textcolor{corange}{x_3}|\colorbox{byellow}{$c=2$}) & = \mathcal{N}(\textcolor{corange}{x_3}|\colorbox{byellow}{$u_{2}'$}, \colorbox{byellow}{$\Sigma_{2}'$}) \\
+                                                                            & = 0.10478
+                  \end{aligned}
+              $$
+
+          \end{paracol}
+
+          \begin{center}
+              Then, we multiply it by $p(c_k)$, as per \eqref{ex1-joint}, yielding
+              the joint probability for each cluster,
+          \end{center}
+
+          \begin{paracol}{3}
+              \begin{scriptsize}
+                  $$
+                      \begin{aligned}
+                          p(\textcolor{cred}{x_1},\colorbox{bgreen}{$c=1$})  & = p(\textcolor{cred}{x_1}|\colorbox{bgreen}{$c=1$})p(\colorbox{bgreen}{$c=1$})   \\
+                                                                             & = 0.19570 \times 0.41719                                                         \\
+                                                                             & = 0.08164                                                                        \\
+                          p(\textcolor{cred}{x_1},\colorbox{byellow}{$c=2$}) & = p(\textcolor{cred}{x_1}|\colorbox{byellow}{$c=2$})p(\colorbox{byellow}{$c=2$}) \\
+                                                                             & = 0.01352 \times 0.58281                                                         \\
+                                                                             & = 0.00788
+                      \end{aligned}
+                  $$
+              \end{scriptsize}
+
+              \switchcolumn
+
+              \begin{scriptsize}
+                  $$
+                      \begin{aligned}
+                          p(\textcolor{cblue}{x_2},\colorbox{bgreen}{$c=1$})  & = p(\textcolor{cblue}{x_2}|\colorbox{bgreen}{$c=1$})p(\colorbox{bgreen}{$c=1$})   \\
+                                                                              & = 0.00820 \times 0.41719                                                          \\
+                                                                              & = 0.00342                                                                         \\
+                          p(\textcolor{cblue}{x_2},\colorbox{byellow}{$c=2$}) & = p(\textcolor{cblue}{x_2}|\colorbox{byellow}{$c=2$})p(\colorbox{byellow}{$c=2$}) \\
+                                                                              & = 0.14365 \times 0.58281                                                          \\
+                                                                              & = 0.08372
+                      \end{aligned}
+                  $$
+              \end{scriptsize}
+
+              \switchcolumn
+
+              \begin{scriptsize}
+                  $$
+                      \begin{aligned}
+                          p(\textcolor{corange}{x_3},\colorbox{bgreen}{$c=1$})  & = p(\textcolor{corange}{x_3}|\colorbox{bgreen}{$c=1$})p(\colorbox{bgreen}{$c=1$})   \\
+                                                                                & = 0.07717 \times 0.41719                                                            \\
+                                                                                & = 0.03219                                                                           \\
+                          p(\textcolor{corange}{x_3},\colorbox{byellow}{$c=2$}) & = p(\textcolor{corange}{x_3}|\colorbox{byellow}{$c=2$})p(\colorbox{byellow}{$c=2$}) \\
+                                                                                & = 0.10478 \times 0.58281                                                            \\
+                                                                                & = 0.06107
+                      \end{aligned}
+                  $$
+              \end{scriptsize}
+
+          \end{paracol}
+
+          \begin{center}
+              We can now calculate the value of $p(x_i)$, given by \eqref{ex1-sum-joint},
+          \end{center}
+
+          \begin{paracol}{3}
+              $$
+                  \begin{aligned}
+                      p(\textcolor{cred}{x_1}) & = \sum_k p(\textcolor{cred}{x_1}, c_k) \\
+                                               & = 0.08164 + 0.00788                    \\
+                                               & = 0.08952
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      p(\textcolor{cblue}{x_2}) & = \sum_k p(\textcolor{cblue}{x_2}, c_k) \\
+                                                & = 0.00342 + 0.08372                     \\
+                                                & = 0.08714
+                  \end{aligned}
+              $$
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      p(\textcolor{corange}{x_3}) & = \sum_k p(\textcolor{corange}{x_3}, c_k) \\
+                                                  & = 0.03219 + 0.06107                       \\
+                                                  & = 0.09326
+                  \end{aligned}
+              $$
+
+          \end{paracol}
+
+          \begin{center}
+              Finally, we can calculate the posterior probability, using \eqref{ex1-posterior}, for each cluster,
+              and then assign each observation to a cluster, under a MAP assumption,
+          \end{center}
+
+          \begin{paracol}{3}
+              $$
+                  \begin{aligned}
+                      p(\colorbox{bgreen}{$c=1$}|\textcolor{cred}{x_1})  & = \frac{p(\textcolor{cred}{x_1},\colorbox{bgreen}{$c=1$})}{p(\textcolor{cred}{x_1})}  \\
+                                                                         & = \frac{0.08164}{0.08952}                                                             \\
+                                                                         & = 0.91198                                                                             \\
+                      p(\colorbox{byellow}{$c=2$}|\textcolor{cred}{x_1}) & = \frac{p(\textcolor{cred}{x_1},\colorbox{byellow}{$c=2$})}{p(\textcolor{cred}{x_1})} \\
+                                                                         & = \frac{0.00788}{0.08952}                                                             \\
+                                                                         & = 0.08802
+                  \end{aligned}
+              $$
+
+              Therefore, \textcolor{cred}{$x_1$} is assigned to\\
+              \colorbox{bgreen}{Cluster 1}.
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      p(\colorbox{bgreen}{$c=1$}|\textcolor{cblue}{x_2})  & = \frac{p(\textcolor{cblue}{x_2},\colorbox{bgreen}{$c=1$})}{p(\textcolor{cblue}{x_2})}  \\
+                                                                          & = \frac{0.00342}{0.08714}                                                               \\
+                                                                          & = 0.03924                                                                               \\
+                      p(\colorbox{byellow}{$c=2$}|\textcolor{cblue}{x_2}) & = \frac{p(\textcolor{cblue}{x_2},\colorbox{byellow}{$c=2$})}{p(\textcolor{cblue}{x_2})} \\
+                                                                          & = \frac{0.08372}{0.08714}                                                               \\
+                                                                          & = 0.96076
+                  \end{aligned}
+              $$
+
+              Therefore, \textcolor{cblue}{$x_2$} is assigned to\\
+              \colorbox{byellow}{Cluster 2}.
+
+              \switchcolumn
+
+              $$
+                  \begin{aligned}
+                      p(\colorbox{bgreen}{$c=1$}|\textcolor{corange}{x_3})  & = \frac{p(\textcolor{corange}{x_3},\colorbox{bgreen}{$c=1$})}{p(\textcolor{corange}{x_3})}  \\
+                                                                            & = \frac{0.03219}{0.09326}                                                                   \\
+                                                                            & = 0.34519                                                                                   \\
+                      p(\colorbox{byellow}{$c=2$}|\textcolor{corange}{x_3}) & = \frac{p(\textcolor{corange}{x_3},\colorbox{byellow}{$c=2$})}{p(\textcolor{corange}{x_3})} \\
+                                                                            & = \frac{0.06107}{0.09326}                                                                   \\
+                                                                            & = 0.65481
+                  \end{aligned}
+              $$
+
+              Therefore, \textcolor{corange}{$x_3$} is assigned to\\
+              \colorbox{byellow}{Cluster 2}.
+
+          \end{paracol}
+
+          \vspace*{0.5cm}
+
+          \begin{enumerate}[resume]
+              \item {\color{questioncolor}\bfseries
+                    compute the silhouette of the larger cluster using the
+                    Euclidean distance.
+                    }\\
+                    \vspace{0.5em}
+
+                    The larger cluster is \colorbox{byellow}{Cluster 2}, since is has 2 observations, versus just one
+                    in the other cluster.
+
+                    The silhouette of each point, $s(x_i)$, is given by,
+                    \begin{equation}\label{ex2b-ai-bi}
+                        a_i = \frac{1}{n_k - 1} \sum_{j \in c_k \backslash \{i\}} d(x_i, x_j)
+                        \quad,\quad
+                        b_i = \min_{k' \ne k} \frac{1}{n_k'} \sum_{j \in c_{k'}} d(x_i, x_j)
+                    \end{equation}
+                    \begin{equation}\label{ex2b-s-xi}
+                        s(x_i) = \begin{cases}
+                            1-\frac{a_i}{b_i}   & , \text{if}~a_i < b_i    \\
+                            \frac{b_i}{a_i} - 1 & , \text{if}~a_i \geq b_i
+                        \end{cases}
+                        =\frac{b_i - a_i}{\max(a_i,b_i)}
+                    \end{equation}
+                    where $d(x_i, x_j)$ is the Euclidean distance between $x_i$ and $x_j$.
+
+                    For the sake of completeness, the Euclidean distance between two points in a $d$-dimensional
+                    space is given by
+
+                    $$
+                        d(x_i, x_j) = ||x_i - x_m||_d = \sqrt{\sum_{m=1}^{d} \left(x_{i_m} - x_{j_m}\right)^2}
+                    $$
+
+                    It is relevant to note that $a_i$ is the mean of the distances of observation $x_i$ to other
+                    observations in its cluster, while $b_i$ is the mean of the distances of
+                    that same observation to the observations in another cluster (the cluster
+                    that yeilds the lowest value).
+
+                    The silhouette of a cluster, $s(c_k)$ is the mean of the silhouette of its observations,
+                    \begin{equation}\label{ex2b-s-ck}
+                        s(c_k) = \frac{1}{n_k} \sum_{i \in c_k} s_i
+                    \end{equation}
+
+                    Observations \textcolor{cblue}{$x_2$} and \textcolor{corange}{$x_3$}
+                    belong to \colorbox{byellow}{Cluster 2}, as per the previous
+                    question, therefore we'll calculate their silhouettes:
+
+                    \vspace*{0.5cm}
+
+                    \begin{paracol}{2}
+                        \begin{center}
+                            \textbf{Observation: \textcolor{cblue}{$x_2 = \begin{pmatrix}
+                                            -1 \\
+                                            1
+                                        \end{pmatrix}$}}
+                        \end{center}
+
+                        \switchcolumn
+
+                        \begin{center}
+                            \textbf{Observation: \textcolor{corange}{$x_3 = \begin{pmatrix}
+                                            1 \\
+                                            0
+                                        \end{pmatrix}$}}
+                        \end{center}
+                    \end{paracol}
+
+                    \begin{center}
+                        We can calculate the distances to other observations in
+                        the same cluster (\colorbox{byellow}{Cluster 2}), $a_i$, using
+                        \eqref{ex2b-ai-bi}.
+                    \end{center}
+
+                    \begin{paracol}{2}
+
+                        $$
+                            \begin{aligned}
+                                \textcolor{cblue}{a_2} & = \frac{||\textcolor{cblue}{x_2} - \textcolor{corange}{x_3}||_2}{2 - 1} \\
+                                                       & = ||\textcolor{cblue}{x_2} - \textcolor{corange}{x_3}||_2               \\
+                                                       & = \sqrt{\left(-1 -1\right)^2 + \left(1 - 0\right)^2}                    \\
+                                                       & = 2.23607
+                            \end{aligned}
+                        $$
+
+                        \switchcolumn
+
+                        $$
+                            \begin{aligned}
+                                \textcolor{corange}{a_3} & = \frac{||\textcolor{corange}{x_3} - \textcolor{cblue}{x_2}||_2}{2 - 1} \\
+                                                         & = ||\textcolor{corange}{x_3} - \textcolor{cblue}{x_2}||_2               \\
+                                                         & = \sqrt{\left(1 -\left(-1\right)\right)^2 + \left(0 - 1\right)^2}       \\
+                                                         & = 2.23607
+                            \end{aligned}
+                        $$
+
+                    \end{paracol}
+
+                    \begin{center}
+                        We can calculate the distances to other observations in
+                        the other cluster (\colorbox{bgreen}{Cluster 1}), $b_i$, using
+                        \eqref{ex2b-ai-bi}.
+                    \end{center}
+
+                    \begin{paracol}{2}
+
+                        $$
+                            \begin{aligned}
+                                \textcolor{cblue}{b_2} & = \frac{||\textcolor{cblue}{x_2} - \textcolor{cred}{x_1}||_2}{1} \\
+                                                       & = ||\textcolor{cblue}{x_2} - \textcolor{cred}{x_1}||_2           \\
+                                                       & = \sqrt{\left(-1 -1\right)^2 + \left(1 - 2\right)^2}             \\
+                                                       & = 2.23607
+                            \end{aligned}
+                        $$
+
+                        \switchcolumn
+
+                        $$
+                            \begin{aligned}
+                                \textcolor{corange}{b_3} & = \frac{||\textcolor{corange}{x_3} - \textcolor{cred}{x_1}||_2}{1} \\
+                                                         & = ||\textcolor{corange}{x_3} - \textcolor{cred}{x_1}||_2           \\
+                                                         & = \sqrt{\left(1 - 1\right)^2 + \left(0 - 2\right)^2}               \\
+                                                         & = 2.0
+                            \end{aligned}
+                        $$
+
+                    \end{paracol}
+
+                    \begin{center}
+                        We can now calculate the silhouette of each observation, $s(x_i)$,
+                        using \eqref{ex2b-s-xi}.
+                    \end{center}
+
+                    \begin{paracol}{2}
+
+                        $$
+                            \begin{aligned}
+                                \textcolor{cblue}{s(x_2)} & = \frac{b_2 - a_2}{\max(a_2, b_2)}  \\
+                                                          & = \frac{2.23607 - 2.23607}{2.23607} \\
+                                                          & = 0
+                            \end{aligned}
+                        $$
+
+                        \switchcolumn
+
+                        $$
+                            \begin{aligned}
+                                \textcolor{corange}{s(x_3)} & = \frac{b_3 - a_3}{\max(a_3, b_3)} \\
+                                                            & = \frac{2.0 - 2.23607}{2.23607}    \\
+                                                            & = -0.10557
+                            \end{aligned}
+                        $$
+
+                    \end{paracol}
+
+                    Finally, we're able to calculate the silhouette of \colorbox{byellow}{Cluster 2},
+                    $s(c_2)$, using \eqref{ex2b-s-ck},
+
+                    $$
+                        \colorbox{byellow}{$s(c_k)$} = \frac{\textcolor{cblue}{s(x_2)} + \textcolor{corange}{s(x_3)}}{2}
+                        = \frac{0 - 0.10557}{2} = -0.05279
+                    $$
+
+          \end{enumerate}
+\end{enumerate}
+
+\pagebreak
+
+\begin{center}
+    \large{\textbf{Part II}: Programming and critical analysis}
+\end{center}
+
+{\color{questioncolor}\bfseries
+\noindent
+Recall the \texttt{pd\_speech.arff} dataset from earlier homeworks, centered on
+the Parkinson diagnosis from speech features.
+For the following exercises, normalize the data using \texttt{sklearn}'s
+MinMaxScaler.
+}
+
+\begin{enumerate}[leftmargin=\labelsep]
+    \item {\color{questioncolor}\bfseries
+          Using \texttt{sklearn}, apply \textit{k}-means clustering fully unsupervisedly
+          (without targets) on the normalized data with $k = 3$ and three different
+          seeds (using \texttt{random} $\in \{0,1,2\}$).
+          Assess the silhouette and purity of the produced solutions.
+          }\\
+          \vspace{0.5em}
+
+          Using \texttt{sklearn}'s \texttt{KMeans} class, we can apply a
+          \textit{k}-means clustering algorithm.\\
+          We opted to use Euclidean distance for the silhouette, since no other distance
+          function was specified in the question prompt
+          and it is \texttt{sklearn}'s default for the
+          \texttt{metrics.silhouette\_score} function.\\
+          For the purity score, we opted to use the \texttt{purity\_score} function
+          available in the course's N5 (Clustering) Notebook.
+
+          Therefore, for each seed, we get the following results:
+
+          \begin{center}
+              \captionsetup{type=table}
+              \begin{tabular}{c|cc}
+                  \texttt{random}        & Silhouette (Euclidean) & Purity  \\
+                  \hline
+                  \textcolor{cred}{0}    & 0.11362                & 0.76720 \\
+                  \textcolor{cblue}{1}   & 0.11404                & 0.76323 \\
+                  \textcolor{corange}{2} & 0.11362                & 0.76720
+              \end{tabular}
+              \captionof{table}{Silhouette (Euclidean) and purity scores for \texttt{random} $\in \{0,1,2\}$}
+              \label{ex1p-silhouette-purity}
+          \end{center}
+
+          The respective code can be found on listing \ref{listing-ex1}.
+
+    \item {\color{questioncolor}\bfseries
+          What is causing the non-determinism?
+          }\\
+          \vspace{0.5em}
+
+          To understand why \texttt{sklearn}'s \texttt{cluster.KMeans} is not deterministic,
+          we must first understand how it works.
+          To initialize the centroids' positions, \texttt{KMeans} uses the \texttt{k-means++}
+          algorithm by default (and it is what we're using here).
+          This algorithm starts by selecting a random point of the dataset as the first
+          initial cluster centroid, followed by randomly selecting the remaining $k-1$ centroids,
+          given that the points furthest away have a greater chance of being selected.
+          In other words, this means the initial cluster centroids are selected
+          \textit{"using sampling based on an empirical probability distribution of
+              the points' contribution to the overall inertia"}, as per the
+          \href{https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html}{documentation},
+          therefore being generally distant from each other.
+
+          The algorithm will then proceed based on these initial centroids.
+          It is also worth noting that this process is repeated \texttt{n\_init} times (by default, 10),
+          preserving the best output (i.e. the one that minimizes inertia).
+
+          All of this means the algorithm is inheritly non-deterministic: the initial cluster
+          centroids are selected randomly (not truly randomly, as we've seen, but some randomness is involved)
+          and might converge to different positions (i.e. different local minimums) in different runs.
+
+          We can see this happening on the chosen seeds: seeds \textcolor{cred}{0}
+          and \textcolor{corange}{2} converge to the same centroid positions,
+          while seed \textcolor{cblue}{1} converges to different centroid positions.
+
+    \item {\color{questioncolor}\bfseries
+          Using a scatter plot, visualize side-by-side the labeled data using labels:
+          i) the original Parkinson diagnosis, and ii) the previously learned $k = 3$
+          clusters (\texttt{random} = 0).
+          To this end, select the two most informative features as axes and color
+          observations according to their label.
+          For feature selection, select the two input variables with highest
+          variance on the MinMax normalized data.
+          }\\
+          \vspace{0.5em}
+
+          By analysing the normalized data, we choose the features with the highest
+          variance to be the ones that will be used in the scatter plot.
+          The most informative features are \texttt{tqwt\_entropy\_shannon\_dec\_16}
+          and \texttt{tqwt\_kurtosisValue\_dec\_34}.
+
+          Labeling the observations yields the following scatterplots:
+
+          \begin{figure}[H]
+              \centering
+              \includesvg[width=17cm]{assets/hw4-scatterplots.svg}
+              \caption{Side-by-side comparison of the labeled data: on the left, the original Parkinson disease labels, on the right, the cluster labeled data}
+              \label{fig:scatterplot-labels}
+          \end{figure}
+
+          The respective code can be found on listing \ref{listing-ex3}.
+
+    \item {\color{questioncolor}\bfseries
+          The fraction of variance explained by a principal component is the ratio
+          between the variance of that component (i.e., its eigenvalue) and total
+          variance (i.e., sum of all eigenvalues).
+          How many principal components are necessary to explain more than 80\%
+          of variability?\\
+          Hint: explore the \texttt{DimReduction} notebook to be familiar
+          with PCA in \texttt{sklearn}.
+          }\\
+          \vspace{0.5em}
+
+          By reading the documentation of the
+          \href{https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html}{\texttt{decomposition.PCA} class}
+          in \texttt{sklearn}, at the moment of initalization of the \texttt{PCA} we can give
+          the \texttt{n\_components} parameter a value between 0 and 1 (in this case 0.8),
+          and set the \texttt{svd\_solver} parameter with the value \texttt{full}.
+          With these parameters, the PCA will return the number of components that explain more than 80\% of the variance.
+
+
+          Fitting this model to our normalized data set and consulting the parameter
+          \texttt{n\_components\_} of the model, gives us the number of principal components
+          as requested by the question.
+          Therefore, \textbf{31} principal components are necessary to explain more than 80\% of variability.
+
+          The respective code can be found on listing \ref{listing-ex4}.
+
+\end{enumerate}
+
+\pagebreak
+
+\center\large{\textbf{Appendix}\vskip 0.3cm}
+
+\lstinputlisting[label={listing-ex1},caption={Apply 3 k-means and assess the silhouette and purity of the produced solutions},language=Python]{assets/hw4-code-1.py}
+
+\vspace*{1.5cm}
+
+\lstinputlisting[label={listing-ex3},caption={Scatter plot of the the original data and the cluster (k = 3) with random = 0},language=Python]{assets/hw4-code-2.py}
+
+\vspace*{1.5cm}
+
+\lstinputlisting[label={listing-ex4},caption={Number of principal components that are necessary to explain more than 80\% of variablity},language=Python]{assets/hw4-code-3.py}
+
+
+\end{document}
